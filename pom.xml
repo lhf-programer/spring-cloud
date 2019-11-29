@@ -9,6 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>cloud-center</module>
+        <module>cloud-common</module>
+        <module>cloud-config</module>
     </modules>
     <packaging>pom</packaging>
 
