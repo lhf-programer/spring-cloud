@@ -1,4 +1,4 @@
-package com.lvhaifeng.cloud.listener;
+package com.lvhaifeng.cloud.center.listener;
 
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.shared.Applications;

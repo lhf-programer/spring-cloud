@@ -11,6 +11,7 @@
         <module>cloud-center</module>
         <module>cloud-common</module>
         <module>cloud-config</module>
+        <module>cloud-gate</module>
     </modules>
     <packaging>pom</packaging>
 

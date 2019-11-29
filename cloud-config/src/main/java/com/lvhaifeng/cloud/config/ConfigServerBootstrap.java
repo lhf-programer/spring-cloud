@@ -1,4 +1,4 @@
-package com.lvhaifeng.cloud;
+package com.lvhaifeng.cloud.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
