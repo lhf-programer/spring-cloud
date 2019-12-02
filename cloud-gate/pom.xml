@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>cloud-gate-ratelimit</module>
+        <module>cloud-gate-server</module>
     </modules>
 
 </project>

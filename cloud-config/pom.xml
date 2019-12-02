@@ -26,12 +26,12 @@
         </dependency>
 
         <!--配置中心监控-->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-monitor</artifactId>
-        </dependency>-->
+        </dependency>
         <!--消息总线依赖 需要rabbitmq,主要针对于配置修改后,通知客户端-->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>
@@ -39,7 +39,7 @@
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit</artifactId>
             <version>3.7.1.201504261725-r</version>
-        </dependency>-->
+        </dependency>
     </dependencies>
 
     <build>

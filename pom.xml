@@ -12,6 +12,9 @@
         <module>cloud-common</module>
         <module>cloud-config</module>
         <module>cloud-gate</module>
+        <module>cloud-auth</module>
+        <module>cloud-auth</module>
+        <module>cloud-modules</module>
     </modules>
     <packaging>pom</packaging>
 

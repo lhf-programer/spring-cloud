@@ -1,0 +1,112 @@
+server:
+  port: 8765 #启动端口
+
+spring:
+  application:
+    name: cloud-gate
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  #redis 配置
+  redis:
+    database: 0
+    host: 192.168.0.250
+    lettuce:
+      pool:
+        max-active: 8   #最大连接数据库连接数,设 0 为没有限制
+        max-idle: 8     #最大等待连接中的数量,设 0 为没有限制
+        max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
+      shutdown-timeout: 100ms
+    password: ylz1234
+    port: 6379
+  rabbitmq:
+    host: 192.168.0.250
+    port: 5672
+    virtual-host: /spring-cloud
+    username: admin
+    password: 123456
+  zipkin:
+    enabled: true
+  sleuth:
+    sampler:
+      percentage: 1
+  http:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 10Mb
+
+zuul:
+  ignored-services: "*"
+  servlet-path: /
+  sensitive-headers:
+  prefix: /api #为zuul设置一个公共的前缀
+  ratelimit: # 网关限流
+    key-prefix: gate_rate
+    enabled: true
+    repository: REDIS #REDIS, JPA, IN_MEMORY
+    behind-proxy: true
+    default-policy: #optional - will apply unless specific policy exists
+      limit: 200
+      refresh-interval: 60 #default value (in seconds)
+      type: #optional
+        - user
+        - origin
+        - url
+
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 120000
+  ConnectTimeout: 120000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
+  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+
+auth:
+  serviceId: cloud-auth
+  user:
+    token-header: Authorization
+    limit-expire: 1440 # 一天过期
+  client:
+    id: cloud-gate
+    secret: 123456
+    token-header: client-token
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 1000  #并发执行的最大线程数，默认10
+      maxQueueSize: 1000 #BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 500 #即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 50000
+
+#请求和响应GZIP压缩支持
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+
+gate:
+  ignore:
+    # 逗号隔开，不允许有空格
+    startWith: /static,/auth/oauth/,/admin/v2/api-docs,/dict/v2/api-docs,/auth/v2/api-docs

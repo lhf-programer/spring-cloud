@@ -12,16 +12,29 @@ spring:
         native:
           search-locations: classpath:/config/
 
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
+  rabbitmq:
+    host: 192.168.0.250
+    port: 5672
+    username: admin
+    password: 123456
+    connection-timeout: 15
+    virtual-host: /spring-cloud
+    listener:
+      simple:
+        acknowledge-mode: manual
+      direct:
+        retry:
+          enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
-#security:
-#  user:
-#    name: haifeng.lv
-#    password: 135976
+security:
+  user:
+    name: lvhaifeng
+    password: 135976
 
 eureka:
   instance:

@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    config:
+      password: 135976
+      username: lvhaifeng
+      name: cloud-gate
+      profile: dev
+      label: dev
+      discovery:
+        enabled: true
+        service-id: cloud-config
+  eureka:
+    instance:
+      lease-renewal-interval-in-seconds: 5
+      lease-expiration-duration-in-seconds: 15
+      statusPageUrlPath: /info
+      healthCheckUrlPath: /health
+      prefer-ip-address: true
+      instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    client:
+      registryFetchIntervalSeconds: 5
+      serviceUrl:
+        defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
