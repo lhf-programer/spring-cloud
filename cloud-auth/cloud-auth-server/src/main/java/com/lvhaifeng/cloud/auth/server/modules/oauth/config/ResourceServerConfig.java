@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author loki
+ * @author haifeng.lv
  * @create 2018/3/21.
  */
 @Configuration

@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>cloud-interface</module>
+        <module>cloud-admin</module>
     </modules>
 
     <dependencies>

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 全局异常拦截处理器
  *
- * @author loki
+ * @author haifeng.lv
  * @version 2018/9/8
  */
 @ControllerAdvice("com.lvhaifeng.cloud")

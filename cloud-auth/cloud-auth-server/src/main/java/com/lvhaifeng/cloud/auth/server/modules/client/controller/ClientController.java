@@ -24,7 +24,7 @@ public class ClientController{
         return new ObjectRestResponse<String>().data(authClientService.apply(clientId, secret));
     }
 
-    @RequestMapping(value = "/myClient")
+    @RequestMapping(value = "/allowedClient")
     public ObjectRestResponse getAllowedClient(String serviceId, String secret) {
         return new ObjectRestResponse<List<String>>().data(authClientService.getAllowedClient(serviceId, secret));
     }

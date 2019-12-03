@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * 集成请求过滤器
  *
- * @author loki
+ * @author haifeng.lv
  * @date 2019-07-29 21:09
  */
 @Component

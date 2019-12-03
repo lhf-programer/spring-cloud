@@ -2,7 +2,7 @@
 package com.lvhaifeng.cloud.common.annotation;
 
 /**
- * @author ace
+ * @author haifeng.lv
  * @create 2018/1/22.
  */
 

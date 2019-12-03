@@ -27,20 +27,21 @@ public class UserAuthUtil {
         try {
             IJWTInfo infoFromToken = jwtHelper.getInfoFromToken(token, userAuthConfig.getPubKeyByte());
             if (redisTemplate.hasKey(RedisKeyUtil.buildUserDisableKey(infoFromToken.getId(), infoFromToken.getExpireTime()))) {
-                throw new NonLoginException("User token is empty!");
+                throw new NonLoginException("用户 token为空！");
             }
+            // jwt 的默认超时时间 + 用户的超时时间 是否在现在之前
             if (new DateTime(infoFromToken.getExpireTime()).plusMinutes(userAuthConfig.getTokenLimitExpire()).isBeforeNow()) {
                 redisTemplate.opsForValue().set(RedisKeyUtil.buildUserDisableKey(infoFromToken.getId(), infoFromToken.getExpireTime()), "1");
                 redisTemplate.delete(RedisKeyUtil.buildUserAbleKey(infoFromToken.getId(), infoFromToken.getExpireTime()));
-                throw new NonLoginException("User token expired!");
+                throw new NonLoginException("用户 token过期！");
             }
             return infoFromToken;
         } catch (ExpiredJwtException ex) {
-            throw new NonLoginException("User token expired!");
+            throw new NonLoginException("用户 token过期！");
         } catch (SignatureException ex) {
-            throw new NonLoginException("User token signature error!");
+            throw new NonLoginException("用户签名错误！");
         } catch (IllegalArgumentException ex) {
-            throw new NonLoginException("User token is empty!");
+            throw new NonLoginException("用户 token为空！");
         }
     }
 }

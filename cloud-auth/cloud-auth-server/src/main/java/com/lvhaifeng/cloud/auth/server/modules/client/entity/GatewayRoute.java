@@ -11,7 +11,6 @@ import java.util.Date;
 
 /**
  * 路由实体类
- *
  * @author haifeng.lv
  * @date 2019-08-01 15:46
  */

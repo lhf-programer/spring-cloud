@@ -7,7 +7,7 @@ import com.lvhaifeng.cloud.auth.server.modules.oauth.entity.IntegrationAuthentic
 /**
  * 集成认证
  *
- * @author loki
+ * @author haifeng.lv
  * @date 2019-07-29 13:37
  */
 public interface IntegrationAuthenticator {

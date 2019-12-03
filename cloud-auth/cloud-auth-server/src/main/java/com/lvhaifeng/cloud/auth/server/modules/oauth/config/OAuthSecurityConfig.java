@@ -46,7 +46,7 @@ import java.util.Map;
 /**
  * 认证安全配置
  *
- * @author loki
+ * @author haifeng.lv
  * @date 2019-08-01 16:15
  */
 @Configuration

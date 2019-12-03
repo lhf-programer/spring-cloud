@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.StringJoiner;
 
 import static org.springframework.http.HttpStatus.TOO_MANY_REQUESTS;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RequiredArgsConstructor
 public class RateLimitFilter extends ZuulFilter {
@@ -90,6 +91,12 @@ public class RateLimitFilter extends ZuulFilter {
 
     private String key(final HttpServletRequest request, final List<Type> types) {
         final Route route = route();
+        if (null == route) {
+            // 没有查询到内容
+            throw new ZuulRuntimeException(new ZuulException(NO_CONTENT.toString(),
+                    NO_CONTENT.value(), null));
+        }
+
         final StringJoiner joiner = new StringJoiner(":");
         joiner.add(properties.getKeyPrefix());
         joiner.add(route.getId());

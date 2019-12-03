@@ -21,5 +21,4 @@ public interface ServiceAuthFeign {
 
     @RequestMapping(value = "/client/userPubKey", method = RequestMethod.POST)
     ObjectRestResponse<byte[]> getUserPublicKey(@RequestParam("clientId") String clientId, @RequestParam("secret") String secret);
-
 }

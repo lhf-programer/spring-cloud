@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * 服务token认证
- *
  * @author haifeng.lv
  * @version 2018/9/12
  */
@@ -35,8 +34,6 @@ public class ServiceAuthRestInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     private ServiceAuthConfig serviceAuthConfig;
-
-    private List<String> allowedClient;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -54,9 +51,11 @@ public class ServiceAuthRestInterceptor extends HandlerInterceptorAdapter {
         if (annotation == null || ignoreClientToken != null) {
             return super.preHandle(request, response, handler);
         } else {
+            // 获取头部 token
             String token = request.getHeader(serviceAuthConfig.getTokenHeader());
             try {
                 IJWTInfo infoFromToken = serviceAuthUtil.getInfoFromToken(token);
+                // 获取属性，检测异常
                 String uniqueName = infoFromToken.getUniqueName();
                 return super.preHandle(request, response, handler);
             } catch (ClientTokenException ex) {

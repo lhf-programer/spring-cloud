@@ -14,9 +14,7 @@ import com.lvhaifeng.cloud.common.context.BaseContextHandler;
 import com.lvhaifeng.cloud.common.exception.auth.UserForbiddenException;
 import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
 import com.lvhaifeng.cloud.common.util.RequestUtil;
-import com.lvhaifeng.cloud.gate.feign.ILogFeign;
 import com.lvhaifeng.cloud.gate.feign.IUserFeign;
-import com.lvhaifeng.cloud.gate.utils.DBLog;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +36,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
- * ${DESCRIPTION}
- *
+ * 路由过滤器
  * @author haifeng.lv
  * @version 2018-06-23 8:25
  */
@@ -50,9 +47,6 @@ public class AdminAccessFilter extends ZuulFilter {
     @Autowired
     @Lazy
     private IUserFeign userService;
-    @Autowired
-    @Lazy
-    private ILogFeign logService;
 
     @Value("${gate.ignore.startWith}")
     private String startWith;
@@ -98,13 +92,6 @@ public class AdminAccessFilter extends ZuulFilter {
         if (isStartWith(requestUri) || HttpMethod.OPTIONS.matches(method)) {
             return null;
         }
-        IJWTInfo user = null;
-        try {
-            user = getJWTUser(request, ctx);
-        } catch (Exception e) {
-            //setFailedRequest(JSON.toJSONString(new NonLoginException("用户身份过期,请重新登录!")), HttpStatus.UNAUTHORIZED.value());
-            return null;
-        }
 
         // 申请客户端密钥头
         ctx.addZuulRequestHeader(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken());
@@ -138,7 +125,6 @@ public class AdminAccessFilter extends ZuulFilter {
     private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, PermissionInfo pm) {
         String host = RequestUtil.getRequestIp();
         LogInfo logInfo = new LogInfo(pm.getMenu(), pm.getName(), pm.getUri(), LocalDateTime.now(), user.getId(), user.getName(), host);
-        DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
     }
 
     /**

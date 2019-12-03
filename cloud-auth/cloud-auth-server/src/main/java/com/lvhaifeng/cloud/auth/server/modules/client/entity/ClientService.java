@@ -27,33 +27,16 @@ public class ClientService {
     @Column(name = "client_id")
     private String clientId;
 
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "crt_time")
-    private Date crtTime;
-
-    @Column(name = "crt_user")
-    private String crtUser;
-
-    @Column(name = "crt_name")
-    private String crtName;
+    @Column(name = "crt_user_name")
+    private String crtUserName;
 
     @Column(name = "crt_host")
     private String crtHost;
 
-    private String attr1;
+    @Column(name = "crt_time")
+    private Date crtTime;
 
-    private String attr2;
-
-    private String attr3;
-
-    private String attr4;
-
-    private String attr5;
-
-    private String attr6;
-
-    private String attr7;
-
-    private String attr8;
 }

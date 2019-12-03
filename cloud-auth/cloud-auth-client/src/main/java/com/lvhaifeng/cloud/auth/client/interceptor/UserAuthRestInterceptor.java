@@ -56,6 +56,7 @@ public class UserAuthRestInterceptor extends HandlerInterceptorAdapter {
         if (annotation == null || ignoreUserToken != null) {
             return super.preHandle(request, response, handler);
         } else {
+            // 获取用户 token
             String token = request.getHeader(userAuthConfig.getTokenHeader());
             // 如果为空则到 cookie中查找
             if (StringUtils.isEmpty(token)) {

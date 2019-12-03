@@ -55,7 +55,9 @@ public class AuthServerRunner implements CommandLineRunner {
             Map<String, byte[]> keyMap = rsaKeyHelper.generateKey(keyConfiguration.getUserSecret());
             keyConfiguration.setUserPriKey(keyMap.get("pri"));
             keyConfiguration.setUserPubKey(keyMap.get("pub"));
+            // 密钥加密
             redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_USER_PRI_KEY, aecUtil.encrypt(rsaKeyHelper.toHexString(keyMap.get("pri"))));
+            // 公钥不加密
             redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_USER_PUB_KEY, rsaKeyHelper.toHexString(keyMap.get("pub")));
         }
         log.info("完成用户公钥/密钥的初始化...");

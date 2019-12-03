@@ -36,7 +36,7 @@ public class RateLimitAutoConfiguration {
     public RateLimitFilter rateLimiterFilter(final RateLimiter rateLimiter,
                                              final RateLimitProperties rateLimitProperties,
                                              final RouteLocator routeLocator, final IUserPrincipal userPrincipal) {
-        return new RateLimitFilter(rateLimiter, rateLimitProperties, routeLocator,userPrincipal);
+        return new RateLimitFilter(rateLimiter, rateLimitProperties, routeLocator, userPrincipal);
     }
 
     @ConditionalOnClass(RedisTemplate.class)

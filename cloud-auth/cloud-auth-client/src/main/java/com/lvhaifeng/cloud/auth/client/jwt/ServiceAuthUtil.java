@@ -44,21 +44,20 @@ public class ServiceAuthUtil {
             IJWTInfo infoFromToken = jwtHelper.getInfoFromToken(token, serviceAuthConfig.getPubKeyByte());
             Date current = infoFromToken.getExpireTime();
             if (new Date().after(current)) {
-                throw new ClientTokenException("Client token expired!");
+                throw new ClientTokenException("客户端 token过期！");
             }
             return infoFromToken;
         } catch (ExpiredJwtException ex) {
-            throw new ClientTokenException("Client token expired!");
+            throw new ClientTokenException("客户端 token过期！");
         } catch (SignatureException ex) {
-            throw new ClientTokenException("Client token signature error!");
+            throw new ClientTokenException("客户端 token签名错误！");
         } catch (IllegalArgumentException ex) {
-            throw new ClientTokenException("User token is empty!");
+            throw new ClientTokenException("用户 token为空!");
         }
     }
 
     /**
      * 刷新可以访问的客户端
-     *
      * @author haifeng.lv
      * @date 2019-07-30 17:58
      */
@@ -73,7 +72,6 @@ public class ServiceAuthUtil {
 
     /**
      * 刷新客户端token
-     *
      * @author haifeng.lv
      * @date 2019-07-30 17:58
      */
@@ -87,6 +85,12 @@ public class ServiceAuthUtil {
         }
     }
 
+    /**
+     * @description 获取客户端 token
+     * @author haifeng.lv
+     * @updateTime 2019/12/3 14:09
+     * @return: java.lang.String
+     */
     public String getClientToken() {
         if (this.clientToken == null) {
             this.refreshClientToken();
@@ -96,7 +100,6 @@ public class ServiceAuthUtil {
 
     /**
      * 获取允许访问的客户端
-     *
      * @author haifeng.lv
      * @date 2019-07-30 14:03
      */

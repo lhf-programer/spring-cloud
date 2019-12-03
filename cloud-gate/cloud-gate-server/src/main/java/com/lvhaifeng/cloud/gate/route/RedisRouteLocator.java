@@ -50,7 +50,7 @@ public class RedisRouteLocator extends SimpleRouteLocator implements Refreshable
         LinkedHashMap<String, ZuulProperties.ZuulRoute> values = new LinkedHashMap<>();
         for (Map.Entry<String, ZuulProperties.ZuulRoute> entry : routesMap.entrySet()) {
             String path = entry.getKey();
-            // Prepend with slash if not already present.
+            // 如果没有出现，在前面加上斜杠
             if (!path.startsWith("/")) {
                 path = "/" + path;
             }
@@ -88,7 +88,7 @@ public class RedisRouteLocator extends SimpleRouteLocator implements Refreshable
             try {
                 BeanUtils.copyProperties(result, zuulRoute);
             } catch (Exception e) {
-                log.error("=============load zuul route info from redis with error==============", e);
+                log.error("=============加载路由错误==============", e);
             }
             routes.put(zuulRoute.getPath(), zuulRoute);
         }

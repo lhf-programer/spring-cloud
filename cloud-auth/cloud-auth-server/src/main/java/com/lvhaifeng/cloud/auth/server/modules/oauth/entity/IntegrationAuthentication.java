@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Map;
 
 /**
- * @author LIQIU
+ * @author haifeng.lv
  * @date 2018-3-30
  **/
 @Data

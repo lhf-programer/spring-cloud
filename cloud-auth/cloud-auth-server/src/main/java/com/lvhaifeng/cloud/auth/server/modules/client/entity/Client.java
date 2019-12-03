@@ -11,7 +11,6 @@ import java.util.Date;
 
 /**
  * 客户端实体类
- *
  * @author haifeng.lv
  * @date 2019-08-01 15:47
  */
@@ -23,53 +22,33 @@ public class Client {
     @GeneratedValue(generator = "UUID")
     private String id;
 
+    /**
+     * 客户端 id
+     */
+    @Column(name = "code")
     private String code;
 
+    @Column(name = "secret")
     private String secret;
 
+    @Column(name = "name")
     private String name;
 
-    private String locked = "0";
-
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "crt_time")
-    private Date crtTime;
-
-    @Column(name = "crt_user")
-    private String crtUser;
-
-    @Column(name = "crt_name")
-    private String crtName;
+    @Column(name = "crt_user_name")
+    private String crtUserName;
 
     @Column(name = "crt_host")
     private String crtHost;
 
-    @Column(name = "upd_time")
-    private Date updTime;
-
-    @Column(name = "upd_user")
-    private String updUser;
-
-    @Column(name = "upd_name")
-    private String updName;
-
     @Column(name = "upd_host")
     private String updHost;
 
-    private String attr1;
+    @Column(name = "crt_time")
+    private Date crtTime;
 
-    private String attr2;
-
-    private String attr3;
-
-    private String attr4;
-
-    private String attr5;
-
-    private String attr6;
-
-    private String attr7;
-
-    private String attr8;
+    @Column(name = "upd_time")
+    private Date updTime;
 }

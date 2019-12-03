@@ -22,6 +22,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 基础熔断器配置
  * @author haifeng.lv
  * @create 2018/2/10.
  */

@@ -38,7 +38,6 @@ public class GatewayRouteBiz extends BusinessBiz<GatewayRouteMapper, GatewayRout
     public void deleteById(Object id) {
         GatewayRoute gatewayRoute = this.selectById(id);
         gatewayRoute.setEnabled(false);
-//        super.deleteById(id);
         this.updateSelectiveById(gatewayRoute);
     }
 
@@ -50,7 +49,6 @@ public class GatewayRouteBiz extends BusinessBiz<GatewayRouteMapper, GatewayRout
 
     /**
      * 更新redis中的路由信息
-     *
      * @author haifeng.lv
      * @date 2019-08-03 13:57
      */

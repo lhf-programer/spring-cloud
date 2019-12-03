@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author loki
+ * @author haifeng.lv
  * @version 2018/12/26.
  */
 @Configuration

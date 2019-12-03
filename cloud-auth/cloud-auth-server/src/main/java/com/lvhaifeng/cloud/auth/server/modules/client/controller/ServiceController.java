@@ -18,7 +18,6 @@ public class ServiceController extends BaseController<ClientBiz, Client, String>
 
     /**
      * 修改客户端的serviceId
-     *
      * @author haifeng.lv
      * @date 2019-08-03 13:54
      */

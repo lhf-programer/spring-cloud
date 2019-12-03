@@ -23,7 +23,6 @@ public class ClientInfo implements IJWTInfo {
         this.id = id;
     }
 
-
     @Override
     public String getUniqueName() {
         return clientId;

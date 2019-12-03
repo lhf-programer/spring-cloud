@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,17 +20,10 @@ import java.util.List;
  */
 @Service
 public class AuthClientServiceImpl implements AuthClientService {
-    @Autowired
+    @Resource
     private ClientMapper clientMapper;
     @Autowired
     private ClientTokenUtil clientTokenUtil;
-    @Autowired
-    private ApplicationContext context;
-
-    @Autowired
-    public AuthClientServiceImpl(ApplicationContext context) {
-        this.context = context;
-    }
 
     @Override
     public String apply(String clientId, String secret) throws Exception {
@@ -42,18 +36,18 @@ public class AuthClientServiceImpl implements AuthClientService {
         client.setCode(clientId);
         client = clientMapper.selectOne(client);
         if (client == null || !client.getSecret().equals(secret)) {
-            throw new ClientInvalidException("Client not found or Client secret is error!");
+            throw new ClientInvalidException("客户端没有找到或者客户端密钥错误！");
         }
         return client;
     }
 
     @Override
-    public void validate(String clientId, String secret) throws Exception {
+    public void validate(String clientId, String secret) {
         Client client = new Client();
         client.setCode(clientId);
         client = clientMapper.selectOne(client);
         if (client == null || !client.getSecret().equals(secret)) {
-            throw new ClientInvalidException("Client not found or Client secret is error!");
+            throw new ClientInvalidException("客户端没有找到或者客户端密钥错误！");
         }
     }
 

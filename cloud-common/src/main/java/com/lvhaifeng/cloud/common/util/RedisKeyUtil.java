@@ -28,6 +28,7 @@ public class RedisKeyUtil {
      * @return
      */
     public static String buildUserDisableKey(String userId, Date expire) {
+        // jwt:user_:dis: + userId + ":" + expire.getTime()
         return CommonConstants.REDIS_USER_TOKEN + RedisKeyConstants.USER_DISABLE + userId + ":" + expire.getTime();
     }
 }

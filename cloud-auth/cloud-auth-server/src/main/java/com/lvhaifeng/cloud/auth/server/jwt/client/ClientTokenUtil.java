@@ -41,7 +41,7 @@ public class ClientTokenUtil {
         IJWTInfo infoFromToken = jwtHelper.getInfoFromToken(token, keyConfiguration.getServicePubKey());
         Date current = infoFromToken.getExpireTime();
         if (new Date().after(current)) {
-            throw new ClientTokenException("Client token expired!");
+            throw new ClientTokenException("客户端 token过期！");
         }
         return infoFromToken;
     }

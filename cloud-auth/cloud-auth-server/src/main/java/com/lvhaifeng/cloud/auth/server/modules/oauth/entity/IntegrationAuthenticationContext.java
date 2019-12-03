@@ -1,7 +1,7 @@
 package com.lvhaifeng.cloud.auth.server.modules.oauth.entity;
 
 /**
- * @author LIQIU
+ * @author haifeng.lv
  * @date 2018-3-30
  **/
 public class IntegrationAuthenticationContext {

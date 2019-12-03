@@ -48,20 +48,12 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
                 "/client/**",
                 "/jwt/**",
                 "/oauth/**",
-                "/mobile/token",
                 "/login",
                 "/error",
                 "/bind"
         };
         Collections.addAll(list, urls);
         return list;
-    }
-
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/oauth/confirm_access").setViewName("authorize");
     }
 
     @Override

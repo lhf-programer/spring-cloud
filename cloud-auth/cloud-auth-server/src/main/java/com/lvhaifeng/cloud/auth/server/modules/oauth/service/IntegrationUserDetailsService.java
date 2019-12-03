@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.auth.server.modules.oauth.service;
 
-import com.lvhaifeng.cloud.auth.server.feign.IUserFeign;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.authenticator.IntegrationAuthenticator;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.bean.OauthUser;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.entity.IntegrationAuthentication;
@@ -10,13 +9,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * 集成认证用户服务
  *
- * @author loki
+ * @author haifeng.lv
  * @date 2019-07-29 13:37
  */
 @Service

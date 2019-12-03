@@ -32,8 +32,7 @@ public class GateConfig {
      */
     @Bean
     public FilterRegistrationBean xssFilterRegistration() {
-        XssFilter xssFilter = new XssFilter();
-        FilterRegistrationBean registration = new FilterRegistrationBean(xssFilter);
+        FilterRegistrationBean registration = new FilterRegistrationBean(new XssFilter());
         registration.addUrlPatterns("/*");
         registration.setOrder(Integer.MIN_VALUE);
         return registration;
