@@ -14,9 +14,7 @@ import java.util.Collection;
 @Service
 @Slf4j
 public class OauthClientDetailsBiz extends BusinessBiz<OauthClientDetailsMapper, OauthClientDetails> {
-
     public OauthUser getLoginUserFullInfo(String id, String username, String password, String name, Collection<GrantedAuthority> authorities) {
         return new OauthUser(id, username, password, name, authorities);
     }
-
 }

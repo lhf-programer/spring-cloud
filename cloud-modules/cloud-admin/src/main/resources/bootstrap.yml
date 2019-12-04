@@ -5,7 +5,6 @@ spring:
       username: lvhaifeng
       name: cloud-admin
       profile: dev
-      #uri: http://127.0.0.1:8750
       label: dev
       discovery:
         enabled: true

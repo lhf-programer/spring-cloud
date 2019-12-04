@@ -15,9 +15,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login").permitAll()
+        http.formLogin()
                 .and()
-                .authorizeRequests().antMatchers("/static/**", "/wsHandler/**", "/favicon.ico", "/webjars/**", "/client/**", "/v2/api-docs")
+                .authorizeRequests().antMatchers("/static/**", "/wsHandler/**", "/favicon.ico", "/webjars/**", "/client/**")
                 .permitAll().and()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))

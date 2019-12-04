@@ -74,7 +74,6 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private IntegrationAuthenticationFilter integrationAuthenticationFilter;
 
-
     @Bean
     public RedisTokenStore redisTokenStore() {
         RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
@@ -84,8 +83,7 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
-        security
-                .tokenKeyAccess("permitAll()");
+        security.tokenKeyAccess("permitAll()");
         security.checkTokenAccess("isAuthenticated()");
         //需要更换成加密模式
         security.passwordEncoder(NoOpPasswordEncoder.getInstance());
@@ -95,10 +93,8 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints)
             throws Exception {
-        endpoints
-                .authenticationManager(auth)
-                .tokenStore(redisTokenStore()).accessTokenConverter(accessTokenConverter())
-        ;
+        endpoints.authenticationManager(auth)
+                .tokenStore(redisTokenStore()).accessTokenConverter(accessTokenConverter());
     }
 
     @Override
@@ -121,13 +117,12 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
         }
     }
 
-
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
-        byte[] pri, pub = null;
+        byte[] pri, pub;
         try {
-            pri = rsaKeyHelper.toBytes(aecUtil.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PRI_KEY).toString()));
-            pub = rsaKeyHelper.toBytes(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PUB_KEY).toString());
+            pri = rsaKeyHelper.toBytes(aecUtil.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PRI_KEY)));
+            pub = rsaKeyHelper.toBytes(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PUB_KEY));
         } catch (Exception e) {
             Map<String, byte[]> keyMap = rsaKeyHelper.generateKey(keyConfiguration.getUserSecret());
             redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_USER_PRI_KEY, aecUtil.encrypt(rsaKeyHelper.toHexString(keyMap.get("pri"))));

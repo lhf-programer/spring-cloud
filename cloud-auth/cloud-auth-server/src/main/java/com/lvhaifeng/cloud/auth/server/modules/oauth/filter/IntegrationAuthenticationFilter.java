@@ -32,7 +32,7 @@ import java.util.Map;
 @Component
 public class IntegrationAuthenticationFilter extends GenericFilterBean implements ApplicationContextAware {
 
-    private static final String AUTH_TYPE_PARM_NAME = "auth_type";
+    private static final String AUTH_TYPE_PARAM_NAME = "auth_type";
 
     private static final String OAUTH_TOKEN_URL = "/oauth/token";
 
@@ -51,14 +51,13 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         if (requestMatcher.matches(request)) {
             //设置集成登录信息
             IntegrationAuthentication integrationAuthentication = new IntegrationAuthentication();
-            integrationAuthentication.setAuthType(request.getParameter(AUTH_TYPE_PARM_NAME));
+            integrationAuthentication.setAuthType(request.getParameter(AUTH_TYPE_PARAM_NAME));
             integrationAuthentication.setAuthParameters(request.getParameterMap());
             IntegrationAuthenticationContext.set(integrationAuthentication);
             try {
@@ -92,11 +91,9 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
                 }
             }
         }
-
         if (this.authenticators == null) {
             this.authenticators = new ArrayList<>();
         }
-
         for (IntegrationAuthenticator authenticator : authenticators) {
             if (authenticator.support(integrationAuthentication)) {
                 authenticator.prepare(integrationAuthentication);
@@ -106,7 +103,6 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
 
     /**
      * 后置处理
-     *
      * @param integrationAuthentication
      */
     private void complete(IntegrationAuthentication integrationAuthentication) {

@@ -44,6 +44,13 @@ public class IntegrationUserDetailsService implements UserDetailsService {
         return oauthUser;
     }
 
+    /**
+     * @description 验证用户
+     * @author haifeng.lv
+     * @param: integrationAuthentication
+     * @updateTime 2019/12/4 11:12
+     * @return: com.lvhaifeng.cloud.auth.server.modules.oauth.bean.OauthUser
+     */
     private OauthUser authenticate(IntegrationAuthentication integrationAuthentication) {
         if (this.authenticators != null) {
             for (IntegrationAuthenticator authenticator : authenticators) {

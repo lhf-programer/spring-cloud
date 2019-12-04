@@ -16,13 +16,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .authorizeRequests().antMatchers("/static/**", "/bind", "/favicon.ico", "/webjars/**", "/client/**", "/v2/api-docs")
+                .authorizeRequests().antMatchers("/static/**", "/bind", "/favicon.ico", "/webjars/**", "/client/**")
                 .permitAll()
                 .and()
                 .authorizeRequests().antMatchers(HttpMethod.OPTIONS)
                 .permitAll()
                 .and()
-                .formLogin().loginPage("/login").permitAll();
+                .formLogin();
     }
 
 }
