@@ -1,11 +1,9 @@
 package com.lvhaifeng.cloud.auth.server.feign;
 
 import com.lvhaifeng.cloud.auth.server.configuration.FeignConfiguration;
-import com.lvhaifeng.cloud.common.msg.ObjectRestResponse;
+import com.lvhaifeng.cloud.common.vo.Result;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
@@ -25,7 +23,7 @@ public interface IUserFeign {
      * @date 2019-07-29 10:44
      */
     @PostMapping("/user/validate")
-    ObjectRestResponse<Map<String, String>> validate(@RequestParam("username") String username, @RequestParam("password") String password);
+    Result<Map<String, String>> validate(@RequestParam("username") String username, @RequestParam("password") String password);
 
     /**
      * 根据用户名获取用户信息
@@ -33,7 +31,7 @@ public interface IUserFeign {
      * @author haifeng.lv
      * @date 2019-07-29 10:44
      */
-    @PostMapping("/user/info")
-    ObjectRestResponse<Map<String, String>> getUserInfoByUsername(@RequestParam("username") String username);
+    @PostMapping("/user/getUserInfoByUsername")
+    Result<Map<String, String>> getUserInfoByUsername(@RequestParam("username") String username);
 
 }

@@ -2,7 +2,7 @@
 package com.lvhaifeng.cloud.common.util;
 
 
-import com.lvhaifeng.cloud.common.constant.CommonConstants;
+import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
 import com.lvhaifeng.cloud.common.constant.RedisKeyConstants;
 
 import java.util.Date;
@@ -19,7 +19,7 @@ public class RedisKeyUtil {
      * @return
      */
     public static String buildUserAbleKey(String userId, Date expire) {
-        return CommonConstants.REDIS_USER_TOKEN + RedisKeyConstants.USER_ABLE + userId + ":" + expire.getTime();
+        return CommonKeyConstants.REDIS_USER_TOKEN + RedisKeyConstants.USER_ABLE + userId + ":" + expire.getTime();
     }
 
     /**
@@ -29,6 +29,6 @@ public class RedisKeyUtil {
      */
     public static String buildUserDisableKey(String userId, Date expire) {
         // jwt:user_:dis: + userId + ":" + expire.getTime()
-        return CommonConstants.REDIS_USER_TOKEN + RedisKeyConstants.USER_DISABLE + userId + ":" + expire.getTime();
+        return CommonKeyConstants.REDIS_USER_TOKEN + RedisKeyConstants.USER_DISABLE + userId + ":" + expire.getTime();
     }
 }

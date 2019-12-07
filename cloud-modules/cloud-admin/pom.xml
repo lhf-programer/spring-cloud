@@ -13,10 +13,7 @@
     <properties>
         <hystrix.version>1.5.12</hystrix.version>
         <!-- 依赖版本 -->
-        <mapper.version>3.4.0</mapper.version>
-        <mybatis.version>3.3.1</mybatis.version>
-        <mybatis.spring.version>1.2.4</mybatis.spring.version>
-        <pagehelper.version>4.1.1</pagehelper.version>
+        <mybatis.version>3.1.2</mybatis.version>
     </properties>
 
     <dependencies>
@@ -84,17 +81,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.16</version>
         </dependency>
-        <!-- 通用mapper -->
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>1.1.2</version>
-        </dependency>
 
+        <!-- mybatis-plus -->
         <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.1.2</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis.version}</version>
         </dependency>
 
         <dependency>
@@ -134,6 +126,12 @@
         <dependency>
             <groupId>com.lvhaifeng.cloud</groupId>
             <artifactId>cloud-auth-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.lvhaifeng.cloud</groupId>
+            <artifactId>cloud-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

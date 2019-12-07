@@ -3,8 +3,7 @@ package com.lvhaifeng.cloud.auth.client.runner;
 import com.lvhaifeng.cloud.auth.client.config.ServiceAuthConfig;
 import com.lvhaifeng.cloud.auth.client.config.UserAuthConfig;
 import com.lvhaifeng.cloud.auth.client.feign.ServiceAuthFeign;
-import com.lvhaifeng.cloud.common.msg.BaseResponse;
-import com.lvhaifeng.cloud.common.msg.ObjectRestResponse;
+import com.lvhaifeng.cloud.common.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -50,20 +49,18 @@ public class AuthClientRunner implements CommandLineRunner {
     @Scheduled(cron = "0 0/1 * * * ?")
     public void refreshUserPubKey() {
         log.info("refreshUserPubKey,clientId={},clientSecret={}",serviceAuthConfig.getClientId(),serviceAuthConfig.getClientSecret());
-        BaseResponse resp = serviceAuthFeign.getUserPublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
-        if (resp.getStatus() == HttpStatus.OK.value()) {
-            ObjectRestResponse<byte[]> userResponse = (ObjectRestResponse<byte[]>) resp;
-            this.userAuthConfig.setPubKeyByte(userResponse.getData());
+        Result<byte[]> userPublicKey = serviceAuthFeign.getUserPublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
+        if (userPublicKey.isSuccess()) {
+            this.userAuthConfig.setPubKeyByte(userPublicKey.getResult());
         }
     }
 
     @Scheduled(cron = "0 0/1 * * * ?")
     public void refreshServicePubKey() {
         log.info("refreshServicePubKey,clientId={},clientSecret={}",serviceAuthConfig.getClientId(),serviceAuthConfig.getClientSecret());
-        BaseResponse resp = serviceAuthFeign.getServicePublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
-        if (resp.getStatus() == HttpStatus.OK.value()) {
-            ObjectRestResponse<byte[]> userResponse = (ObjectRestResponse<byte[]>) resp;
-            this.serviceAuthConfig.setPubKeyByte(userResponse.getData());
+        Result<byte[]> servicePublicKey = serviceAuthFeign.getServicePublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
+        if (servicePublicKey.isSuccess()) {
+            this.serviceAuthConfig.setPubKeyByte(servicePublicKey.getResult());
         }
     }
 }

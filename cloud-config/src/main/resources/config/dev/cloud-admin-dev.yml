@@ -53,8 +53,6 @@ spring:
   sleuth:
     sampler:
       percentage: 1
-mybatis:
-  mapper-locations: "classpath*:mapper/*.xml"
 
 server:
   port: 8762
@@ -65,6 +63,21 @@ feign:
     enabled: false
   okhttp:
     enabled: true
+
+#mybatis plus 设置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      #主键类型  0:"数据库ID自增",1:"该类型为未设置主键类型", 2:"用户输入ID",3:"全局唯一ID (数字类型唯一ID)", 4:"全局唯一ID UUID",5:"字符串全局唯一ID (idWorker 的字符串表示)";
+      id-type: 4
+      # 默认数据库表下划线命名
+      table-underline: true
+    #configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 ribbon:
   eureka:
@@ -108,5 +121,13 @@ merge:
   aop:
     enabled: true
 
-mapper:
-  mappers: com.lvhaifeng.cloud.common.mapper.CommonMapper
+swagger:
+  # 配置请求路由
+  zuul:
+    host: 127.0.0.1:8765
+    prefix: /api/admin
+  production: false
+  basic:
+    enable: false
+    username: admin
+    password: admin

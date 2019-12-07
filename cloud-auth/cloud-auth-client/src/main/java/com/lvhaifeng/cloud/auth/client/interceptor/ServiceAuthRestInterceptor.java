@@ -7,7 +7,7 @@ import com.lvhaifeng.cloud.auth.client.config.ServiceAuthConfig;
 import com.lvhaifeng.cloud.auth.client.jwt.ServiceAuthUtil;
 import com.lvhaifeng.cloud.common.exception.auth.ClientTokenException;
 import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
-import com.lvhaifeng.cloud.common.msg.BaseResponse;
+import com.lvhaifeng.cloud.common.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -61,8 +63,8 @@ public class ServiceAuthRestInterceptor extends HandlerInterceptorAdapter {
             } catch (ClientTokenException ex) {
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 logger.error(ex.getMessage(), ex);
-                response.setContentType("UTF-8");
-                response.getOutputStream().println(JSON.toJSONString(new BaseResponse(ex.getStatus(), ex.getMessage())));
+                response.setContentType("text/html;charset=utf-8");
+                response.getWriter().println(JSON.toJSONString(new Result(ex.getMessage(), ex.getStatus())));
                 return false;
             }
         }

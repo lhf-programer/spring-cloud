@@ -1,6 +1,6 @@
 package com.lvhaifeng.cloud.common.jwt;
 
-import com.lvhaifeng.cloud.common.constant.CommonConstants;
+import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
 import com.lvhaifeng.cloud.common.util.RsaKeyHelper;
 import com.lvhaifeng.cloud.common.util.StringHelper;
 import io.jsonwebtoken.*;
@@ -26,9 +26,9 @@ public class JWTHelper {
     public String generateToken(IJWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
         String compactJws = Jwts.builder()
                 .setSubject(jwtInfo.getId())
-                .claim(CommonConstants.JWT_KEY_USER_ID, jwtInfo.getId())
-                .claim(CommonConstants.JWT_KEY_NAME, jwtInfo.getName())
-                .claim(CommonConstants.JWT_KEY_EXPIRE, DateTime.now().plusSeconds(expire).toDate().getTime())
+                .claim(CommonKeyConstants.JWT_KEY_USER_ID, jwtInfo.getId())
+                .claim(CommonKeyConstants.JWT_KEY_USER_NAME, jwtInfo.getName())
+                .claim(CommonKeyConstants.JWT_KEY_EXPIRE, DateTime.now().plusSeconds(expire).toDate().getTime())
                 .signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKey))
                 .compact();
         return compactJws;
@@ -43,9 +43,9 @@ public class JWTHelper {
     public String generateToken(IJWTInfo jwtInfo, byte priKey[], Date expire, Map<String, String> otherInfo) throws Exception {
         JwtBuilder builder = Jwts.builder()
                 .setSubject(jwtInfo.getId())
-                .claim(CommonConstants.JWT_KEY_USER_ID, jwtInfo.getId())
-                .claim(CommonConstants.JWT_KEY_NAME, jwtInfo.getName())
-                .claim(CommonConstants.JWT_KEY_EXPIRE, expire.getTime());
+                .claim(CommonKeyConstants.JWT_KEY_USER_ID, jwtInfo.getId())
+                .claim(CommonKeyConstants.JWT_KEY_USER_NAME, jwtInfo.getName())
+                .claim(CommonKeyConstants.JWT_KEY_EXPIRE, expire.getTime());
         if (otherInfo != null) {
             for (Map.Entry<String, String> entry : otherInfo.entrySet()) {
                 builder.claim(entry.getKey(), entry.getValue());
@@ -78,11 +78,11 @@ public class JWTHelper {
         Claims body = claimsJws.getBody();
         Map<String, String> otherInfo = new HashMap<>();
         for (Map.Entry entry : body.entrySet()) {
-            if (Claims.SUBJECT.equals(entry.getKey()) || CommonConstants.JWT_KEY_USER_ID.equals(entry.getKey()) || CommonConstants.JWT_KEY_NAME.equals(entry.getKey()) || CommonConstants.JWT_KEY_EXPIRE.equals(entry.getKey())) {
+            if (Claims.SUBJECT.equals(entry.getKey()) || CommonKeyConstants.JWT_KEY_USER_ID.equals(entry.getKey()) || CommonKeyConstants.JWT_KEY_USER_NAME.equals(entry.getKey()) || CommonKeyConstants.JWT_KEY_EXPIRE.equals(entry.getKey())) {
                 continue;
             }
             otherInfo.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
         }
-        return new JWTInfo(body.getSubject(), StringHelper.getObjectValue(body.get(CommonConstants.JWT_KEY_USER_ID)), StringHelper.getObjectValue(body.get(CommonConstants.JWT_KEY_NAME)), new DateTime(body.get(CommonConstants.JWT_KEY_EXPIRE)).toDate(), otherInfo);
+        return new JWTInfo(body.getSubject(), StringHelper.getObjectValue(body.get(CommonKeyConstants.JWT_KEY_USER_ID)), StringHelper.getObjectValue(body.get(CommonKeyConstants.JWT_KEY_USER_NAME)), new DateTime(body.get(CommonKeyConstants.JWT_KEY_EXPIRE)).toDate(), otherInfo);
     }
 }

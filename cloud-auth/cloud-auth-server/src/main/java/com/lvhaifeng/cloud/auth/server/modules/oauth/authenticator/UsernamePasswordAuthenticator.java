@@ -2,9 +2,8 @@ package com.lvhaifeng.cloud.auth.server.modules.oauth.authenticator;
 
 import com.lvhaifeng.cloud.auth.server.feign.IUserFeign;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.bean.OauthUser;
-import com.lvhaifeng.cloud.auth.server.modules.oauth.biz.OauthClientDetailsBiz;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.entity.IntegrationAuthentication;
-import com.lvhaifeng.cloud.common.msg.ObjectRestResponse;
+import com.lvhaifeng.cloud.common.vo.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -30,9 +29,6 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
     @Autowired
     private IUserFeign iUserFeign;
 
-    @Autowired
-    private OauthClientDetailsBiz oauthClientDetailsBiz;
-
     @Override
     public OauthUser authenticate(IntegrationAuthentication integrationAuthentication) {
         String username = integrationAuthentication.getUsername();
@@ -43,11 +39,11 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
         }
 
         //获取用户基本信息
-        ObjectRestResponse<Map<String, String>> response = iUserFeign.getUserInfoByUsername(username);
-        Map<String, String> data = response.getData();
+        Result<Map<String, String>> response = iUserFeign.getUserInfoByUsername(username);
+        Map<String, String> data = response.getResult();
 
         //获取用户关联主机
-        return oauthClientDetailsBiz.getLoginUserFullInfo(data.get("id"), data.get("username"), data.get("password"), data.get("name"), authorities);
+        return new OauthUser(data.get("id"), data.get("username"), data.get("password"), authorities);
     }
 
     @Override

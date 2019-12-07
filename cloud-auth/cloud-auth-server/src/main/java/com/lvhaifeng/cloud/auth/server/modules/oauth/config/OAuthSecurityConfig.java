@@ -7,7 +7,7 @@ import com.lvhaifeng.cloud.auth.server.jwt.user.JwtTokenUtil;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.bean.OauthUser;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.filter.IntegrationAuthenticationFilter;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.service.IntegrationUserDetailsService;
-import com.lvhaifeng.cloud.common.constant.CommonConstants;
+import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
 import com.lvhaifeng.cloud.common.util.RsaKeyHelper;
 import com.lvhaifeng.cloud.common.util.Sha256PasswordEncoder;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +34,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 import sun.security.rsa.RSAPrivateCrtKeyImpl;
 import sun.security.rsa.RSAPublicKeyImpl;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -56,7 +57,7 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private AuthenticationManager auth;
 
-    @Autowired
+    @Resource
     private DataSource dataSource;
 
     @Autowired
@@ -140,10 +141,9 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
                 /** 自定义一些token属性 ***/
                 final Map<String, Object> additionalInformation = new HashMap<>();
                 Date expireTime = DateTime.now().plusSeconds(jwtTokenUtil.getExpire()).toDate();
-                additionalInformation.put(CommonConstants.JWT_KEY_EXPIRE, expireTime);
-                additionalInformation.put(CommonConstants.JWT_KEY_USER_ID, user.getId());
-                additionalInformation.put(CommonConstants.JWT_KEY_NAME, user.getName());
-                additionalInformation.put("sub", user.getUsername());
+                additionalInformation.put(CommonKeyConstants.JWT_KEY_EXPIRE, expireTime);
+                additionalInformation.put(CommonKeyConstants.JWT_KEY_USER_ID, user.getId());
+                additionalInformation.put(CommonKeyConstants.JWT_KEY_USER_NAME, user.getUsername());
                 ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInformation);
                 OAuth2AccessToken enhancedToken = super.enhance(accessToken, authentication);
                 return enhancedToken;

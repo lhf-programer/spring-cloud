@@ -1,7 +1,7 @@
 package com.lvhaifeng.cloud.common.context;
 
 
-import com.lvhaifeng.cloud.common.constant.CommonConstants;
+import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
 import com.lvhaifeng.cloud.common.util.StringHelper;
 
 import java.util.HashMap;
@@ -35,30 +35,30 @@ public class BaseContextHandler {
     }
 
     public static String getUserID() {
-        Object value = get(CommonConstants.CONTEXT_KEY_USER_ID);
+        Object value = get(CommonKeyConstants.CONTEXT_KEY_USER_ID);
         return returnObjectValue(value);
     }
 
     public static String getUserName() {
-        Object value = get(CommonConstants.CONTEXT_KEY_USER_NAME);
+        Object value = get(CommonKeyConstants.CONTEXT_KEY_USER_NAME);
         return returnObjectValue(value);
     }
 
     public static String getToken() {
-        Object value = get(CommonConstants.CONTEXT_KEY_USER_TOKEN);
+        Object value = get(CommonKeyConstants.CONTEXT_KEY_USER_TOKEN);
         return StringHelper.getObjectValue(value);
     }
 
     public static void setToken(String token) {
-        set(CommonConstants.CONTEXT_KEY_USER_TOKEN, token);
+        set(CommonKeyConstants.CONTEXT_KEY_USER_TOKEN, token);
     }
 
     public static void setUserID(String userID) {
-        set(CommonConstants.CONTEXT_KEY_USER_ID, userID);
+        set(CommonKeyConstants.CONTEXT_KEY_USER_ID, userID);
     }
 
     public static void setUserName(String userName) {
-        set(CommonConstants.CONTEXT_KEY_USER_NAME, userName);
+        set(CommonKeyConstants.CONTEXT_KEY_USER_NAME, userName);
     }
 
     private static String returnObjectValue(Object value) {

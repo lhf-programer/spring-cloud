@@ -7,7 +7,7 @@ import com.lvhaifeng.cloud.common.constant.RequestHeaderConstants;
 import com.lvhaifeng.cloud.common.context.BaseContextHandler;
 import com.lvhaifeng.cloud.common.exception.auth.NonLoginException;
 import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
-import com.lvhaifeng.cloud.common.msg.BaseResponse;
+import com.lvhaifeng.cloud.common.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,6 @@ public class UserAuthInterceptor extends HandlerInterceptorAdapter {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private UserConfiguration userConfiguration;
-
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -54,7 +53,7 @@ public class UserAuthInterceptor extends HandlerInterceptorAdapter {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             log.error(ex.getMessage(), ex);
             response.setContentType("UTF-8");
-            response.getOutputStream().println(JSON.toJSONString(new BaseResponse(ex.getStatus(), ex.getMessage())));
+            response.getOutputStream().println(JSON.toJSONString(new Result(ex.getMessage(), ex.getStatus())));
             return false;
         }
         return super.preHandle(request, response, handler);

@@ -2,7 +2,8 @@ package com.lvhaifeng.cloud.auth.server.interceptor;
 
 import com.lvhaifeng.cloud.auth.server.configuration.ClientConfiguration;
 import com.lvhaifeng.cloud.auth.server.jwt.client.ClientTokenUtil;
-import com.lvhaifeng.cloud.auth.server.modules.client.service.AuthClientService;
+import com.lvhaifeng.cloud.auth.server.modules.client.entity.AuthClientService;
+import com.lvhaifeng.cloud.auth.server.modules.client.service.IAuthClientService;
 import com.lvhaifeng.cloud.common.exception.auth.ClientForbiddenException;
 import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ public class ServiceAuthInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private ClientTokenUtil clientTokenUtil;
     @Autowired
-    private AuthClientService authClientService;
+    private IAuthClientService authClientService;
     @Autowired
     private ClientConfiguration clientConfiguration;
 
@@ -29,8 +30,10 @@ public class ServiceAuthInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         String token = request.getHeader(clientConfiguration.getClientTokenHeader());
+        // 获取 jwt基本信息
         IJWTInfo infoFromToken = clientTokenUtil.getInfoFromToken(token);
         String uniqueName = infoFromToken.getUniqueName();
+        // 获取所有允许的 client
         for(String client: authClientService.getAllowedClient(clientConfiguration.getClientId())){
             if(client.equals(uniqueName)){
                 return super.preHandle(request, response, handler);

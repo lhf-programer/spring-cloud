@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.lvhaifeng.cloud.auth.server.configuration.KeyConfiguration;
 import com.lvhaifeng.cloud.auth.server.constant.RedisKeyConstant;
 import com.lvhaifeng.cloud.auth.server.jwt.AECUtil;
-import com.lvhaifeng.cloud.auth.server.modules.client.biz.GatewayRouteBiz;
 import com.lvhaifeng.cloud.auth.server.modules.client.entity.GatewayRoute;
+import com.lvhaifeng.cloud.auth.server.modules.client.service.IGatewayRouteService;
 import com.lvhaifeng.cloud.common.constant.RedisKeyConstants;
 import com.lvhaifeng.cloud.common.util.RsaKeyHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class AuthServerRunner implements CommandLineRunner {
     private RsaKeyHelper rsaKeyHelper;
 
     @Autowired
-    private GatewayRouteBiz gatewayRouteBiz;
+    private IGatewayRouteService gatewayRouteService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -81,7 +81,7 @@ public class AuthServerRunner implements CommandLineRunner {
             redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_SERVICE_PUB_KEY, rsaKeyHelper.toHexString(keyMap.get("pub")));
         }
         log.info("完成服务公钥/密钥的初始化...");
-        List<GatewayRoute> gatewayRoutes = gatewayRouteBiz.selectListAll();
+        List<GatewayRoute> gatewayRoutes = gatewayRouteService.list();
         redisTemplate.opsForValue().set(RedisKeyConstants.ZUUL_ROUTE_KEY, JSON.toJSONString(gatewayRoutes));
         log.info("完成网关路由的更新...");
     }

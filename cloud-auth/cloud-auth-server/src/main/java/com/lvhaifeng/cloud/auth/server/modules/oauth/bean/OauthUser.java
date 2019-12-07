@@ -13,12 +13,10 @@ import java.util.Collection;
 public class OauthUser extends User implements UserDetails {
     private static final long serialVersionUID = 3123152600328379950L;
     public String id;
-    public String name;
 
-    public OauthUser(String id, String username, String password, String name, Collection<GrantedAuthority> authorities) {
+    public OauthUser(String id, String username, String password, Collection<GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.id = id;
-        this.name = name;
     }
 
 }

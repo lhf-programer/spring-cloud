@@ -11,10 +11,8 @@ import com.lvhaifeng.cloud.auth.client.jwt.ServiceAuthUtil;
 import com.lvhaifeng.cloud.auth.client.jwt.UserAuthUtil;
 import com.lvhaifeng.cloud.common.constant.RequestHeaderConstants;
 import com.lvhaifeng.cloud.common.context.BaseContextHandler;
-import com.lvhaifeng.cloud.common.exception.auth.UserForbiddenException;
 import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
 import com.lvhaifeng.cloud.common.util.RequestUtil;
-import com.lvhaifeng.cloud.gate.feign.IUserFeign;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
@@ -44,9 +42,6 @@ import java.util.stream.Stream;
 @Slf4j
 @RefreshScope
 public class AdminAccessFilter extends ZuulFilter {
-    @Autowired
-    @Lazy
-    private IUserFeign userService;
 
     @Value("${gate.ignore.startWith}")
     private String startWith;
@@ -148,32 +143,6 @@ public class AdminAccessFilter extends ZuulFilter {
         BaseContextHandler.setToken(originToken);
         return userAuthUtil.getInfoFromToken(authToken);
     }
-
-
-    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, IJWTInfo user) {
-        List<PermissionInfo> permissionInfos = userService.getPermissionByUsername();
-        PermissionInfo current = null;
-        for (PermissionInfo info : permissions) {
-            boolean anyMatch = permissionInfos.parallelStream().anyMatch(new Predicate<PermissionInfo>() {
-                @Override
-                public boolean test(PermissionInfo permissionInfo) {
-                    return permissionInfo.getCode().equals(info.getCode());
-                }
-            });
-            if (anyMatch) {
-                current = info;
-                break;
-            }
-        }
-        if (current == null) {
-            setFailedRequest(JSON.toJSONString(new UserForbiddenException("User Permission Forbidden!")), HttpStatus.FORBIDDEN.value());
-        } else {
-            if (!RequestMethod.GET.toString().equals(current.getMethod())) {
-                setCurrentUserInfoAndLog(ctx, user, current);
-            }
-        }
-    }
-
 
     /**
      * URI是否以什么打头

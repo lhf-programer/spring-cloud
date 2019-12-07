@@ -5,8 +5,7 @@ import com.lvhaifeng.cloud.auth.client.feign.ServiceAuthFeign;
 import com.lvhaifeng.cloud.common.exception.auth.ClientTokenException;
 import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
 import com.lvhaifeng.cloud.common.jwt.JWTHelper;
-import com.lvhaifeng.cloud.common.msg.BaseResponse;
-import com.lvhaifeng.cloud.common.msg.ObjectRestResponse;
+import com.lvhaifeng.cloud.common.vo.Result;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +51,7 @@ public class ServiceAuthUtil {
         } catch (SignatureException ex) {
             throw new ClientTokenException("客户端 token签名错误！");
         } catch (IllegalArgumentException ex) {
-            throw new ClientTokenException("用户 token为空!");
+            throw new ClientTokenException("客户端 token为空!");
         }
     }
 
@@ -63,10 +62,9 @@ public class ServiceAuthUtil {
      */
     @Scheduled(cron = "0/30 * * * * ?")
     public void refreshAllowedClient() {
-        BaseResponse resp = serviceAuthFeign.getAllowedClient(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
-        if (resp.getStatus() == 200) {
-            ObjectRestResponse<List<String>> allowedClient = (ObjectRestResponse<List<String>>) resp;
-            this.allowedClient = allowedClient.getData();
+        Result<List<String>> resp = serviceAuthFeign.getAllowedClient(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
+        if (resp.isSuccess()) {
+            this.allowedClient = resp.getResult();
         }
     }
 
@@ -78,10 +76,9 @@ public class ServiceAuthUtil {
     @Scheduled(cron = "0 0/10 * * * ?")
     public void refreshClientToken() {
         log.debug("刷新客户端 token.....");
-        BaseResponse resp = serviceAuthFeign.getAccessToken(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
-        if (resp.getStatus() == 200) {
-            ObjectRestResponse<String> clientToken = (ObjectRestResponse<String>) resp;
-            this.clientToken = clientToken.getData();
+        Result<String> accessToken = serviceAuthFeign.getAccessToken(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
+        if (accessToken.isSuccess()) {
+            this.clientToken = accessToken.getResult();
         }
     }
 
