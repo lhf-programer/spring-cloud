@@ -13,10 +13,10 @@ spring:
           search-locations: classpath:/config/
 
   rabbitmq:
-    host: 192.168.0.250
+    host: 192.168.42.128
     port: 5672
     username: admin
-    password: 123456
+    password: admin
     connection-timeout: 15
     virtual-host: /spring-cloud
     listener:

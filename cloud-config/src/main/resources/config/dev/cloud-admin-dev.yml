@@ -10,7 +10,7 @@ spring:
     default-property-inclusion: non_null
   datasource:
     name: cloud
-    url: jdbc:mysql://localhost:3306/spring_cloud?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+    url: jdbc:mysql://192.168.42.128:3306/spring_cloud?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
     username: root
     password: 123456
     # 使用druid数据源
@@ -32,7 +32,7 @@ spring:
   #redis 配置
   redis:
     database: 0
-    host: 192.168.0.250
+    host: 192.168.42.128
     lettuce:
       pool:
         max-active: 8   #最大连接数据库连接数,设 0 为没有限制
@@ -40,14 +40,14 @@ spring:
         max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
         min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
       shutdown-timeout: 100ms
-    password: ylz1234
+    password: 123456
     port: 6379
   rabbitmq:
-    host: 192.168.0.250
+    host: 192.168.42.128
     port: 5672
     virtual-host: /spring-cloud
     username: admin
-    password: 123456
+    password: admin
   zipkin:
     enabled: true
   sleuth:
