@@ -1,8 +1,7 @@
 # spring-cloud 基础架构（v1.1）
 
 ## 环境要求
-jdk 1.8
----
+- jdk 1.8
 maven 3.3.9
 git 2.21.0
 docker latest （容器）
