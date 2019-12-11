@@ -20,12 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Eureka 服务检测时间
- *
  * @author haifeng.lv
  * @date 2019-07-27 22:54
  */
 @Configuration
-@EnableScheduling
 public class EurekaInstanceCanceledListener implements ApplicationListener {
     private static Logger log = LoggerFactory.getLogger(EurekaInstanceCanceledListener.class);
     private ConcurrentHashMap<String, LostInstance> lostInstanceMap = new ConcurrentHashMap<String, LostInstance>();
@@ -66,7 +64,6 @@ public class EurekaInstanceCanceledListener implements ApplicationListener {
 
     /**
      * 20分钟检测一次服务状态
-     *
      * @author haifeng.lv
      * @date 2019-07-27 22:54
      */
@@ -75,7 +72,6 @@ public class EurekaInstanceCanceledListener implements ApplicationListener {
         lostInstanceMap.entrySet().forEach((lostInstanceMap) -> {
             LostInstance lostInstance = lostInstanceMap.getValue();
             if (lostInstance.getLostTime().plusSeconds(defaultNotifyInterval[lostInstance.getCurrentInterval()]).isBefore(LocalDateTime.now())) {
-                //String msg = "服务：" + lostInstance.getAppName() + "/" + lostInstance.getInstanceId() + "已失效，IP为：" + lostInstance.getIPAddr() + ":" + lostInstance.getPort() + "，失效时间为：" + lostInstance.getLostTime().toString() + "，请马上重启服务！";
                 log.info("服务：{}/{}已失效，IP为：{}:{}，失效时间为：{}，请马上重启服务！", new Object[]{lostInstance.getAppName(), lostInstance.getInstanceId(), lostInstance.getIPAddr(), lostInstance.getPort(), lostInstance.getLostTime().toString()});
                 log.info("服务hostname：{}，失效时间为：{},失败次数{}！", new Object[]{getEurekaHostname(), lostInstance.getLostTime().toString(), lostInstance.getCurrentInterval()});
             }
