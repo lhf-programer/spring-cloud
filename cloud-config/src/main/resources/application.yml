@@ -2,16 +2,14 @@ server:
   port: 8750 #启动端口
 
 spring:
-  profiles:
-    active: native
   application:
     name: cloud-config
   cloud:
     config:
       server:
-        native:
-          search-locations: classpath:/config/
-
+        git:
+          uri: https://git@github.com:lhf-programer/spring-cloud.git
+          searchPaths: cloud-config
   rabbitmq:
     host: 192.168.42.128
     port: 5672
@@ -25,16 +23,12 @@ spring:
       direct:
         retry:
           enabled: true
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-
-security:
-  user:
-    name: lvhaifeng
-    password: 135976
 
 eureka:
   instance:
