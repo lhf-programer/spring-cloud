@@ -25,7 +25,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import static com.lvhaifeng.cloud.gate.ratelimit.config.properties.RateLimitProperties.PREFIX;
 
 /**
+ * @description 限流器配置
  * @author haifeng.lv
+ * @updateTime 2019/12/12 17:39
  */
 @Configuration
 @EnableConfigurationProperties(RateLimitProperties.class)

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 全局异常拦截处理器
- *
  * @author haifeng.lv
  * @version 2018/9/8
  */

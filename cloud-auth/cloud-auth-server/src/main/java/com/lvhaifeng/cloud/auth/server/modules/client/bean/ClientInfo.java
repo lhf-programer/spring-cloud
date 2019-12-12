@@ -8,7 +8,6 @@ import java.util.Map;
 
 /**
  * 客户端信息
- *
  * @author haifeng.lv
  * @date 2019-08-03 13:51
  */

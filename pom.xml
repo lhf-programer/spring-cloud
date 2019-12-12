@@ -10,6 +10,10 @@
     <modules>
         <module>cloud-center</module>
         <module>cloud-config</module>
+        <module>cloud-common</module>
+        <module>cloud-auth</module>
+        <module>cloud-gate</module>
+        <module>cloud-modules</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -66,12 +70,12 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.2.33</version>
+                <version>1.2.58</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
-                <version>1.1.17</version>
+                <version>1.1.20</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -11,15 +11,26 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-@Configuration("adminWebConfig")
+/**
+ * @description 服务全局配置
+ * @author haifeng.lv
+ * @updateTime 2019/12/12 17:04
+ */
+@Configuration
 @Primary
-public class WebConfiguration extends WebMvcConfigurerAdapter {
+public class WebConfiguration implements WebMvcConfigurer {
+
+    /**
+     * @description 异常
+     * @author haifeng.lv
+     * @updateTime 2019/12/12 17:04
+     * @return: com.lvhaifeng.cloud.common.exception.GlobalExceptionHandler
+     */
     @Bean
     GlobalExceptionHandler getGlobalExceptionHandler() {
         return new GlobalExceptionHandler();
@@ -30,6 +41,9 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         return builder.build();
     }
 
+    /**
+     * 忽略拦截
+     */
     @Value("${resquest.skip}")
     private String matchers;
 
@@ -45,7 +59,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         ArrayList<String> commonPathPatterns = getExcludeCommonPathPatterns();
         registry.addInterceptor(getServiceAuthRestInterceptor()).addPathPatterns("/**").excludePathPatterns(commonPathPatterns.toArray(new String[]{}));
         registry.addInterceptor(getUserAuthRestInterceptor()).addPathPatterns("/**").excludePathPatterns(commonPathPatterns.toArray(new String[]{}));
-        super.addInterceptors(registry);
     }
 
     @Bean

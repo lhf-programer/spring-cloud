@@ -30,7 +30,6 @@ import java.util.*;
  * @Description: 授权客户端
  * @Author: haifeng.lv
  * @Date:   2019-12-05
- * @Version: V1.0
  */
 @Service
 public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthClient> implements IAuthClientService {
@@ -38,18 +37,16 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
     private AuthClientMapper authClientMapper;
     @Autowired
     private ClientTokenUtil clientTokenUtil;
-    private JwtTokenUtil jwtTokenUtil;
-    private IUserFeign iUserFeign;
     @Resource
     private AuthClientServiceMapper authClientServiceMapper;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 
     /**
      * 获取服务鉴权token
-     * @param clientId
-     * @param secret
-     * @return
+     * @param clientId 客户端 id
+     * @param secret 密钥
      * @throws Exception
      */
     @Override
@@ -58,6 +55,14 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
         return clientTokenUtil.generateToken(new ClientInfo(authClient.getCode(), authClient.getName(), authClient.getId()));
     }
 
+    /**
+     * @description 获取授权服务
+     * @author haifeng.lv
+     * @param clientId 客户端 id
+     * @param secret 密钥
+     * @updateTime 2019/12/12 17:09
+     * @return: com.lvhaifeng.cloud.auth.server.modules.client.entity.AuthClient
+     */
     private AuthClient getAuthClient(String clientId, String secret) {
         AuthClient authClient = getAuthClient(clientId);
         if (authClient == null || !authClient.getSecret().equals(secret)) {
@@ -68,9 +73,8 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
 
     /**
      * 校验合法性
-     *
-     * @param clientId
-     * @param secret
+     * @param clientId 客户端 id
+     * @param secret 密钥
      * @throws Exception
      */
     @Override
@@ -83,9 +87,8 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
 
     /**
      * 获取授权的客户端列表
-     *
-     * @param clientId
-     * @param secret
+     * @param clientId 客户端 id
+     * @param secret 密钥
      * @return
      */
     @Override
@@ -100,7 +103,7 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
 
     /**
      * 获取服务授权的客户端列表
-     * @param clientId
+     * @param clientId 客户端 id
      * @return
      */
     @Override
@@ -120,41 +123,19 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
         return authClient;
     }
 
+    /**
+     * @description 验证
+     * @author haifeng.lv
+     * @param: token
+     * @updateTime 2019/12/12 17:10
+     * @return: java.lang.Boolean
+     */
     @Override
     public Boolean invalid(String token) throws Exception {
         IJWTInfo infoFromToken = jwtTokenUtil.getInfoFromToken(token);
         redisTemplate.delete(RedisKeyUtil.buildUserAbleKey(infoFromToken.getId(), infoFromToken.getExpireTime()));
         redisTemplate.opsForValue().set(RedisKeyUtil.buildUserDisableKey(infoFromToken.getId(), infoFromToken.getExpireTime()), "1");
         return true;
-    }
-
-    @Override
-    public String login(String username, String password) throws Exception {
-        Map<String, String> data = iUserFeign.validate(username, password).getResult();
-        String token;
-        if (!StringUtils.isEmpty(data.get("id"))) {
-            Map<String, String> map = new HashMap<>();
-            JWTInfo jwtInfo = new JWTInfo(data.get("username"), data.get("id"), data.get("name"));
-            Date expireTime = DateTime.now().plusSeconds(jwtTokenUtil.getExpire()).toDate();
-            token = jwtTokenUtil.generateToken(jwtInfo, map, expireTime);
-            redisTemplate.opsForValue().set(RedisKeyUtil.buildUserAbleKey(data.get("id"), expireTime), "1");
-            return token;
-        }
-        throw new UserInvalidException("用户不存在或账户密码错误!");
-    }
-
-    @Override
-    public void validate(String token) throws Exception {
-        jwtTokenUtil.getInfoFromToken(token);
-    }
-
-    @Override
-    public String refresh(String oldToken) throws Exception {
-        IJWTInfo infoFromToken = jwtTokenUtil.getInfoFromToken(oldToken);
-        invalid(oldToken);
-        Date expireTime = DateTime.now().plusSeconds(jwtTokenUtil.getExpire()).toDate();
-        redisTemplate.opsForValue().set(RedisKeyUtil.buildUserAbleKey(infoFromToken.getId(), expireTime), "1");
-        return jwtTokenUtil.generateToken(infoFromToken, infoFromToken.getOtherInfo(), expireTime);
     }
 
     /**

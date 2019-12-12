@@ -25,7 +25,6 @@ import java.util.Set;
 @Component
 @Primary
 public class UsernamePasswordAuthenticator extends AbstractPreparableIntegrationAuthenticator {
-
     @Autowired
     private IUserFeign iUserFeign;
 

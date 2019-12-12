@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @Description: 角色
  * @Author: haifeng.lv
  * @Date:   2019-12-06
- * @Version: V1.0
  */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {

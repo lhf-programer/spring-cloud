@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 单数据源配置
- *
  * @Author haifeng.lv
  */
 @Configuration

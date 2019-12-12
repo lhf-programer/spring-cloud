@@ -8,12 +8,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 静态资源配置类
  * @author haifeng.lv
  * @create 2018/3/21.
  */
 @Configuration
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-
     @Value("${resquest.skip}")
     private String matchers;
 

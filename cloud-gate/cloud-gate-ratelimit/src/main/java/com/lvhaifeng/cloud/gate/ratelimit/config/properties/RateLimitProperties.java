@@ -15,14 +15,15 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * @description 限流器配置项
  * @author haifeng.lv
+ * @updateTime 2019/12/12 17:39
  */
 @Data
 @Validated
 @NoArgsConstructor
 @ConfigurationProperties(RateLimitProperties.PREFIX)
 public class RateLimitProperties {
-
     public static final String PREFIX = "zuul.ratelimit";
 
     private Policy defaultPolicy;

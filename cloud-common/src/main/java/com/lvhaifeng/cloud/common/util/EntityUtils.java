@@ -14,11 +14,12 @@ import java.util.*;
 
 
 /**
- * 1、快速对实体的常驻字段，如：crtUser、crtHost、updUser等值快速注入
+ * @description 快速对实体的常驻字段，如：crtUser、crtHost、updUser等值快速注入
+ * @author haifeng.lv
+ * @updateTime 2019/12/12 17:34
  */
 @Slf4j
 public class EntityUtils {
-
     public static <T> void setCreatAndUpdatInfo(T entity) {
         setCreateInfo(entity);
         setUpdatedInfo(entity);
@@ -104,9 +105,6 @@ public class EntityUtils {
                 sb.append(field).append(" ");
             }
         }
-        if (!sb.toString().isEmpty()) {
-            // log.error(entity.getClass().getName() + ",部分字段审计失败: " + sb.toString());
-        }
     }
 
     public static <T> boolean isPKNotNull(T entity, String field) {
@@ -124,7 +122,9 @@ public class EntityUtils {
         Set<String> emptyNames = new HashSet<String>();
         for (java.beans.PropertyDescriptor pd : pds) {
             Object srcValue = src.getPropertyValue(pd.getName());
-            if (srcValue == null) emptyNames.add(pd.getName());
+            if (srcValue == null) {
+                emptyNames.add(pd.getName());
+            }
         }
         String[] result = new String[emptyNames.size()];
         return emptyNames.toArray(result);

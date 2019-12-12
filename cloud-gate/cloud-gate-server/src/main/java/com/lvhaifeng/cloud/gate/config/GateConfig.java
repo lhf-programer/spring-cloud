@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import javax.annotation.Resource;
 
 /**
+ * 网关配置项
  * @author haifeng.lv
  * @create 2018/2/12
  */
@@ -20,15 +21,16 @@ import javax.annotation.Resource;
 public class GateConfig {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-
     @Resource
     ZuulProperties zuulProperties;
-
     @Autowired
     ServerProperties server;
 
     /**
-     * xssFilter注册
+     * @description xssFilter注册
+     * @author haifeng.lv
+     * @updateTime 2019/12/12 17:42
+     * @return: org.springframework.boot.web.servlet.FilterRegistrationBean
      */
     @Bean
     public FilterRegistrationBean xssFilterRegistration() {
@@ -40,7 +42,7 @@ public class GateConfig {
 
     @Bean
     RedisRouteLocator redisRouteLocator() {
-        RedisRouteLocator redisRouteLocator = new RedisRouteLocator(this.server.getServletPrefix(), this.zuulProperties);
+        RedisRouteLocator redisRouteLocator = new RedisRouteLocator(null == this.server.getServlet().getContextPath() ? "/":this.server.getServlet().getContextPath(), this.zuulProperties);
         redisRouteLocator.setRedisTemplate(this.redisTemplate);
         return redisRouteLocator;
     }

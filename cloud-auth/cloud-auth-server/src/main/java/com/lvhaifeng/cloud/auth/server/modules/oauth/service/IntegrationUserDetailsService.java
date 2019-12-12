@@ -19,7 +19,6 @@ import java.util.List;
  */
 @Service
 public class IntegrationUserDetailsService implements UserDetailsService {
-
     private List<IntegrationAuthenticator> authenticators;
 
     @Autowired(required = false)
@@ -36,7 +35,6 @@ public class IntegrationUserDetailsService implements UserDetailsService {
         }
         integrationAuthentication.setUsername(username);
         OauthUser oauthUser = this.authenticate(integrationAuthentication);
-
         if (oauthUser == null) {
             throw new UsernameNotFoundException("用户名或密码错误");
         }

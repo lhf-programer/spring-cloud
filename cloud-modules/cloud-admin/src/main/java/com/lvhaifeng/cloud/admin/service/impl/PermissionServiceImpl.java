@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @Description: 权限
  * @Author: haifeng.lv
  * @Date:   2019-12-06
- * @Version: V1.0
  */
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {

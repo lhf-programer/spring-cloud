@@ -2,6 +2,7 @@ package com.lvhaifeng.cloud.common.xss;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,7 +39,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public Map<String, String[]> getParameterMap() {
-        Map<String, String[]> parameterMap = super.getParameterMap();
+        Map<String, String[]> parameterMap = new HashMap<>(super.getParameterMap());
         if (parameterMap == null) {
             return null;
         }

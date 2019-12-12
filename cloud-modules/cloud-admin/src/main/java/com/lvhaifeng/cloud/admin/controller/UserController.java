@@ -28,7 +28,6 @@ import io.swagger.annotations.ApiOperation;
  * @Description: 用户
  * @Author: haifeng.lv
  * @Date:   2019-12-06
- * @Version: V1.0
  */
 @Slf4j
 @Api(tags="用户")
@@ -42,8 +41,7 @@ public class UserController {
 
 	 /**
 	  * 登入通过用户名获取用户信息
-	  *
-	  * @author loki
+	  * @author haifeng.lv
 	  * @date 2019-07-30 10:06
 	  */
 	 @IgnoreClientToken

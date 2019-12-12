@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * socket 过滤器
  * @author haifeng.lv
  * @date 2019-08-12 19:28
  **/

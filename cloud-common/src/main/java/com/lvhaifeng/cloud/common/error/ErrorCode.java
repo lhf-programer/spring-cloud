@@ -3,7 +3,6 @@ package com.lvhaifeng.cloud.common.error;
 /**
  * 错误码
  * time: 5/13/2019
- *
  * @author haifeng.lv
  */
 public final class ErrorCode {

@@ -6,6 +6,11 @@ import lombok.Setter;
 import java.io.Serializable;
 
 
+/**
+ * @description 授权信息
+ * @author haifeng.lv
+ * @updateTime 2019/12/12 17:45
+ */
 @Getter
 @Setter
 public class PermissionInfo implements Serializable {

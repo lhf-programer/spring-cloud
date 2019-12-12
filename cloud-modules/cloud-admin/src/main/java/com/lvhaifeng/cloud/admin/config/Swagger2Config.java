@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * swagger 配置
  * @Author haifeng.lv
  */
 @Slf4j

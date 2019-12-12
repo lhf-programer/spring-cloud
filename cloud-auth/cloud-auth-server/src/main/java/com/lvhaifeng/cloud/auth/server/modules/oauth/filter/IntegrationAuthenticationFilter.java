@@ -31,15 +31,11 @@ import java.util.Map;
  */
 @Component
 public class IntegrationAuthenticationFilter extends GenericFilterBean implements ApplicationContextAware {
-
     private static final String AUTH_TYPE_PARAM_NAME = "auth_type";
-
     private static final String OAUTH_TOKEN_URL = "/oauth/token";
 
     private Collection<IntegrationAuthenticator> authenticators;
-
     private ApplicationContext applicationContext;
-
     private RequestMatcher requestMatcher;
 
     public IntegrationAuthenticationFilter() {
@@ -78,7 +74,6 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
 
     /**
      * 进行预处理
-     *
      * @param integrationAuthentication
      */
     private void prepare(IntegrationAuthentication integrationAuthentication) {
@@ -102,8 +97,10 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
     }
 
     /**
-     * 后置处理
-     * @param integrationAuthentication
+     * @description 后置处理
+     * @author haifeng.lv
+     * @param: integrationAuthentication
+     * @updateTime 2019/12/12 17:19
      */
     private void complete(IntegrationAuthentication integrationAuthentication) {
         for (IntegrationAuthenticator authenticator : authenticators) {

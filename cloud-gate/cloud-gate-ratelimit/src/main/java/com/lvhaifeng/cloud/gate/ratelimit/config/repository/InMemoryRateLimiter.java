@@ -26,12 +26,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 在内存速率限制器配置为开发环境。
- *
  * @author haifeng.lv
  * @since 2018-06-23
  */
 public class InMemoryRateLimiter extends AbstractRateLimiter {
-
     private Map<String, Rate> repository = new ConcurrentHashMap<>();
 
     @Override

@@ -12,7 +12,6 @@ import java.util.Date;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- *
  * @author haifeng.lv
  * @since 2018-08-28
  */

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * 日志服务
  * @author haifeng.lv
  * @version 2018-07-01 11:18
  */
@@ -18,7 +19,6 @@ public class LogInfo implements Serializable {
     private String opt;
 
     private String uri;
-
 
     private LocalDateTime crtTime;
 

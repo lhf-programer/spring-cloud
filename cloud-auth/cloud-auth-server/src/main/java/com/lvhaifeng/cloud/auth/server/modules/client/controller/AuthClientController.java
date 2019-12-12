@@ -18,7 +18,6 @@ import springfox.documentation.annotations.ApiIgnore;
  * @Description: 授权客户端
  * @Author: haifeng.lv
  * @Date:   2019-12-05
- * @Version: V1.0
  */
 @Slf4j
 @RestController
@@ -27,7 +26,6 @@ import springfox.documentation.annotations.ApiIgnore;
 public class AuthClientController {
 	@Autowired
 	private IAuthClientService authClientService;
-
 	@Autowired
     private KeyConfiguration keyConfiguration;
 

@@ -9,14 +9,12 @@ import java.io.Serializable;
 
 /**
  * 接口返回数据格式
- *
  * @author haifeng.lv
  * @date 2019年1月19日
  */
 @Data
 @ApiModel(value = "接口返回对象", description = "接口返回对象")
 public class Result<T> implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     /**
@@ -50,7 +48,6 @@ public class Result<T> implements Serializable {
     private long timestamp = System.currentTimeMillis();
 
     public Result() {
-
     }
 
     public Result(String message, Integer code) {

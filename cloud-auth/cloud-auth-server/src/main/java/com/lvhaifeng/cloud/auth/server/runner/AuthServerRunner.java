@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * runner 初始化
  * @author haifeng.lv
  * @version 2018/12/17.
  */
@@ -26,16 +27,12 @@ import java.util.Map;
 public class AuthServerRunner implements CommandLineRunner {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-
     @Autowired
     private KeyConfiguration keyConfiguration;
-
     @Autowired
     private AECUtil aecUtil;
-
     @Autowired
     private RsaKeyHelper rsaKeyHelper;
-
     @Autowired
     private IGatewayRouteService gatewayRouteService;
 

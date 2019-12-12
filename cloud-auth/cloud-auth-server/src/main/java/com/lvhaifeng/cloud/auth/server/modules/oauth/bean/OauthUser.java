@@ -8,6 +8,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * @description security 用户类
+ * @author haifeng.lv
+ * @updateTime 2019/12/12 17:17
+ */
 @Getter
 @Setter
 public class OauthUser extends User implements UserDetails {

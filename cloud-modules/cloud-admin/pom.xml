@@ -5,16 +5,11 @@
     <parent>
         <artifactId>cloud-modules</artifactId>
         <groupId>com.lvhaifeng.cloud</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>v1.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cloud-admin</artifactId>
-    <properties>
-        <hystrix.version>1.5.12</hystrix.version>
-        <!-- 依赖版本 -->
-        <mybatis.version>3.1.2</mybatis.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -31,20 +26,16 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-feign</artifactId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <!--增加eureka-server的依赖-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-sleuth-zipkin-stream</artifactId>
+            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -69,13 +60,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- druid -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.0</version>
+            <artifactId>druid</artifactId>
         </dependency>
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -86,7 +78,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis.version}</version>
+            <version>3.2.0</version>
         </dependency>
 
         <dependency>
@@ -98,7 +90,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.33</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -121,18 +112,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <version>1.5.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.lvhaifeng.cloud</groupId>
             <artifactId>cloud-auth-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>v1.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.lvhaifeng.cloud</groupId>
             <artifactId>cloud-interface</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>v1.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

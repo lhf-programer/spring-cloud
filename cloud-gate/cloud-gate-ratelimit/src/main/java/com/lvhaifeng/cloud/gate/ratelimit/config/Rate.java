@@ -13,7 +13,6 @@ import java.util.Date;
  * limit - 用户可以执行多少请求。映射到X-RateLimit-Limit
  * remaining - 当前窗口中还有多少请求。映射到X-RateLimit-Remaining头
  * reset - 比率受限制补充的时期。映射到X-RateLimit-Reset报头
- *
  * @author haifeng.lv
  */
 @Data

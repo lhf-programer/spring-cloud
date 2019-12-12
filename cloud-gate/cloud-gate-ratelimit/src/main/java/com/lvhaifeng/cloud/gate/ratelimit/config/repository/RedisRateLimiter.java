@@ -9,11 +9,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
+ * @description redis 版本限流器
  * @author haifeng.lv
+ * @updateTime 2019/12/12 17:40
  */
 @RequiredArgsConstructor
 public class RedisRateLimiter implements RateLimiter {
-
     private final RedisTemplate template;
 
     @Override

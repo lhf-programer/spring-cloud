@@ -7,8 +7,7 @@ import java.io.Serializable;
 
 /**
  * 用户登入鉴权VO
- *
- * @author loki
+ * @author haifeng.lv
  * @date 2019-07-29 10:28
  **/
 @Getter
@@ -30,5 +29,4 @@ public class AuthUser implements Serializable {
      * 用户名称
      */
     private String name;
-
 }

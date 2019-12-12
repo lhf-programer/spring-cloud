@@ -37,20 +37,19 @@ public class RequestUtil {
     }
 
     public static boolean isRpcCall(HttpServletRequest request) {
-        if (request == null)
+        if (request == null) {
             return false;
+        }
 
-        /**
-         * 如果是hessian请求则认为是rpc调用
-         */
-        if (isHessianRequest(request))
+        // 如果是hessian请求则认为是rpc调用
+        if (isHessianRequest(request)) {
             return true;
+        }
 
-        /**
-         * 如果是soap的web service请求则认为是rpc调用
-         */
-        if (isSoapRequest(request))
+        // 如果是soap的web service请求则认为是rpc调用
+        if (isSoapRequest(request)) {
             return true;
+        }
 
         return false;
     }
@@ -62,24 +61,24 @@ public class RequestUtil {
      * @return
      */
     private static boolean isSoapRequest(HttpServletRequest request) {
-        if (request == null)
+        if (request == null) {
             return false;
+        }
 
         String contentType = request.getContentType();
-        if (contentType == null)
+        if (contentType == null) {
             return false;
+        }
 
-        /*
-         * sopa1.2协议中，ContentType为application/soap+xml
-         */
-        if (contentType.contains("soap"))
+        // sopa1.2协议中，ContentType为application/soap+xml
+        if (contentType.contains("soap")) {
             return true;
+        }
 
-        /**
-         * sopa协议中有一个请求头SOAPAction的项，该项可能为空串 因此只判断是否为null
-         */
-        if (request.getHeader("SOAPAction") != null)
+        // sopa协议中有一个请求头SOAPAction的项，该项可能为空串 因此只判断是否为null
+        if (request.getHeader("SOAPAction") != null) {
             return true;
+        }
 
         return false;
     }
@@ -91,33 +90,37 @@ public class RequestUtil {
      * @return
      */
     private static boolean isHessianRequest(HttpServletRequest request) {
-        if (request == null)
+        if (request == null) {
             return false;
+        }
 
         String contentType = request.getContentType();
-        if (contentType == null)
+        if (contentType == null) {
             return false;
+        }
 
-        /*
-         * Hessian协议的ContentType为x-application/hessian
-         */
-        if (contentType.contains("hessian"))
+        // Hessian协议的ContentType为x-application/hessian
+        if (contentType.contains("hessian")) {
             return true;
+        }
 
         return false;
     }
 
     private static String getFirstValidIp(String ipList) {
-        if (ipList == null || ipList.length() == 0)
+        if (ipList == null || ipList.length() == 0) {
             return null;
+        }
 
         String[] ips = ipList.split(",");
         for (String ip : ips) {
-            if (StringUtils.isBlank(ip))
+            if (StringUtils.isBlank(ip)) {
                 continue;
+            }
 
-            if ("unknown".equalsIgnoreCase(ip))
+            if ("unknown".equalsIgnoreCase(ip)) {
                 continue;
+            }
 
             return ip;
         }
@@ -127,8 +130,9 @@ public class RequestUtil {
 
     public static String getRequestIp() {
         HttpServletRequest request = RequestUtil.getRequest();
-        if (request == null)
+        if (request == null) {
             return null;
+        }
 
         String ip = getFirstValidIp(request.getHeader("X-Forwarded-For"));
 
@@ -168,10 +172,12 @@ public class RequestUtil {
             return ip;
         }
 
-        if (ip != null)
+        if (ip != null) {
             return ip.trim();
-        else
+        }
+        else {
             return null;
+        }
     }
 
     /**
@@ -181,24 +187,24 @@ public class RequestUtil {
      * @return
      */
     public static String getRequestString(HttpServletRequest request) {
-        if (request == null)
+        if (request == null) {
             return null;
+        }
 
-        /**
-         * 如果是rpc调用，则不获取请求内容，rpc调用请求的内容是特定格式
-         */
-        if (RequestUtil.isRpcCall(request))
+        // 如果是rpc调用，则不获取请求内容，rpc调用请求的内容是特定格式
+        if (RequestUtil.isRpcCall(request)) {
             return null;
+        }
 
-        /**
-         * 是GET方法则从query string中获取
-         */
+        // 是GET方法则从query string中获取
         String method = request.getMethod();
-        if (method == null)
+        if (method == null) {
             method = StrUtils.EMPTY;
+        }
 
-        if (method.equalsIgnoreCase("GET"))
+        if (method.equalsIgnoreCase("GET")) {
             return request.getQueryString();
+        }
 
         /**
          * 如果是post方法则从请求的body中获取,但需要区分文件上传的 情况
@@ -207,15 +213,18 @@ public class RequestUtil {
             try {
                 ServletInputStream inputStream = request.getInputStream();
                 int length = request.getContentLength();
-                if (length <= 0)
+                if (length <= 0) {
                     return null;
+                }
 
                 byte[] bytes = new byte[length];
                 int readSize = inputStream.read(bytes);
-                if (readSize > 0)
+                if (readSize > 0) {
                     return new String(bytes, 0, readSize);
-                else
+                }
+                else {
                     return StrUtils.EMPTY;
+                }
             } catch (Throwable t) {
                 log.error("get post data body from request input stream fail", t);
             }
@@ -234,8 +243,9 @@ public class RequestUtil {
     }
 
     public static boolean isHttpPost(HttpServletRequest request) {
-        if (request == null)
+        if (request == null) {
             return false;
+        }
 
         String method = request.getMethod();
         if (method == null || !"post".equalsIgnoreCase(method)) {
@@ -253,37 +263,44 @@ public class RequestUtil {
      */
     public static boolean isBinayBodyData(HttpServletRequest request) {
         String contentType = request.getContentType();
-        if (contentType == null)
+        if (contentType == null) {
             return false;
+        }
         contentType = contentType.toLowerCase();
 
         // 判断Content-Type是否指定为流数据
-        if (contentType.contains("stream"))
+        if (contentType.contains("stream")) {
             return true;
+        }
 
         // 判断Content-Type是否指定为文件上传
-        if (contentType.contains("multipart"))
+        if (contentType.contains("multipart")) {
             return true;
+        }
 
         // 判断Content-Type是否指定为图片
-        if (contentType.contains("image"))
+        if (contentType.contains("image")) {
             return true;
+        }
 
         return false;
     }
 
     @SuppressWarnings("unchecked")
     public static String getParameterMapString(HttpServletRequest request) {
-        if (request == null)
+        if (request == null){
             return StrUtils.EMPTY;
+        }
 
         Map<String, String[]> map = request.getParameterMap();
 
-        if (map == null || map.size() <= 0)
+        if (map == null || map.size() <= 0) {
             return StrUtils.EMPTY;
+        }
 
         StringBuilder sb = new StringBuilder(100);
-        boolean bfirst = true;// 是否首次拼接
+        // 是否首次拼接
+        boolean bfirst = true;
         for (Map.Entry<String, String[]> entry : map.entrySet()) {
             for (String item : entry.getValue()) {
                 if (!bfirst) {
@@ -303,7 +320,6 @@ public class RequestUtil {
     /**
      * 获取请求url的应用映射部分url
      * 例如 demo-test-war/test/index.html,获得结果为/test/index.html
-     *
      * @param request
      * @return
      */

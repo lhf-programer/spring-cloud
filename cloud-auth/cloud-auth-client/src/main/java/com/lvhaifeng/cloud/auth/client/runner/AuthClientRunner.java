@@ -12,15 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 
 /**
- * 监听完成时触发
- *
+ * runner 初始化
  * @author haifeng.lv
  * @version 2018/11/29.
  */
 @Configuration
 @Slf4j
 public class AuthClientRunner implements CommandLineRunner {
-
     @Autowired
     private ServiceAuthConfig serviceAuthConfig;
     @Autowired

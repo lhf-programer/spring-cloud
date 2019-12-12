@@ -10,3 +10,20 @@
 - rabbit management （docker pull rabbitmq:management）
 - spring boot 2.1.6.RELEASE
 - spring cloud Greenwich.RELEASE
+
+## 总体架构
+- spring cloud + spring boot
+- 持久层: mybatis-plus
+- 授权: spring security + oauth + jwt
+- 网关: zuul + ratelimit 
+- 服务之间通信与负载: feign + hystrix
+- 消息总线: rabbitmq + spring cloud bus
+- nosql: redis
+
+## 服务
+- cloud-center （总服务）
+- cloud-config （配置文件中心）
+- cloud-auth （授权服务）
+- cloud-common（公共服务）
+- cloud-gate （网关）
+- cloud-modules （业务模块）

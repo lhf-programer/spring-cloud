@@ -23,7 +23,6 @@ public class ClientTokenUtil {
 
     /**
      * 秘钥加密token
-     *
      * @author haifeng.lv
      * @date 2019-08-07 14:28
      */
@@ -33,7 +32,6 @@ public class ClientTokenUtil {
 
     /**
      * 解析token
-     *
      * @author haifeng.lv
      * @date 2019-08-07 14:28
      */

@@ -20,8 +20,9 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -46,20 +47,16 @@ import java.util.Map;
 
 /**
  * 认证安全配置
- *
  * @author haifeng.lv
  * @date 2019-08-01 16:15
  */
 @Configuration
 @Slf4j
 public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
-
     @Autowired
-    private AuthenticationManager auth;
-
+    private AuthenticationManager authenticationManager;
     @Resource
     private DataSource dataSource;
-
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
     @Autowired
@@ -86,15 +83,13 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerSecurityConfigurer security) {
         security.tokenKeyAccess("permitAll()");
         security.checkTokenAccess("isAuthenticated()");
-        //需要更换成加密模式
-        security.passwordEncoder(NoOpPasswordEncoder.getInstance());
         security.addTokenEndpointAuthenticationFilter(integrationAuthenticationFilter);
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints)
             throws Exception {
-        endpoints.authenticationManager(auth)
+        endpoints.authenticationManager(authenticationManager)
                 .tokenStore(redisTokenStore()).accessTokenConverter(accessTokenConverter());
     }
 
@@ -102,8 +97,16 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(ClientDetailsServiceConfigurer clients)
             throws Exception {
         //需要更换成加密模式
-        clients.jdbc(dataSource)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+        clients.jdbc(dataSource);
+//                .withClient("cloud")
+//                .secret(new Sha256PasswordEncoder().encode("cloud"))
+//                //允许授权范围
+//                .authorizedGrantTypes("password", "refresh_token")
+//                //客户端可以使用的权限
+//                .authorities("ROLE_ADMIN","ROLE_USER")
+//                .scopes( "read", "write")
+//                .accessTokenValiditySeconds(7200)
+//                .refreshTokenValiditySeconds(7200);
     }
 
     @Configuration
@@ -111,10 +114,14 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
     protected static class AuthenticationManagerConfiguration extends GlobalAuthenticationConfigurerAdapter {
         @Autowired
         private IntegrationUserDetailsService oauthUserDetailsService;
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+            return new Sha256PasswordEncoder();
+        }
 
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(oauthUserDetailsService).passwordEncoder(new Sha256PasswordEncoder());
+            auth.userDetailsService(oauthUserDetailsService).passwordEncoder(passwordEncoder());
         }
     }
 

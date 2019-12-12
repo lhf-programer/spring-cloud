@@ -16,7 +16,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 客户端退出登录
- *
  * @author haifeng.lv
  * @date 2019-08-01 16:57
  */

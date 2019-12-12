@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
  * @Description: 用户角色
  * @Author: haifeng.lv
  * @Date:   2019-12-06
- * @Version: V1.0
  */
 @Data
 @TableName("user_role")

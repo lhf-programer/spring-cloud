@@ -17,14 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 路由服务
  * @author haifeng.lv
  * @create 2018/2/25
  */
 @Slf4j
 public class RedisRouteLocator extends SimpleRouteLocator implements RefreshableRouteLocator {
-
     private RedisTemplate<String, String> redisTemplate;
-
     private ZuulProperties properties;
 
     public RedisRouteLocator(String servletPath, ZuulProperties properties) {
@@ -32,7 +31,6 @@ public class RedisRouteLocator extends SimpleRouteLocator implements Refreshable
         this.properties = properties;
         log.info("servletPath:{}", servletPath);
     }
-
 
     @Override
     public void refresh() {
@@ -99,6 +97,11 @@ public class RedisRouteLocator extends SimpleRouteLocator implements Refreshable
         this.redisTemplate = redisTemplate;
     }
 
+    /**
+     * @description 路由基础类
+     * @author haifeng.lv
+     * @updateTime 2019/12/12 17:43
+     */
     @Getter
     @Setter
     public static class ZuulRouteVO {

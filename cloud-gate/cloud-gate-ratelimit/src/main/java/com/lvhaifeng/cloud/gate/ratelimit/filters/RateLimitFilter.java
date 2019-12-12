@@ -25,14 +25,18 @@ import java.util.StringJoiner;
 import static org.springframework.http.HttpStatus.TOO_MANY_REQUESTS;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
+/**
+ * @description 限流过滤器
+ * @author haifeng.lv
+ * @updateTime 2019/12/12 17:39
+ */
 @RequiredArgsConstructor
 public class RateLimitFilter extends ZuulFilter {
-
     public static final String LIMIT_HEADER = "X-RateLimit-Limit";
     public static final String REMAINING_HEADER = "X-RateLimit-Remaining";
     public static final String RESET_HEADER = "X-RateLimit-Reset";
-
     private static final String ANONYMOUS_USER = "anonymous";
+
     private static final UrlPathHelper URL_PATH_HELPER = new UrlPathHelper();
 
     private final RateLimiter rateLimiter;

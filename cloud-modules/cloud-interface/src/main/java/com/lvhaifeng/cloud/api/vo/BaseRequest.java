@@ -5,8 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * BaseRequest
- *
  * @author haifeng.lv
  * @date 2019/6/20
  * @Description
@@ -15,7 +13,5 @@ import lombok.ToString;
 @Getter
 @ToString
 public class BaseRequest {
-
     private String id;
-
 }

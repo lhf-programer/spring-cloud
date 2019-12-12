@@ -1,8 +1,5 @@
-
-
 package com.lvhaifeng.cloud.gate.filter;
 
-import com.alibaba.fastjson.JSON;
 import com.lvhaifeng.cloud.api.vo.authority.PermissionInfo;
 import com.lvhaifeng.cloud.api.vo.log.LogInfo;
 import com.lvhaifeng.cloud.auth.client.config.ServiceAuthConfig;
@@ -20,11 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -42,7 +36,6 @@ import java.util.stream.Stream;
 @Slf4j
 @RefreshScope
 public class AdminAccessFilter extends ZuulFilter {
-
     @Value("${gate.ignore.startWith}")
     private String startWith;
 
@@ -96,7 +89,6 @@ public class AdminAccessFilter extends ZuulFilter {
 
     /**
      * 获取目标权限资源
-     *
      * @param requestUri
      * @param method
      * @param serviceInfo
@@ -124,7 +116,6 @@ public class AdminAccessFilter extends ZuulFilter {
 
     /**
      * 返回session中的用户信息
-     *
      * @param request
      * @param ctx
      * @return
@@ -146,7 +137,6 @@ public class AdminAccessFilter extends ZuulFilter {
 
     /**
      * URI是否以什么打头
-     *
      * @param requestUri
      * @return
      */
@@ -169,7 +159,6 @@ public class AdminAccessFilter extends ZuulFilter {
 
     /**
      * 网关抛异常
-     *
      * @param body
      * @param code
      */

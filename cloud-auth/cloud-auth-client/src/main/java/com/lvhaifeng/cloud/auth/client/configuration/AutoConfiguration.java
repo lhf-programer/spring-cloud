@@ -27,7 +27,6 @@ public class AutoConfiguration {
     ServiceAuthConfig getServiceAuthConfig() {
         return new ServiceAuthConfig();
     }
-
     @Bean
     UserAuthConfig getUserAuthConfig() {
         return new UserAuthConfig();

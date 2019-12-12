@@ -29,7 +29,6 @@ import java.io.PrintWriter;
 
 /**
  * 用户token拦截认证
- *
  * @author haifeng.lv
  * @version 2018/9/10
  */

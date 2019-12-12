@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * 在内存速率限制器配置为开发环境
- *
  * @author haifeng.lv
  * @since 2018-06-23
  */
@@ -17,7 +16,7 @@ public class SpringDataRateLimiter extends AbstractRateLimiter {
 
     @Override
     protected Rate getRate(String key) {
-        return this.repository.findOne(key);
+        return this.repository.findById(key).get();
     }
 
     @Override

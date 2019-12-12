@@ -18,6 +18,11 @@ import org.springframework.util.CollectionUtils;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @description 服务授权工具类
+ * @author haifeng.lv
+ * @updateTime 2019/12/12 16:59
+ */
 @Configuration
 @Slf4j
 @EnableScheduling
@@ -34,7 +39,6 @@ public class ServiceAuthUtil {
 
     /**
      * 根据token获取用户信息
-     *
      * @author haifeng.lv
      * @date 2019-07-30 17:57
      */

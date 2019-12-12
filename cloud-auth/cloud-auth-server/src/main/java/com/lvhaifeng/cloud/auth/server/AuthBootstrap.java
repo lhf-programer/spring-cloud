@@ -1,12 +1,9 @@
 package com.lvhaifeng.cloud.auth.server;
 
-
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -19,13 +16,13 @@ import java.net.UnknownHostException;
 
 @Slf4j
 @SpringBootApplication(scanBasePackages = {"com.lvhaifeng.cloud.auth.server", "com.lvhaifeng.cloud.common"})
-@EnableEurekaClient
 @EnableFeignClients
 @SessionAttributes("authorizationRequest")
 @EnableResourceServer
 @EnableSwagger2
 @EnableAuthorizationServer
 public class AuthBootstrap {
+
     public static void main(String[] args) throws UnknownHostException {
         ConfigurableApplicationContext application = SpringApplication.run(AuthBootstrap.class, args);
         Environment env = application.getEnvironment();

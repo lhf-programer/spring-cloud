@@ -20,6 +20,7 @@ import java.io.IOException;
 
 
 /**
+ * okHttp 拦截器
  * @author haifeng.lv
  */
 @Component

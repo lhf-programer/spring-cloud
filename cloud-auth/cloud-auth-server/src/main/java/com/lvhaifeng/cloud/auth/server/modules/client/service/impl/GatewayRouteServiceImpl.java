@@ -19,14 +19,11 @@ import java.util.List;
  * @Description: 路由
  * @Author: haifeng.lv
  * @Date:   2019-12-05
- * @Version: V1.0
  */
 @Service
 public class GatewayRouteServiceImpl extends ServiceImpl<GatewayRouteMapper, GatewayRoute> implements IGatewayRouteService {
-
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-
     @Resource
     private GatewayRouteMapper gatewayRouteMapper;
 

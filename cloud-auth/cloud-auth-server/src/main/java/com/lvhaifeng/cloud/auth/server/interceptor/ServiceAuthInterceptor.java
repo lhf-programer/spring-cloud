@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("ALL")
 public class ServiceAuthInterceptor extends HandlerInterceptorAdapter {
     private Logger logger = LoggerFactory.getLogger(ServiceAuthInterceptor.class);
-
     @Autowired
     private ClientTokenUtil clientTokenUtil;
     @Autowired

@@ -16,7 +16,6 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @Description: 授权客户端
  * @Author: haifeng.lv
  * @Date:   2019-12-05
- * @Version: V1.0
  */
 @Data
 @TableName("auth_client")

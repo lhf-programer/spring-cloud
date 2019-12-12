@@ -1,14 +1,9 @@
 spring:
   cloud:
     config:
-      password: 135976
-      username: lvhaifeng
       name: cloud-gate
-      profile: dev
-      label: dev
-      discovery:
-        enabled: true
-        service-id: cloud-config
+      uri: http://localhost:8750/
+      label: master
   eureka:
     instance:
       lease-renewal-interval-in-seconds: 5

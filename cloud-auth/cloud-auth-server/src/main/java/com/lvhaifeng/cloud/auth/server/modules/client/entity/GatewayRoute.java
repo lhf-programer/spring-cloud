@@ -16,7 +16,6 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @Description: 路由
  * @Author: haifeng.lv
  * @Date:   2019-12-05
- * @Version: V1.0
  */
 @Data
 @TableName("gateway_route")

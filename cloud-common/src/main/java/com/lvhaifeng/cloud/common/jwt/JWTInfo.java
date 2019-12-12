@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- *
+ * jwt 基本信息
  * @author haifeng.lv
  * @version 2018/9/10
  */
@@ -31,8 +31,6 @@ public class JWTInfo implements Serializable, IJWTInfo {
         this.expireTime = expireTime;
         this.otherInfo = otherInfo;
     }
-
-
 
     public JWTInfo(String username, String userId, String name) {
         this.username = username;

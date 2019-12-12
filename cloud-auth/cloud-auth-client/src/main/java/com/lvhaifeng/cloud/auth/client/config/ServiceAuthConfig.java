@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 服务授权配置
- *
  * @author haifeng.lv
  * @date 2019-07-29 14:00
  */

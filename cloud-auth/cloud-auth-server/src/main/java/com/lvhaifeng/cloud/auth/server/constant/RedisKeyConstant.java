@@ -1,6 +1,7 @@
 package com.lvhaifeng.cloud.auth.server.constant;
 
 /**
+ * redis key 配置
  * @author haifeng.lv
  * @create 2018/3/23.
  */
