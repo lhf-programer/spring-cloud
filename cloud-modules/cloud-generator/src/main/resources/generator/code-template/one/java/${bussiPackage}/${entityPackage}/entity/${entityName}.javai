@@ -18,7 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @Description: ${tableVo.ftlDescription}
  * @Author: haifeng.lv
  * @Date:   ${.now?string["yyyy-MM-dd"]}
- * @Version: V1.0
  */
 @Data
 @TableName("${tableName}")

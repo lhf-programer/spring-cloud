@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @Description: ${tableVo.ftlDescription}
  * @Author: haifeng.lv
  * @Date:   ${.now?string["yyyy-MM-dd"]}
- * @Version: V1.0
  */
 public interface ${entityName}Mapper extends BaseMapper<${entityName}> {
 
