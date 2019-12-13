@@ -6,6 +6,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.lvhaifeng.cloud.auth.client.interceptor.ServiceAuthRestInterceptor;
 import com.lvhaifeng.cloud.auth.client.interceptor.UserAuthRestInterceptor;
 import com.lvhaifeng.cloud.common.exception.GlobalExceptionHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -57,14 +58,15 @@ public class WebConfiguration implements WebMvcConfigurer {
         return new UserAuthRestInterceptor();
     }
 
+    /**
+     * 忽略拦截
+     */
+    @Value("${resquest.skip}")
+    private String matchers;
+
     private ArrayList<String> getExcludeCommonPathPatterns() {
         ArrayList<String> list = new ArrayList<>();
-        String[] urls = {
-                "/v2/api-docs",
-                "/swagger-resources/**",
-                "/cache/**",
-                "/api/log/save"
-        };
+        String[] urls = matchers.split(",");
         Collections.addAll(list, urls);
         return list;
     }
