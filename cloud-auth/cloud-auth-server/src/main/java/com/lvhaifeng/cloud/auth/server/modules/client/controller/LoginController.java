@@ -17,10 +17,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @Classname LoginController
  * @Description 仅为 swagger使用
- * @Date 2019/12/7 15:41
  * @Author haifeng.lv
+ * @Date 2019/12/16 17:35
  */
 @RestController
 @Api(tags = "登录")

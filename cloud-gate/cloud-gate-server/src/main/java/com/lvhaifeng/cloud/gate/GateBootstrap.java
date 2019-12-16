@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * 网关
- * @author haifeng.lv
- * @date 2019-07-29 13:50
+ * @Description 网关
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:55
  */
 @Slf4j
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})

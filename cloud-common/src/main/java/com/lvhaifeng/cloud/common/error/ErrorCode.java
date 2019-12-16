@@ -1,9 +1,9 @@
 package com.lvhaifeng.cloud.common.error;
 
 /**
- * 错误码
- * time: 5/13/2019
- * @author haifeng.lv
+ * @Description 错误码
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:42
  */
 public final class ErrorCode {
     private final String errCode;

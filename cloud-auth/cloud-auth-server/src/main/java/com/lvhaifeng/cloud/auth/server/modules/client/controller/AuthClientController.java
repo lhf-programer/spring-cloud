@@ -17,7 +17,7 @@ import springfox.documentation.annotations.ApiIgnore;
 /**
  * @Description: 授权客户端
  * @Author: haifeng.lv
- * @Date:   2019-12-05
+ * @Date: 2019-12-05
  */
 @Slf4j
 @RestController

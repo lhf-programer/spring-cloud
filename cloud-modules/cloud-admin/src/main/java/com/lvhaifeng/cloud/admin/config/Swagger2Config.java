@@ -22,8 +22,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * swagger 配置
+ * @Description swagger 配置
  * @Author haifeng.lv
+ * @Date 2019/12/16 17:55
  */
 @Slf4j
 @Configuration
@@ -82,9 +83,10 @@ public class Swagger2Config {
     }
 
     /**
-     * api文档的详细信息函数,注意这里的注解引用的是哪个
-     *
-     * @return
+     * @Description api文档的详细信息函数,注意这里的注解引用的是哪个
+     * @Author haifeng.lv
+     * @Date 2019/12/16 17:55
+     * @return: springfox.documentation.service.ApiInfo
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()

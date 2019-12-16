@@ -5,9 +5,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author haifeng.lv
- */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     public XssHttpServletRequestWrapper(HttpServletRequest servletRequest) {

@@ -1,10 +1,10 @@
 package com.lvhaifeng.cloud.auth.server.modules.oauth.entity;
 
 /**
- * 综合实体环境上下文
- * @author haifeng.lv
- * @date 2018-3-30
- **/
+ * @Description 综合实体环境上下文
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:37
+ */
 public class IntegrationAuthenticationContext {
     private static ThreadLocal<IntegrationAuthentication> holder = new ThreadLocal<>();
 

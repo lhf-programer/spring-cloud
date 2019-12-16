@@ -14,11 +14,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import javax.annotation.Resource;
 import java.util.List;
 
-
 /**
  * @Description: 路由
  * @Author: haifeng.lv
- * @Date:   2019-12-05
+ * @Date: 2019-12-05
  */
 @Service
 public class GatewayRouteServiceImpl extends ServiceImpl<GatewayRouteMapper, GatewayRoute> implements IGatewayRouteService {

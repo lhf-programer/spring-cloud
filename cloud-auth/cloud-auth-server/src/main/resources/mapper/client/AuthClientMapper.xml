@@ -8,11 +8,10 @@
         <result column="secret" property="secret" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="description" property="description" jdbcType="VARCHAR" />
-        <result column="crt_user_uame" property="crtUserName" jdbcType="TIMESTAMP" />
         <result column="crt_time" property="crtTime" jdbcType="TIMESTAMP" />
-        <result column="crt_host" property="crtHost" jdbcType="VARCHAR" />
+        <result column="crt_user" property="crtUser" jdbcType="VARCHAR" />
         <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
-        <result column="upd_host" property="updHost" jdbcType="VARCHAR" />
+        <result column="upd_user" property="updUser" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectAllowedClient" resultType="java.lang.String">

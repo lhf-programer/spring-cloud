@@ -1,5 +1,3 @@
-
-
 package com.lvhaifeng.cloud.auth.server.configuration;
 
 import com.lvhaifeng.cloud.auth.server.interceptor.ClientTokenInterceptor;

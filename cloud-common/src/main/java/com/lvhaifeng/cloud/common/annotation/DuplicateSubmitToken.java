@@ -3,9 +3,9 @@ package com.lvhaifeng.cloud.common.annotation;
 import java.lang.annotation.*;
 
 /**
- * 防止表单重复提交
- * @author haifeng.lv
- * @date 2019-07-17 11:55
+ * @Description 防止表单重复提交
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:39
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})

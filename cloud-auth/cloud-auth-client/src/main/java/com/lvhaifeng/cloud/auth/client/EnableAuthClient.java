@@ -6,10 +6,9 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
- * @Classname EnableAuthClient
  * @Description 开启认证
- * @Date 2019/11/30 10:07
  * @Author haifeng.lv
+ * @Date 2019/12/16 17:32
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

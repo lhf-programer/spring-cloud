@@ -10,8 +10,10 @@ import org.springframework.web.filter.CorsFilter;
 public class CorsConfig {
 
     /**
-     * 跨域过滤器
-     * @return
+     * @Description 跨域过滤器
+     * @Author haifeng.lv
+     * @Date 2019/12/16 17:55
+     * @return: org.springframework.web.filter.CorsFilter
      */
     @Bean
     public CorsFilter corsFilter() {
@@ -21,8 +23,10 @@ public class CorsConfig {
     }
 
     /**
-     * 跨域过滤器
-     * @return
+     * @Description 跨域过滤器
+     * @Author haifeng.lv
+     * @Date 2019/12/16 17:55
+     * @return: org.springframework.web.cors.CorsConfiguration
      */
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();

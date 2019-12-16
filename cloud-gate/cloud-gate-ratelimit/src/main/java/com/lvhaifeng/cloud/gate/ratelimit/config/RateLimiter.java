@@ -1,12 +1,11 @@
 package com.lvhaifeng.cloud.gate.ratelimit.config;
 
-
 import com.lvhaifeng.cloud.gate.ratelimit.config.properties.RateLimitProperties.Policy;
 
 /**
- * 限流器
- * @author haifeng.lv
- * @date 2019-07-29 13:52
+ * @Description 限流器
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:52
  */
 public interface RateLimiter {
     Rate consume(Policy policy, String key);

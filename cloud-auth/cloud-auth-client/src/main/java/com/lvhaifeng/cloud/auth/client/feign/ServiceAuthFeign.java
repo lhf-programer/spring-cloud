@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 /**
- * @description 获取授权服务得公钥与私钥
- * @author haifeng.lv
- * @updateTime 2019/12/12 16:58
+ * @Description 获取授权服务得公钥与私钥
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:31
  */
 @FeignClient(value = "${auth.serviceId}")
 public interface ServiceAuthFeign {

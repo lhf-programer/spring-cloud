@@ -10,10 +10,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Classname EnableGateRateLimit
  * @Description 开启网关限速
- * @Date 2019/11/29 14:55
  * @Author haifeng.lv
+ * @Date 2019/12/16 17:53
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

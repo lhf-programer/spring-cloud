@@ -15,9 +15,9 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description 限流器配置项
- * @author haifeng.lv
- * @updateTime 2019/12/12 17:39
+ * @Description 限流器配置项
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:51
  */
 @Data
 @Validated

@@ -13,9 +13,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
- * @description 用户授权工具类
- * @author haifeng.lv
- * @updateTime 2019/12/12 16:59
+ * @Description 用户授权工具类
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:32
  */
 @Configuration
 public class UserAuthUtil {

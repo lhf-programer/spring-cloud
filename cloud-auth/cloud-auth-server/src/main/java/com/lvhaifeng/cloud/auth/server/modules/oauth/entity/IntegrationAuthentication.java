@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.Map;
 
 /**
- * 综合实体
- * @author haifeng.lv
- * @date 2018-3-30
- **/
+ * @Description 综合实体
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:37
+ */
 @Data
 public class IntegrationAuthentication {
     private String authType;

@@ -1,5 +1,3 @@
-
-
 package com.lvhaifeng.cloud.auth.server.jwt.client;
 
 import com.lvhaifeng.cloud.auth.server.configuration.KeyConfiguration;
@@ -22,18 +20,22 @@ public class ClientTokenUtil {
     private KeyConfiguration keyConfiguration;
 
     /**
-     * 秘钥加密token
-     * @author haifeng.lv
-     * @date 2019-08-07 14:28
+     * @Description 秘钥加密token
+     * @Author haifeng.lv
+     * @param: jwtInfo
+     * @Date 2019/12/16 17:34
+     * @return: java.lang.String
      */
     public String generateToken(IJWTInfo jwtInfo) throws Exception {
         return jwtHelper.generateToken(jwtInfo, keyConfiguration.getServicePriKey(), expire);
     }
 
     /**
-     * 解析token
-     * @author haifeng.lv
-     * @date 2019-08-07 14:28
+     * @Description 解析token
+     * @Author haifeng.lv
+     * @param: token
+     * @Date 2019/12/16 17:34
+     * @return: com.lvhaifeng.cloud.common.jwt.IJWTInfo
      */
     public IJWTInfo getInfoFromToken(String token) throws Exception {
         IJWTInfo infoFromToken = jwtHelper.getInfoFromToken(token, keyConfiguration.getServicePubKey());

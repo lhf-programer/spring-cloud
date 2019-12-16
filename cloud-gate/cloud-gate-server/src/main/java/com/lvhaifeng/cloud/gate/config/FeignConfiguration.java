@@ -4,9 +4,9 @@ import com.lvhaifeng.cloud.auth.client.interceptor.ServiceFeignInterceptor;
 import org.springframework.context.annotation.Bean;
 
 /**
- * feign 配置拦截器
- * @author haifeng.lv
- * @date 2018/9/12
+ * @Description feign 配置拦截器
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:53
  */
 public class FeignConfiguration {
     @Bean

@@ -6,10 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author haifeng.lv
- * @create 2018/1/22.
+ * @Description 创建用户
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:39
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value={ElementType.METHOD,ElementType.TYPE,ElementType.FIELD})
-public @interface ModifiedUserId {
+public @interface CrtUser {
 }

@@ -23,9 +23,9 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
- * 服务token认证
- * @author haifeng.lv
- * @version 2018/9/12
+ * @Description 服务token认证
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:31
  */
 @SuppressWarnings("ALL")
 public class ServiceAuthRestInterceptor extends HandlerInterceptorAdapter {

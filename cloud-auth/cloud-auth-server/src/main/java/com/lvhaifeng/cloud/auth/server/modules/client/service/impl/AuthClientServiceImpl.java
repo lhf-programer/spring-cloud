@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * @Description: 授权客户端
  * @Author: haifeng.lv
- * @Date:   2019-12-05
+ * @Date: 2019-12-05
  */
 @Service
 public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthClient> implements IAuthClientService {

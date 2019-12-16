@@ -5,9 +5,9 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * jwt 基本信息
- * @author haifeng.lv
- * @version 2018/9/10
+ * @Description jwt 基本信息
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:45
  */
 public class JWTInfo implements Serializable, IJWTInfo {
     private static final long serialVersionUID = 5452605590172369563L;
@@ -87,7 +87,6 @@ public class JWTInfo implements Serializable, IJWTInfo {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         JWTInfo jwtInfo = (JWTInfo) o;
 
         if (username != null ? !username.equals(jwtInfo.username) : jwtInfo.username != null) {

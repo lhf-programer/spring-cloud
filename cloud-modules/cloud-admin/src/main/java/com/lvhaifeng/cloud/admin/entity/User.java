@@ -1,23 +1,19 @@
 package com.lvhaifeng.cloud.admin.entity;
 
-import java.io.Serializable;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date:   2019-12-06
+ * @Date: 2019-12-16 16:43
  */
 @Data
 @TableName("user")
@@ -25,18 +21,32 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 @ApiModel(value="user对象", description="用户")
 public class User {
-    
+
+	/**创建时间*/
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "创建时间")
+	private java.time.LocalDateTime crtTime;
+	/**创建人*/
+    @ApiModelProperty(value = "创建人")
+	private java.lang.String crtUser;
 	/**id*/
 	@TableId(type = IdType.UUID)
     @ApiModelProperty(value = "id")
 	private java.lang.String id;
-	/**password*/
-    @ApiModelProperty(value = "password")
+	/**密码*/
+    @ApiModelProperty(value = "密码")
 	private java.lang.String password;
-	/**realname*/
-    @ApiModelProperty(value = "realname")
+	/**真实名称*/
+    @ApiModelProperty(value = "真实名称")
 	private java.lang.String realname;
-	/**username*/
-    @ApiModelProperty(value = "username")
+	/**最后更新时间*/
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "最后更新时间")
+	private java.time.LocalDateTime updTime;
+	/**最后更新人*/
+    @ApiModelProperty(value = "最后更新人")
+	private java.lang.String updUser;
+	/**登录名*/
+    @ApiModelProperty(value = "登录名")
 	private java.lang.String username;
 }

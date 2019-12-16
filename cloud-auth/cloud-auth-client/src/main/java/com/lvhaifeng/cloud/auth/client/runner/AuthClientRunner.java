@@ -12,9 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 
 /**
- * runner 初始化
- * @author haifeng.lv
- * @version 2018/11/29.
+ * @Description runner 初始化
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:32
  */
 @Configuration
 @Slf4j

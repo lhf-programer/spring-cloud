@@ -6,10 +6,6 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * @author haifeng.lv
- * @version 2018/9/12
- */
 public class ClientTokenInterceptor implements RequestInterceptor {
     @Autowired
     private ClientConfiguration clientConfiguration;

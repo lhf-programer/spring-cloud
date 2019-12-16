@@ -15,8 +15,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * @author haifeng.lv
- * @date 2019-07-10 18:07
+ * @Description 用户服务
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:59
  */
 @Slf4j
 @EnableCircuitBreaker

@@ -1,4 +1,3 @@
-
 package com.lvhaifeng.cloud.common.util;
 
 public class StringHelper {

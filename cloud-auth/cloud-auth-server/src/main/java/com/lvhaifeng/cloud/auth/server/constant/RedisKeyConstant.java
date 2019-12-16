@@ -1,9 +1,9 @@
 package com.lvhaifeng.cloud.auth.server.constant;
 
 /**
- * redis key 配置
- * @author haifeng.lv
- * @create 2018/3/23.
+ * @Description redis key 配置
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:34
  */
 public class RedisKeyConstant {
     public static final String REDIS_USER_PRI_KEY = "CLOUD:AUTH:JWT:PRI";

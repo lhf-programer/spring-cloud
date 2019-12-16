@@ -12,10 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 集成认证用户服务
- *
- * @author haifeng.lv
- * @date 2019-07-29 13:37
+ * @Description 集成认证用户服务
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:38
  */
 @Service
 public class IntegrationUserDetailsService implements UserDetailsService {
@@ -29,7 +28,7 @@ public class IntegrationUserDetailsService implements UserDetailsService {
     @Override
     public OauthUser loadUserByUsername(String username) throws UsernameNotFoundException {
         IntegrationAuthentication integrationAuthentication = IntegrationAuthenticationContext.get();
-        //判断是否是集成登录
+        // 判断是否是集成登录
         if (integrationAuthentication == null) {
             integrationAuthentication = new IntegrationAuthentication();
         }
@@ -43,10 +42,10 @@ public class IntegrationUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * @description 验证用户
-     * @author haifeng.lv
+     * @Description 验证用户
+     * @Author haifeng.lv
      * @param: integrationAuthentication
-     * @updateTime 2019/12/4 11:12
+     * @Date 2019/12/16 17:38
      * @return: com.lvhaifeng.cloud.auth.server.modules.oauth.bean.OauthUser
      */
     private OauthUser authenticate(IntegrationAuthentication integrationAuthentication) {

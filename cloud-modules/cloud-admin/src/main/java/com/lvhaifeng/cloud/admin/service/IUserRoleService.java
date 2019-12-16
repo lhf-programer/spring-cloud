@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 /**
  * @Description: 用户角色
  * @Author: haifeng.lv
- * @Date:   2019-12-06
+ * @Date: 2019-12-16 16:46
  */
 public interface IUserRoleService extends IService<UserRole> {
 

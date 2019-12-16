@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 路由服务
- * @author haifeng.lv
- * @create 2018/2/25
+ * @Description 路由服务
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:54
  */
 @Slf4j
 public class RedisRouteLocator extends SimpleRouteLocator implements RefreshableRouteLocator {
@@ -64,9 +64,9 @@ public class RedisRouteLocator extends SimpleRouteLocator implements Refreshable
     }
 
     /**
-     * @description 从 redis加载路由
-     * @author haifeng.lv
-     * @updateTime 2019/11/30 17:06
+     * @Description 从 redis加载路由
+     * @Author haifeng.lv
+     * @Date 2019/12/16 17:54
      * @return: java.util.Map<java.lang.String,org.springframework.cloud.netflix.zuul.filters.ZuulProperties.ZuulRoute>
      */
     private Map<String, ZuulProperties.ZuulRoute> locateRoutesFromRedis() {
@@ -98,9 +98,9 @@ public class RedisRouteLocator extends SimpleRouteLocator implements Refreshable
     }
 
     /**
-     * @description 路由基础类
-     * @author haifeng.lv
-     * @updateTime 2019/12/12 17:43
+     * @Description 路由基础类
+     * @Author haifeng.lv
+     * @Date 2019/12/16 17:54
      */
     @Getter
     @Setter

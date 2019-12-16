@@ -19,9 +19,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @description 服务授权工具类
- * @author haifeng.lv
- * @updateTime 2019/12/12 16:59
+ * @Description 服务授权工具类
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:32
  */
 @Configuration
 @Slf4j

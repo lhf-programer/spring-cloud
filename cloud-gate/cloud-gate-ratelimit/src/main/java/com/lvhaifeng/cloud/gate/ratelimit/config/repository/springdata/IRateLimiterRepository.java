@@ -1,5 +1,3 @@
-
-
 package com.lvhaifeng.cloud.gate.ratelimit.config.repository.springdata;
 
 import com.lvhaifeng.cloud.gate.ratelimit.config.Rate;

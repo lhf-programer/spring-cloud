@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.common.context;
 
-
 import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
 import com.lvhaifeng.cloud.common.util.StringHelper;
 
@@ -8,9 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 后台当前上下文
- * @author haifeng.lv
- * @version 2018/9/8
+ * @Description 后台当前上下文
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:42
  */
 public class BaseContextHandler {
     public static ThreadLocal<Map<String, Object>> threadLocal = new ThreadLocal<Map<String, Object>>();

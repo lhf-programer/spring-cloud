@@ -9,9 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 /**
- * @description security 配置类
- * @author haifeng.lv
- * @updateTime 2019/12/12 17:18
+ * @Description security 配置类
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:37
  */
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

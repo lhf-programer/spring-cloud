@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @description 用户授权配置
- * @author haifeng.lv
- * @updateTime 2019/11/30 14:24
+ * @Description 用户授权配置
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:30
  */
 @Data
 public class UserAuthConfig {

@@ -1,10 +1,9 @@
 package com.lvhaifeng.cloud.common.constant;
 
 /**
- * @Classname CommonConstant
  * @Description 常量类
- * @Date 2019/12/4 18:31
  * @Author haifeng.lv
+ * @Date 2019/12/16 17:41
  */
 public class CommonConstant {
     public static final Integer SC_OK_200 = 200;

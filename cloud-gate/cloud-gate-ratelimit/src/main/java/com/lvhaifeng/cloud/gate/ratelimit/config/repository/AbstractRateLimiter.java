@@ -1,7 +1,4 @@
-
-
 package com.lvhaifeng.cloud.gate.ratelimit.config.repository;
-
 
 import com.lvhaifeng.cloud.gate.ratelimit.config.properties.RateLimitProperties.Policy;
 import com.lvhaifeng.cloud.gate.ratelimit.config.Rate;
@@ -11,10 +8,6 @@ import java.util.Date;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-/**
- * @author haifeng.lv
- * @since 2018-08-28
- */
 public abstract class AbstractRateLimiter implements RateLimiter {
 
     protected abstract Rate getRate(String key);

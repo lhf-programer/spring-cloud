@@ -9,19 +9,16 @@ public interface IJWTInfo {
      * @return
      */
     String getUniqueName();
-
     /**
      * 获取用户ID
      * @return
      */
     String getId();
-
     /**
      * 获取名称
      * @return
      */
     String getName();
-
     /**
      * 获取过期时间
      * @return

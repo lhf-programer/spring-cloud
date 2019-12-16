@@ -1,32 +1,24 @@
 package com.lvhaifeng.cloud.auth.server.config;
 
-import com.fasterxml.classmate.TypeResolver;
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
-import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import springfox.documentation.builders.*;
-import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.ApiListingScannerPlugin;
-import springfox.documentation.spi.service.contexts.DocumentationContext;
 import springfox.documentation.spring.web.paths.RelativePathProvider;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
-import java.util.*;
 
 /**
- * swagger 配置类
+ * @Description swagger 配置类
  * @Author haifeng.lv
+ * @Date 2019/12/16 17:32
  */
 @Slf4j
 @Configuration

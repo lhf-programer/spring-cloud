@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.auth.server.modules.client.entity;
 
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -9,13 +8,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @Description: 授权客户端
  * @Author: haifeng.lv
- * @Date:   2019-12-05
+ * @Date: 2019-12-16 16:30
  */
 @Data
 @TableName("auth_client")
@@ -23,40 +21,35 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 @ApiModel(value="auth_client对象", description="授权客户端")
 public class AuthClient {
-    
+
+	/**客户端 id*/
+    @ApiModelProperty(value = "客户端 id")
+	private java.lang.String code;
+	/**创建时间*/
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "创建时间")
+	private java.time.LocalDateTime crtTime;
+	/**创建人*/
+    @ApiModelProperty(value = "创建人")
+	private java.lang.String crtUser;
+	/**描述*/
+    @ApiModelProperty(value = "描述")
+	private java.lang.String description;
 	/**id*/
 	@TableId(type = IdType.UUID)
     @ApiModelProperty(value = "id")
-	private String id;
-	/**客户端 id*/
-    @ApiModelProperty(value = "客户端 id")
-	private String code;
-	/**客户端 密钥*/
-    @ApiModelProperty(value = "客户端 密钥")
-	private String secret;
+	private java.lang.String id;
 	/**客户端 名称*/
     @ApiModelProperty(value = "客户端 名称")
-	private String name;
-	/**描述*/
-    @ApiModelProperty(value = "描述")
-	private String description;
-	/**创建用户名称*/
-    @ApiModelProperty(value = "创建用户名称")
-	private String crtUserName;
-	/**创建主机*/
-    @ApiModelProperty(value = "创建主机")
-	private String crtHost;
-	/**更新主机*/
-    @ApiModelProperty(value = "更新主机")
-	private String updHost;
-	/**创建时间*/
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    @ApiModelProperty(value = "创建时间")
-	private Date crtTime;
+	private java.lang.String name;
+	/**客户端 密钥*/
+    @ApiModelProperty(value = "客户端 密钥")
+	private java.lang.String secret;
 	/**最后更新时间*/
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "最后更新时间")
-	private Date updTime;
+	private java.time.LocalDateTime updTime;
+	/**最后更新人*/
+    @ApiModelProperty(value = "最后更新人")
+	private java.lang.String updUser;
 }

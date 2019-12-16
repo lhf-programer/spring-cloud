@@ -12,8 +12,9 @@ import java.util.List;
 
 
 /**
- * 跨站脚本处理
- * @author haifeng.lv
+ * @Description 跨站脚本处理
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:50
  */
 public class XssFilter extends OncePerRequestFilter {
     private List<String> urlExclusion = null;

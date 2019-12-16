@@ -26,9 +26,9 @@ import static org.springframework.http.HttpStatus.TOO_MANY_REQUESTS;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 /**
- * @description 限流过滤器
- * @author haifeng.lv
- * @updateTime 2019/12/12 17:39
+ * @Description 限流过滤器
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:52
  */
 @RequiredArgsConstructor
 public class RateLimitFilter extends ZuulFilter {

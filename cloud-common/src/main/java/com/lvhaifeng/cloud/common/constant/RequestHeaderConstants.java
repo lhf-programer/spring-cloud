@@ -1,9 +1,9 @@
 package com.lvhaifeng.cloud.common.constant;
 
 /**
- * @description
- * @author haifeng.lv
- * @updateTime 2019/11/30 11:47
+ * @Description 请求头
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:41
  */
 public class RequestHeaderConstants {
     public final static String TENANT = "X-Tenant-Auth";

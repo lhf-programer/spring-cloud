@@ -6,10 +6,10 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
- * 用户登入鉴权VO
- * @author haifeng.lv
- * @date 2019-07-29 10:28
- **/
+ * @Description 用户登入鉴权VO
+ * @Author haifeng.lv
+ * @Date 2019/12/16 18:01
+ */
 @Getter
 @Setter
 public class AuthUser implements Serializable {

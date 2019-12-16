@@ -8,9 +8,9 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 接口返回数据格式
- * @author haifeng.lv
- * @date 2019年1月19日
+ * @Description 接口返回数据格式
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:50
  */
 @Data
 @ApiModel(value = "接口返回对象", description = "接口返回对象")

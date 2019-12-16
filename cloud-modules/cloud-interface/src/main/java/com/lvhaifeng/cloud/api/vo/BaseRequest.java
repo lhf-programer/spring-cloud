@@ -5,9 +5,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @author haifeng.lv
- * @date 2019/6/20
- * @Description
+ * @Description 基础请求类
+ * @Author haifeng.lv
+ * @Date 2019/12/16 18:01
  */
 @Setter
 @Getter

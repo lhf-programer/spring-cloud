@@ -5,6 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.security.MessageDigest;
 
+/**
+ * @Description 密码加密方式
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:48
+ */
 public class Sha256PasswordEncoder implements PasswordEncoder {
 
     @Override

@@ -46,9 +46,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 认证安全配置
- * @author haifeng.lv
- * @date 2019-08-01 16:15
+ * @Description 认证安全配置
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:37
  */
 @Configuration
 @Slf4j

@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * 公共的业务异常
- * time: 5/11/2019
- * @author haifeng.lv
+ * @Description 公共的业务异常
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:43
  */
 @ToString
 @Getter

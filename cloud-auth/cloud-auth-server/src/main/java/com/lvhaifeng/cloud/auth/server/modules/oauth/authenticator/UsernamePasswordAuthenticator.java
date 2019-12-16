@@ -17,10 +17,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 登入处理
- *
- * @author haifeng.lv
- * @date 2019-07-29 10:35
+ * @Description 登入处理
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:37
  */
 @Component
 @Primary
@@ -37,11 +36,11 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
             throw new UsernameNotFoundException("用户名为空");
         }
 
-        //获取用户基本信息
+        // 获取用户基本信息
         Result<Map<String, String>> response = iUserFeign.getUserInfoByUsername(username);
         Map<String, String> data = response.getResult();
 
-        //获取用户关联主机
+        // 获取用户关联主机
         return new OauthUser(data.get("id"), data.get("username"), data.get("password"), authorities);
     }
 

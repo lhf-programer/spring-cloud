@@ -20,8 +20,9 @@ import java.io.IOException;
 
 
 /**
- * okHttp 拦截器
- * @author haifeng.lv
+ * @Description okHttp 拦截器
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:31
  */
 @Component
 @Log

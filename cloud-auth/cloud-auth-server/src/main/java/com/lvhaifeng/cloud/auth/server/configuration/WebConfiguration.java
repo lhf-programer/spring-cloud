@@ -17,18 +17,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * @description 服务全局配置
- * @author haifeng.lv
- * @updateTime 2019/12/12 17:04
+ * @Description 服务全局配置
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:33
  */
 @Configuration
 @Primary
 public class WebConfiguration implements WebMvcConfigurer {
 
     /**
-     * @description 异常
-     * @author haifeng.lv
-     * @updateTime 2019/12/12 17:04
+     * @Description 异常
+     * @Author haifeng.lv
+     * @Date 2019/12/16 17:34
      * @return: com.lvhaifeng.cloud.common.exception.GlobalExceptionHandler
      */
     @Bean

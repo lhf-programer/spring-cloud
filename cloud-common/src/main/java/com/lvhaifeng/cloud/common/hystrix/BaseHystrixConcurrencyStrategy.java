@@ -22,9 +22,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 基础熔断器配置
- * @author haifeng.lv
- * @create 2018/2/10.
+ * @Description 基础熔断器配置
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:43
  */
 @Slf4j
 public class BaseHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy {
@@ -34,7 +34,6 @@ public class BaseHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy {
         try {
             this.delegate = HystrixPlugins.getInstance().getConcurrencyStrategy();
             if (this.delegate instanceof BaseHystrixConcurrencyStrategy) {
-                // Welcome to singleton hell...
                 return;
             }
             HystrixCommandExecutionHook commandExecutionHook = HystrixPlugins

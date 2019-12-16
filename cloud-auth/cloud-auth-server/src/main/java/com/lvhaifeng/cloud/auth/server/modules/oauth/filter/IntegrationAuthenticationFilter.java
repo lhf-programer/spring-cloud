@@ -24,10 +24,9 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * 集成请求过滤器
- *
- * @author haifeng.lv
- * @date 2019-07-29 21:09
+ * @Description 集成请求过滤器
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:38
  */
 @Component
 public class IntegrationAuthenticationFilter extends GenericFilterBean implements ApplicationContextAware {
@@ -73,8 +72,10 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
     }
 
     /**
-     * 进行预处理
-     * @param integrationAuthentication
+     * @Description 进行预处理
+     * @Author haifeng.lv
+     * @param: integrationAuthentication
+     * @Date 2019/12/16 17:38
      */
     private void prepare(IntegrationAuthentication integrationAuthentication) {
         //延迟加载认证器
@@ -97,10 +98,10 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
     }
 
     /**
-     * @description 后置处理
-     * @author haifeng.lv
+     * @Description 后置处理
+     * @Author haifeng.lv
      * @param: integrationAuthentication
-     * @updateTime 2019/12/12 17:19
+     * @Date 2019/12/16 17:38
      */
     private void complete(IntegrationAuthentication integrationAuthentication) {
         for (IntegrationAuthenticator authenticator : authenticators) {

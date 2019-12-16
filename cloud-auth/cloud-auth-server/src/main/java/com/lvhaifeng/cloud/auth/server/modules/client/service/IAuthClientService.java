@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @Description: 授权客户端
  * @Author: haifeng.lv
- * @Date:   2019-12-05
+ * @Date: 2019-12-05
  */
 public interface IAuthClientService extends IService<AuthClient> {
     String apply(String clientId, String secret) throws Exception;

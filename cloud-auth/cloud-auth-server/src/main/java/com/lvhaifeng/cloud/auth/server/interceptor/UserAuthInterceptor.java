@@ -18,10 +18,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author haifeng.lv
- * @version 2018/9/10
- */
 @Slf4j
 public class UserAuthInterceptor extends HandlerInterceptorAdapter {
     @Autowired

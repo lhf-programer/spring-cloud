@@ -12,9 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- * @author haifeng.lv
- * @date 2018-06-28 3:54 PM
- **/
+ * @Description 请求工具类
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:47
+ */
 @Slf4j
 public class RequestUtil {
 

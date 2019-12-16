@@ -7,8 +7,9 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
- * 单数据源配置
+ * @Description 单数据源配置
  * @Author haifeng.lv
+ * @Date 2019/12/16 17:32
  */
 @Configuration
 @MapperScan("com.lvhaifeng.cloud.auth.server.modules.*.mapper")

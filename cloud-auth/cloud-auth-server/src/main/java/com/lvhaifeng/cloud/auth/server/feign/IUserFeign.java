@@ -11,16 +11,18 @@ import java.util.Map;
 
 
 /**
- * 用户请求
- * @author haifeng.lv
- * @date 2019-07-29 10:32
+ * @Description 用户请求
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:34
  */
 @FeignClient(value = "cloud-admin", configuration = FeignConfiguration.class)
 public interface IUserFeign {
     /**
-     * 根据用户名获取用户信息
-     * @author haifeng.lv
-     * @date 2019-07-29 10:44
+     * @Description 根据用户名获取用户信息
+     * @Author haifeng.lv
+     * @param: username 用户名
+     * @Date 2019/12/16 17:34
+     * @return: com.lvhaifeng.cloud.common.vo.Result<java.util.Map<java.lang.String,java.lang.String>>
      */
     @PostMapping("/user/getUserInfoByUsername")
     Result<Map<String, String>> getUserInfoByUsername(@RequestParam("username") String username);

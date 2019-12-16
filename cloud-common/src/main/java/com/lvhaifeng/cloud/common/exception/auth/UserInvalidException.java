@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.common.exception.auth;
 
-
 import com.lvhaifeng.cloud.common.constant.RestCodeConstants;
 import com.lvhaifeng.cloud.common.exception.base.BaseException;
 

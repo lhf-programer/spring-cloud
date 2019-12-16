@@ -15,11 +15,13 @@ import java.util.Map;
 
 @Service
 public class RsaKeyHelper {
+
     /**
-     * 获取公钥
-     * @param filename
-     * @return
-     * @throws Exception
+     * @Description 获取公钥
+     * @Author haifeng.lv
+     * @param: filename
+     * @Date 2019/12/16 17:48
+     * @return: java.security.PublicKey
      */
     public PublicKey getPublicKey(String filename) throws Exception {
         InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(filename);
@@ -33,10 +35,11 @@ public class RsaKeyHelper {
     }
 
     /**
-     * 获取密钥
-     * @param filename
-     * @return
-     * @throws Exception
+     * @Description 获取密钥
+     * @Author haifeng.lv
+     * @param: filename
+     * @Date 2019/12/16 17:48
+     * @return: java.security.PrivateKey
      */
     public PrivateKey getPrivateKey(String filename) throws Exception {
         InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(filename);
@@ -50,11 +53,11 @@ public class RsaKeyHelper {
     }
 
     /**
-     * 获取公钥
-     *
-     * @param publicKey
-     * @return
-     * @throws Exception
+     * @Description 获取公钥
+     * @Author haifeng.lv
+     * @param: publicKey
+     * @Date 2019/12/16 17:48
+     * @return: java.security.PublicKey
      */
     public PublicKey getPublicKey(byte[] publicKey) throws Exception {
         X509EncodedKeySpec spec = new X509EncodedKeySpec(publicKey);
@@ -63,11 +66,11 @@ public class RsaKeyHelper {
     }
 
     /**
-     * 获取密钥
-     *
-     * @param privateKey
-     * @return
-     * @throws Exception
+     * @Description 获取密钥
+     * @Author haifeng.lv
+     * @param: privateKey
+     * @Date 2019/12/16 17:48
+     * @return: java.security.PrivateKey
      */
     public PrivateKey getPrivateKey(byte[] privateKey) throws Exception {
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privateKey);
@@ -76,13 +79,12 @@ public class RsaKeyHelper {
     }
 
     /**
-     * 生存rsa公钥和密钥
-     *
-     * @param publicKeyFilename
-     * @param privateKeyFilename
-     * @param password
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
+     * @Description 生存rsa公钥和密钥
+     * @Author haifeng.lv
+     * @param: publicKeyFilename
+     * @param: privateKeyFilename
+     * @param: password
+     * @Date 2019/12/16 17:48
      */
     public void generateKey(String publicKeyFilename, String privateKeyFilename, String password) throws IOException, NoSuchAlgorithmException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -100,11 +102,11 @@ public class RsaKeyHelper {
     }
 
     /**
-     * 生存rsa公钥
-     *
-     * @param password
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
+     * @Description 生存rsa公钥
+     * @Author haifeng.lv
+     * @param: password
+     * @Date 2019/12/16 17:48
+     * @return: byte[]
      */
     public byte[] generatePublicKey(String password) throws IOException, NoSuchAlgorithmException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -115,11 +117,11 @@ public class RsaKeyHelper {
     }
 
     /**
-     * 生存rsa公钥
-     *
-     * @param password
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
+     * @Description 生存rsa公钥
+     * @Author haifeng.lv
+     * @param: password
+     * @Date 2019/12/16 17:48
+     * @return: byte[]
      */
     public byte[] generatePrivateKey(String password) throws IOException, NoSuchAlgorithmException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");

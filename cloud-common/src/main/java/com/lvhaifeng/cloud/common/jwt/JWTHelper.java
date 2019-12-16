@@ -12,16 +12,24 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @Description jwt 信息解析工具
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:45
+ */
 @Component
 public class JWTHelper {
     @Autowired
     private RsaKeyHelper rsaKeyHelper;
 
     /**
-     * 密钥加密token
-     *
-     * @author haifeng.lv
-     * @date 2019-08-03 13:50
+     * @Description 密钥加密token
+     * @Author haifeng.lv
+     * @param: jwtInfo jwt 信息
+     * @param: priKey 私钥
+     * @param: expire 存活时间
+     * @Date 2019/12/16 17:44
+     * @return: java.lang.String
      */
     public String generateToken(IJWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
         String compactJws = Jwts.builder()
@@ -35,10 +43,14 @@ public class JWTHelper {
     }
 
     /**
-     * 密钥加密token
-     *
-     * @author haifeng.lv
-     * @date 2019-08-03 13:49
+     * @Description 密钥加密token
+     * @Author haifeng.lv
+     * @param: jwtInfo jwt 信息
+     * @param: priKey 私钥
+     * @param: expire 存活时间
+     * @param: otherInfo 其他信息
+     * @Date 2019/12/16 17:45
+     * @return: java.lang.String
      */
     public String generateToken(IJWTInfo jwtInfo, byte priKey[], Date expire, Map<String, String> otherInfo) throws Exception {
         JwtBuilder builder = Jwts.builder()
@@ -57,10 +69,12 @@ public class JWTHelper {
     }
 
     /**
-     * 公钥解析token
-     *
-     * @author haifeng.lv
-     * @date 2019-08-03 13:49
+     * @Description 公钥解析token
+     * @Author haifeng.lv
+     * @param: token
+     * @param: pubKey 公钥
+     * @Date 2019/12/16 17:45
+     * @return: io.jsonwebtoken.Jws<io.jsonwebtoken.Claims>
      */
     public Jws<Claims> parserToken(String token, byte[] pubKey) throws Exception {
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(rsaKeyHelper.getPublicKey(pubKey)).parseClaimsJws(token);
@@ -68,10 +82,12 @@ public class JWTHelper {
     }
 
     /**
-     * 获取token中的用户信息
-     *
-     * @author haifeng.lv
-     * @date 2019-08-03 13:50
+     * @Description 获取token中的用户信息
+     * @Author haifeng.lv
+     * @param: token
+     * @param: pubKey 公钥
+     * @Date 2019/12/16 17:45
+     * @return: com.lvhaifeng.cloud.common.jwt.IJWTInfo
      */
     public IJWTInfo getInfoFromToken(String token, byte[] pubKey) throws Exception {
         Jws<Claims> claimsJws = parserToken(token, pubKey);

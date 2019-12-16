@@ -5,11 +5,10 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-
 /**
- * @description 授权信息
- * @author haifeng.lv
- * @updateTime 2019/12/12 17:45
+ * @Description 授权信息
+ * @Author haifeng.lv
+ * @Date 2019/12/16 18:01
  */
 @Getter
 @Setter

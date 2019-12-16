@@ -9,8 +9,9 @@ import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Feign 请求拦截
- * @author haifeng.lv
+ * @Description Feign 请求拦截
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:31
  */
 public class ServiceFeignInterceptor implements RequestInterceptor {
     @Autowired

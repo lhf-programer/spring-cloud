@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * socket 过滤器
- * @author haifeng.lv
- * @date 2019-08-12 19:28
- **/
+ * @Description socket 过滤器
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:54
+ */
 @Component
 public class WebSocketFilter extends ZuulFilter {
     @Override

@@ -12,11 +12,10 @@ import org.springframework.beans.BeanWrapperImpl;
 import java.lang.reflect.Field;
 import java.util.*;
 
-
 /**
- * @description 快速对实体的常驻字段，如：crtUser、crtHost、updUser等值快速注入
- * @author haifeng.lv
- * @updateTime 2019/12/12 17:34
+ * @Description 快速对实体的常驻字段，如：crtUser、crtHost、updUser等值快速注入
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:46
  */
 @Slf4j
 public class EntityUtils {
@@ -35,11 +34,7 @@ public class EntityUtils {
             Field[] fields = entity.getClass().getDeclaredFields();
             if (fields != null) {
                 for (Field field : fields) {
-                    if (field.getAnnotation(CrtUserName.class) != null) {
-                        fieldNames[0] = field.getName();
-                        continue;
-                    }
-                    if (field.getAnnotation(CrtUserId.class) != null) {
+                    if (field.getAnnotation(CrtUser.class) != null) {
                         fieldNames[1] = field.getName();
                         continue;
                     }
@@ -69,15 +64,11 @@ public class EntityUtils {
             Field[] fields = entity.getClass().getDeclaredFields();
             if (fields != null) {
                 for (Field field : fields) {
-                    if (field.getAnnotation(ModifiedUserName.class) != null) {
-                        fieldNames[0] = field.getName();
-                        continue;
-                    }
-                    if (field.getAnnotation(ModifiedUserId.class) != null) {
+                    if (field.getAnnotation(UpdUser.class) != null) {
                         fieldNames[1] = field.getName();
                         continue;
                     }
-                    if (field.getAnnotation(ModifiedTime.class) != null) {
+                    if (field.getAnnotation(UpdTime.class) != null) {
                         fieldNames[2] = field.getName();
                         continue;
                     }

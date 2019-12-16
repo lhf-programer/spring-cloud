@@ -1,23 +1,19 @@
-package ${bussiPackage}.${entityPackage}.entity;
+package ${basePackage}.${entityPackage}.entity;
 
-import java.io.Serializable;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @Description: ${tableVo.ftlDescription}
  * @Author: haifeng.lv
- * @Date:   ${.now?string["yyyy-MM-dd"]}
+ * @Date: ${.now?string["yyyy-MM-dd HH:mm"]}
  */
 @Data
 @TableName("${tableName}")
@@ -25,21 +21,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 @ApiModel(value="${tableName}对象", description="${tableVo.ftlDescription}")
 public class ${entityName} {
-    
+
     <#list originalColumns as po>
 	/**${po.filedComment}*/
 	<#if po.fieldName == primaryKeyField>
 	@TableId(type = IdType.UUID)
 	<#else>
-  <#if po.fieldType =='java.util.Date'>
-	<#if po.fieldDbType =='date'>
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+  <#if po.fieldType =='java.time.LocalDate'>
     @DateTimeFormat(pattern="yyyy-MM-dd")
-	<#elseif po.fieldDbType =='datetime'>
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+  <#elseif po.fieldType =='java.time.LocalTime'>
+    @DateTimeFormat(pattern="HH:mm:ss")
+  <#elseif po.fieldType =='java.time.LocalDateTime'>
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	</#if>
-	<#else>
+  <#else>
   </#if>
   </#if>
     @ApiModelProperty(value = "${po.filedComment}")

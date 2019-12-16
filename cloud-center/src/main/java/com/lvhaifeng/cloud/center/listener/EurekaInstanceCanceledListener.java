@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Eureka 服务检测时间
- * @author haifeng.lv
- * @date 2019-07-27 22:54
+ * @Description Eureka 服务检测时间
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:38
  */
 @Configuration
 public class EurekaInstanceCanceledListener implements ApplicationListener {

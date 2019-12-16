@@ -9,9 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * @description security 用户类
- * @author haifeng.lv
- * @updateTime 2019/12/12 17:17
+ * @Description security 用户类
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:37
  */
 @Getter
 @Setter

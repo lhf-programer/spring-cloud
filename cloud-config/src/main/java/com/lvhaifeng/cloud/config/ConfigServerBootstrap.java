@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
- * @description 配置中心
- * @author haifeng.lv
- * @updateTime 2019/11/29 14:01
+ * @Description 配置中心
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:50
  */
 @Slf4j
 @EnableAutoConfiguration

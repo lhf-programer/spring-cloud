@@ -13,9 +13,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import javax.annotation.Resource;
 
 /**
- * 网关配置项
- * @author haifeng.lv
- * @create 2018/2/12
+ * @Description 网关配置项
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:53
  */
 @Configuration
 public class GateConfig {
@@ -27,9 +27,9 @@ public class GateConfig {
     ServerProperties server;
 
     /**
-     * @description xssFilter注册
-     * @author haifeng.lv
-     * @updateTime 2019/12/12 17:42
+     * @Description xssFilter注册
+     * @Author haifeng.lv
+     * @Date 2019/12/16 17:53
      * @return: org.springframework.boot.web.servlet.FilterRegistrationBean
      */
     @Bean

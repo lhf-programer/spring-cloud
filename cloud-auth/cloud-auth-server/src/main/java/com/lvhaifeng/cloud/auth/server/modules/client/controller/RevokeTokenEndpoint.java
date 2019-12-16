@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * 客户端退出登录
- * @author haifeng.lv
- * @date 2019-08-01 16:57
+ * @Description 客户端退出登录
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:36
  */
 @FrameworkEndpoint
 @Api(tags="客户端退出登录")

@@ -5,13 +5,12 @@ import com.lvhaifeng.cloud.gate.ratelimit.config.repository.AbstractRateLimiter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 在内存速率限制器配置为开发环境
- * @author haifeng.lv
- * @since 2018-06-23
+ * @Description 在内存速率限制器配置为开发环境
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:51
  */
 @RequiredArgsConstructor
 public class SpringDataRateLimiter extends AbstractRateLimiter {
-
     private final IRateLimiterRepository repository;
 
     @Override
@@ -23,5 +22,4 @@ public class SpringDataRateLimiter extends AbstractRateLimiter {
     protected void saveRate(Rate rate) {
         this.repository.save(rate);
     }
-
 }

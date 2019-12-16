@@ -4,9 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 /**
- * @author haifeng.lv
- * @date 2018-04-27 下午2:11
- **/
+ * @Description
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:49
+ */
 public class StrUtils {
     public static final String EMPTY = "";
 

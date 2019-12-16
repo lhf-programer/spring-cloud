@@ -1,8 +1,8 @@
-package ${bussiPackage}.${entityPackage}.service.impl;
+package ${basePackage}.${entityPackage}.service.impl;
 
-import ${bussiPackage}.${entityPackage}.entity.${entityName};
-import ${bussiPackage}.${entityPackage}.mapper.${entityName}Mapper;
-import ${bussiPackage}.${entityPackage}.service.I${entityName}Service;
+import ${basePackage}.${entityPackage}.entity.${entityName};
+import ${basePackage}.${entityPackage}.mapper.${entityName}Mapper;
+import ${basePackage}.${entityPackage}.service.I${entityName}Service;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 /**
  * @Description: ${tableVo.ftlDescription}
  * @Author: haifeng.lv
- * @Date:   ${.now?string["yyyy-MM-dd"]}
+ * @Date: ${.now?string["yyyy-MM-dd HH:mm"]}
  */
 @Service
 public class ${entityName}ServiceImpl extends ServiceImpl<${entityName}Mapper, ${entityName}> implements I${entityName}Service {

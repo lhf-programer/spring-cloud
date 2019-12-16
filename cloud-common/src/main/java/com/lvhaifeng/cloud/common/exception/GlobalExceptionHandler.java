@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 全局异常拦截处理器
- * @author haifeng.lv
- * @version 2018/9/8
+ * @Description 全局异常拦截处理器
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:43
  */
 @ControllerAdvice("com.lvhaifeng.cloud")
 @ResponseBody

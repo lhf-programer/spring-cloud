@@ -8,9 +8,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 静态资源配置类
- * @author haifeng.lv
- * @create 2018/3/21.
+ * @Description 静态资源配置类
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:37
  */
 @Configuration
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {

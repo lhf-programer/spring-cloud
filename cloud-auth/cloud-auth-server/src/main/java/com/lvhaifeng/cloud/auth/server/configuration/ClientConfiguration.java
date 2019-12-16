@@ -1,10 +1,13 @@
-
-
 package com.lvhaifeng.cloud.auth.server.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @Description 客户端配置信息
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:33
+ */
 @Configuration
 public class ClientConfiguration {
     @Value("${client.id}")
@@ -25,6 +28,4 @@ public class ClientConfiguration {
     public String getClientId() {
         return clientId;
     }
-
-
 }

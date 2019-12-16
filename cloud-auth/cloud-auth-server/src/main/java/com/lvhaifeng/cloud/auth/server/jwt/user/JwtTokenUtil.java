@@ -1,5 +1,3 @@
-
-
 package com.lvhaifeng.cloud.auth.server.jwt.user;
 
 import com.lvhaifeng.cloud.auth.server.configuration.KeyConfiguration;
@@ -12,10 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.Map;
 
-/**
- * @author haifeng.lv
- * @version 2018/9/10
- */
 @Component
 public class JwtTokenUtil {
 

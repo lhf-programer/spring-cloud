@@ -1,5 +1,3 @@
-
-
 package com.lvhaifeng.cloud.auth.server.configuration;
 
 import lombok.Data;
@@ -7,9 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 用户配置
- * @author haifeng.lv
- * @version 2018/12/26.
+ * @Description 用户配置
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:33
  */
 @Configuration
 @Data

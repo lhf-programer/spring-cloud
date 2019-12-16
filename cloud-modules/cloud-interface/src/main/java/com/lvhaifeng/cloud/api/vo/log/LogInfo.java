@@ -7,9 +7,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 日志服务
- * @author haifeng.lv
- * @version 2018-07-01 11:18
+ * @Description 日志服务
+ * @Author haifeng.lv
+ * @Date 2019/12/16 18:01
  */
 @Getter
 @Setter

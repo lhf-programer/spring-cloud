@@ -16,9 +16,9 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * @description 授权配置类
- * @author haifeng.lv
- * @updateTime 2019/11/30 14:25
+ * @Description 用户授权配置
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:30
  */
 @Configuration
 @ComponentScan({"com.lvhaifeng.cloud.auth.client", "com.lvhaifeng.cloud.common"})

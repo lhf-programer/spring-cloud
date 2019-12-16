@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * runner 初始化
- * @author haifeng.lv
- * @version 2018/12/17.
+ * @Description runner 初始化
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:38
  */
 @Configuration
 @Slf4j

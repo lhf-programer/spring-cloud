@@ -28,9 +28,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 /**
- * 用户token拦截认证
- * @author haifeng.lv
- * @version 2018/9/10
+ * @Description 用户token拦截认证
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:32
  */
 public class UserAuthRestInterceptor extends HandlerInterceptorAdapter {
     private Logger logger = LoggerFactory.getLogger(UserAuthRestInterceptor.class);

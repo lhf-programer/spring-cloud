@@ -20,17 +20,17 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @description web 总配置类
- * @author haifeng.lv
- * @updateTime 2019/12/12 17:46
+ * @Description web 总配置类
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:55
  */
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
     /**
-     * @description 异常总拦截器
-     * @author haifeng.lv
-     * @updateTime 2019/12/12 17:46
+     * @Description 异常总拦截器
+     * @Author haifeng.lv
+     * @Date 2019/12/16 17:56
      * @return: com.lvhaifeng.cloud.common.exception.GlobalExceptionHandler
      */
     @Bean

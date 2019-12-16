@@ -7,9 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @description 检查用户端 token
- * @author haifeng.lv
- * @updateTime 2019/11/30 10:50
+ * @Description 检查用户端 token
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:29
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.TYPE})

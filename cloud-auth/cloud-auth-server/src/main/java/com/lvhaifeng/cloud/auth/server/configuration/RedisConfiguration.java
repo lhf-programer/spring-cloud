@@ -1,5 +1,3 @@
-
-
 package com.lvhaifeng.cloud.auth.server.configuration;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -11,11 +9,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-/**
- * @author haifeng.lv
- * @version 2018-06-21 8:39
- */
 
 @Configuration
 public class RedisConfiguration {

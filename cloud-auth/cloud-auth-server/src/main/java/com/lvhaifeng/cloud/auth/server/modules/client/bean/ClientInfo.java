@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * 客户端信息
- * @author haifeng.lv
- * @date 2019-08-03 13:51
+ * @Description 客户端信息
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:35
  */
 public class ClientInfo implements IJWTInfo {
     String clientId;

@@ -28,9 +28,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
- * 路由过滤器
- * @author haifeng.lv
- * @version 2018-06-23 8:25
+ * @Description 路由过滤器
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:53
  */
 @Component
 @Slf4j
@@ -88,11 +88,13 @@ public class AdminAccessFilter extends ZuulFilter {
     }
 
     /**
-     * 获取目标权限资源
-     * @param requestUri
-     * @param method
-     * @param serviceInfo
-     * @return
+     * @Description 获取目标权限资源
+     * @Author haifeng.lv
+     * @param: requestUri 请求地址
+     * @param: method 方法
+     * @param: serviceInfo 服务信息
+     * @Date 2019/12/16 17:53
+     * @return: java.util.stream.Stream<com.lvhaifeng.cloud.api.vo.authority.PermissionInfo>
      */
     private Stream<PermissionInfo> getPermissionIfs(final String requestUri, final String method, List<PermissionInfo> serviceInfo) {
         return serviceInfo.parallelStream().filter(new Predicate<PermissionInfo>() {
@@ -115,10 +117,12 @@ public class AdminAccessFilter extends ZuulFilter {
     }
 
     /**
-     * 返回session中的用户信息
-     * @param request
-     * @param ctx
-     * @return
+     * @Description 返回session中的用户信息
+     * @Author haifeng.lv
+     * @param: request
+     * @param: ctx
+     * @Date 2019/12/16 17:54
+     * @return: com.lvhaifeng.cloud.common.jwt.IJWTInfo
      */
     private IJWTInfo getJWTUser(HttpServletRequest request, RequestContext ctx) throws Exception {
         String authToken = request.getHeader(userAuthConfig.getTokenHeader());
@@ -136,9 +140,11 @@ public class AdminAccessFilter extends ZuulFilter {
     }
 
     /**
-     * URI是否以什么打头
-     * @param requestUri
-     * @return
+     * @Description URI是否以什么打头
+     * @Author haifeng.lv
+     * @param: requestUri 请求地址
+     * @Date 2019/12/16 17:54
+     * @return: boolean
      */
     private boolean isStartWith(String requestUri) {
         boolean flag = false;
@@ -158,9 +164,11 @@ public class AdminAccessFilter extends ZuulFilter {
     }
 
     /**
-     * 网关抛异常
-     * @param body
-     * @param code
+     * @Description 网关抛异常
+     * @Author haifeng.lv
+     * @param: body
+     * @param: code
+     * @Date 2019/12/16 17:54
      */
     private void setFailedRequest(String body, int code) {
         log.debug("Reporting error ({}): {}", code, body);

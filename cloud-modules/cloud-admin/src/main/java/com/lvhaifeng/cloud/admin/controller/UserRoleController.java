@@ -15,21 +15,26 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
+import com.lvhaifeng.cloud.auth.client.annotation.CheckUserToken;
+
  /**
  * @Description: 用户角色
  * @Author: haifeng.lv
- * @Date:   2019-12-06
+ * @Date: 2019-12-16 16:46
  */
 @Slf4j
 @Api(tags="用户角色")
 @RestController
 @RequestMapping("/userRole")
+@CheckClientToken
+@CheckUserToken
 public class UserRoleController {
 	@Autowired
 	private IUserRoleService userRoleService;
 	
 	/**
-	  * 分页列表查询
+	 * 分页列表查询
 	 * @param userRole
 	 * @param pageNo
 	 * @param pageSize
@@ -42,24 +47,24 @@ public class UserRoleController {
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		Result<IPage<UserRole>> result = new Result<IPage<UserRole>>();
-		QueryWrapper<UserRole> queryWrapper = new QueryWrapper<UserRole>();
+		Result<IPage<UserRole>> result = new Result<>();
+		QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
 		Page<UserRole> page = new Page<UserRole>(pageNo, pageSize);
 		IPage<UserRole> pageList = userRoleService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-	
+
 	/**
-	  *   添加
+	 * 添加
 	 * @param userRole
 	 * @return
 	 */
 	@ApiOperation(value="用户角色-添加", notes="用户角色-添加")
 	@PostMapping(value = "/add")
 	public Result<UserRole> add(@RequestBody UserRole userRole) {
-		Result<UserRole> result = new Result<UserRole>();
+		Result<UserRole> result = new Result<>();
 		try {
 			userRoleService.save(userRole);
 			result.success("添加成功！");
@@ -69,16 +74,16 @@ public class UserRoleController {
 		}
 		return result;
 	}
-	
+
 	/**
-	  *  编辑
+	 * 编辑
 	 * @param userRole
 	 * @return
 	 */
 	@ApiOperation(value="用户角色-编辑", notes="用户角色-编辑")
 	@PutMapping(value = "/edit")
 	public Result<UserRole> edit(@RequestBody UserRole userRole) {
-		Result<UserRole> result = new Result<UserRole>();
+		Result<UserRole> result = new Result<>();
 		UserRole userRoleEntity = userRoleService.getById(userRole.getId());
 		if(userRoleEntity==null) {
 			result.error500("未找到对应实体");
@@ -88,12 +93,12 @@ public class UserRoleController {
 				result.success("修改成功!");
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
-	  *   通过id删除
+	 * 通过id删除
 	 * @param id
 	 * @return
 	 */
@@ -108,16 +113,16 @@ public class UserRoleController {
 		}
 		return Result.ok("删除成功!");
 	}
-	
+
 	/**
-	  *  批量删除
+	 * 批量删除
 	 * @param ids
 	 * @return
 	 */
 	@ApiOperation(value="用户角色-批量删除", notes="用户角色-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<UserRole> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<UserRole> result = new Result<UserRole>();
+		Result<UserRole> result = new Result<>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
 		}else {
@@ -126,16 +131,16 @@ public class UserRoleController {
 		}
 		return result;
 	}
-	
+
 	/**
-	  * 通过id查询
+	 * 通过id查询
 	 * @param id
 	 * @return
 	 */
 	@ApiOperation(value="用户角色-通过id查询", notes="用户角色-通过id查询")
 	@GetMapping(value = "/queryById")
 	public Result<UserRole> queryById(@RequestParam(name="id",required=true) String id) {
-		Result<UserRole> result = new Result<UserRole>();
+		Result<UserRole> result = new Result<>();
 		UserRole userRole = userRoleService.getById(id);
 		if(userRole==null) {
 			result.error500("未找到对应实体");

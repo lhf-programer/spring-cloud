@@ -1,5 +1,3 @@
-
-
 package com.lvhaifeng.cloud.auth.server.jwt;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +10,9 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * AES 是一种可逆加密算法，对用户的敏感信息加密处理 对原始数据进行AES加密后，在进行Base64编码转化；
+ * @Description AES 是一种可逆加密算法，对用户的敏感信息加密处理 对原始数据进行AES加密后，在进行Base64编码转化;
+ * @Author haifeng.lv
+ * @Date 2019/12/16 17:35
  */
 @Component
 public class AECUtil {
@@ -25,7 +25,13 @@ public class AECUtil {
     @Value("${redis.aec-iv:0123456789abcdef}")
     private String ivParameter;
 
-    // 加密
+    /**
+     * @Description 加密
+     * @Author haifeng.lv
+     * @param: sSrc
+     * @Date 2019/12/16 17:35
+     * @return: java.lang.String
+     */
     public String encrypt(String sSrc){
         String result = "";
         try {
@@ -46,7 +52,13 @@ public class AECUtil {
 
     }
 
-    // 解密
+    /**
+     * @Description 解密
+     * @Author haifeng.lv
+     * @param: sSrc
+     * @Date 2019/12/16 17:35
+     * @return: java.lang.String
+     */
     public String decrypt(String sSrc){
         try {
             byte[] raw = sKey.getBytes("ASCII");
