@@ -42,9 +42,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         ArrayList<String> commonPathPatterns = getExcludeCommonPathPatterns();
         registry.addInterceptor(getServiceAuthRestInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns(commonPathPatterns.toArray(new String[]{}))
-                .excludePathPatterns("/userApp/*");
-        commonPathPatterns.add("/user/validate");
+                .excludePathPatterns(commonPathPatterns.toArray(new String[]{}));
         registry.addInterceptor(getUserAuthRestInterceptor()).addPathPatterns("/**").excludePathPatterns(commonPathPatterns.toArray(new String[]{}));
     }
 
