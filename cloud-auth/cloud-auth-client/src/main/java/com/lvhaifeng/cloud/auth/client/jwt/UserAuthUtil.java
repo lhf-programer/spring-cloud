@@ -30,7 +30,7 @@ public class UserAuthUtil {
         try {
             IJWTInfo infoFromToken = jwtHelper.getInfoFromToken(token, userAuthConfig.getPubKeyByte());
             if (redisTemplate.hasKey(RedisKeyUtil.buildUserDisableKey(infoFromToken.getId(), infoFromToken.getExpireTime()))) {
-                throw new NonLoginException("用户 token为空！");
+                throw new NonLoginException("用户 token过期！");
             }
             // jwt 的默认超时时间 + 用户的超时时间 是否在现在之前
             if (new DateTime(infoFromToken.getExpireTime()).plusMinutes(userAuthConfig.getTokenLimitExpire()).isBeforeNow()) {

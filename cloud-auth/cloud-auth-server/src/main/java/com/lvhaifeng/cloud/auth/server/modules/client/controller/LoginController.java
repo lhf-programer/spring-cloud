@@ -34,13 +34,12 @@ public class LoginController {
     @Resource
     private RestTemplate restTemplate;
 
-    @RequestMapping(value = "getToken", method = RequestMethod.POST)
+    @RequestMapping(value = "token", method = RequestMethod.POST)
     @ApiOperation(value="登录获取 token", notes="登录获取 token")
-    public JSONObject getToken(@RequestParam(name="Authorization",required=true) String Authorization,
+    public JSONObject token(@RequestParam(name="Authorization",required=true) String Authorization,
                            @RequestParam(name="grant_type", defaultValue="password") String grant_type,
                            @RequestParam(name="username",required=true) String username,
-                           @RequestParam(name="password",required=true) String password,
-                           HttpServletResponse httpServletResponse) {
+                           @RequestParam(name="password",required=true) String password) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", grant_type);
         params.add("username", username);
@@ -52,8 +51,22 @@ public class LoginController {
 
         String requestUrl = "http://" + host + prefix + "/oauth/token";
         ResponseEntity<JSONObject> response = restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity, JSONObject.class);
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        httpServletResponse.setHeader("Cache-Control","no-cache");
+
+        return response.getBody();
+    }
+
+    @RequestMapping(value = "token", method = RequestMethod.DELETE)
+    @ApiOperation(value="退出登录", notes="退出登录")
+    public JSONObject token(@RequestParam(name="Authorization",required=true) String Authorization,
+                           @RequestParam(name="access_token") String access_token) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", Authorization);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(params, headers);
+
+        String requestUrl = "http://" + host + prefix + "/oauth/token?access_token=" + access_token;
+        ResponseEntity<JSONObject> response = restTemplate.exchange(requestUrl, HttpMethod.DELETE, requestEntity, JSONObject.class);
 
         return response.getBody();
     }

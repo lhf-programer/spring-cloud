@@ -41,7 +41,8 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
     private AuthClientServiceMapper authClientServiceMapper;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-    private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     /**
      * 获取服务鉴权token

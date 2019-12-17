@@ -20,7 +20,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @Date 2019/12/16 17:36
  */
 @FrameworkEndpoint
-@Api(tags="客户端退出登录")
+@ApiIgnore
 public class RevokeTokenEndpoint {
 
     @Autowired
@@ -31,7 +31,6 @@ public class RevokeTokenEndpoint {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/oauth/token")
     @ResponseBody
-    @ApiOperation(value="退出登录", notes="退出登录")
     public Result<Boolean> revokeToken(String access_token) throws Exception {
         Result<Boolean> result = new Result<>();
 
