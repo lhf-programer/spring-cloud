@@ -38,6 +38,6 @@ public class ServiceAuthInterceptor extends HandlerInterceptorAdapter {
                 return super.preHandle(request, response, handler);
             }
         }
-        throw new ClientForbiddenException("Client is Forbidden!");
+        throw new ClientForbiddenException("该客户端不被允许!");
     }
 }

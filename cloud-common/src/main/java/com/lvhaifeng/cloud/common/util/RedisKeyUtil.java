@@ -13,7 +13,7 @@ import java.util.Date;
 public class RedisKeyUtil {
 
     /**
-     * @Description 构建用户可用key
+     * @Description 构建用户可用 key
      * @Author haifeng.lv
      * @param: userId
      * @param: expire 存活时间
@@ -25,7 +25,7 @@ public class RedisKeyUtil {
     }
 
     /**
-     * @Description 构建用户不可用key
+     * @Description 构建用户不可用 key
      * @Author haifeng.lv
      * @param: userId
      * @param: expire 存活时间
