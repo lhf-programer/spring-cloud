@@ -1,5 +1,3 @@
-
-
 package com.lvhaifeng.cloud.auth.client.interceptor;
 
 import com.alibaba.fastjson.JSON;

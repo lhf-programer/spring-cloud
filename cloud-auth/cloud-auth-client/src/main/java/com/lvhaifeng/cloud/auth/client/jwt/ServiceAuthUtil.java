@@ -38,7 +38,7 @@ public class ServiceAuthUtil {
     private String clientToken;
 
     /**
-     * 根据token获取用户信息
+     * 根据token获取客户端信息
      * @author haifeng.lv
      * @date 2019-07-30 17:57
      */

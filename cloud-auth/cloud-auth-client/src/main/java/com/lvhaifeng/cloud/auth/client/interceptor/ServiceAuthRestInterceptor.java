@@ -30,10 +30,8 @@ import java.util.List;
 @SuppressWarnings("ALL")
 public class ServiceAuthRestInterceptor extends HandlerInterceptorAdapter {
     private Logger logger = LoggerFactory.getLogger(ServiceAuthRestInterceptor.class);
-
     @Autowired
     private ServiceAuthUtil serviceAuthUtil;
-
     @Autowired
     private ServiceAuthConfig serviceAuthConfig;
 

@@ -8,6 +8,7 @@ import com.lvhaifeng.cloud.auth.server.modules.oauth.bean.OauthUser;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.filter.IntegrationAuthenticationFilter;
 import com.lvhaifeng.cloud.auth.server.modules.oauth.service.IntegrationUserDetailsService;
 import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
+import com.lvhaifeng.cloud.common.util.RedisKeyUtil;
 import com.lvhaifeng.cloud.common.util.RsaKeyHelper;
 import com.lvhaifeng.cloud.common.util.Sha256PasswordEncoder;
 import lombok.extern.slf4j.Slf4j;
@@ -126,7 +127,7 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
     }
 
     @Bean
-    public JwtAccessTokenConverter accessTokenConverter() throws IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException {
+    public JwtAccessTokenConverter accessTokenConverter() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] pri, pub;
         try {
             pri = rsaKeyHelper.toBytes(aecUtil.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PRI_KEY)));
@@ -153,6 +154,7 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
                 additionalInformation.put(CommonKeyConstants.JWT_KEY_USER_NAME, user.getUsername());
                 ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInformation);
                 OAuth2AccessToken enhancedToken = super.enhance(accessToken, authentication);
+
                 return enhancedToken;
             }
 

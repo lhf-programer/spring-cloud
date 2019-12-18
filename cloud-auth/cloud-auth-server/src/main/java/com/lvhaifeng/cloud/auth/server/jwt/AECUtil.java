@@ -1,5 +1,6 @@
 package com.lvhaifeng.cloud.auth.server.jwt;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -66,11 +67,15 @@ public class AECUtil {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             IvParameterSpec iv = new IvParameterSpec(ivParameter.getBytes());
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
-            // 先用base64解密
-            byte[] encrypted1 = Base64.getDecoder().decode(sSrc);
-            byte[] original = cipher.doFinal(encrypted1);
-            String originalString = new String(original, "utf-8");
-            return originalString;
+            if (StringUtils.isNotBlank(sSrc)) {
+                // 先用base64解密
+                byte[] encrypted1 = Base64.getDecoder().decode(sSrc);
+                byte[] original = cipher.doFinal(encrypted1);
+                String originalString = new String(original, "utf-8");
+                return originalString;
+            } else {
+                return sSrc;
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

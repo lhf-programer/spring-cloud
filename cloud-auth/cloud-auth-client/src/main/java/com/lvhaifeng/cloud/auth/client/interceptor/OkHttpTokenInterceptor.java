@@ -1,5 +1,3 @@
-
-
 package com.lvhaifeng.cloud.auth.client.interceptor;
 
 import com.lvhaifeng.cloud.auth.client.config.ServiceAuthConfig;
@@ -17,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-
 
 /**
  * @Description okHttp 拦截器

@@ -12,5 +12,4 @@ public class CommonKeyConstants {
     public static final String JWT_KEY_USER_ID = "userId";
     public static final String JWT_KEY_USER_NAME = "userName";
     public static final String JWT_KEY_EXPIRE = "expire";
-    public static final String REDIS_USER_TOKEN = "jwt:user_";
 }

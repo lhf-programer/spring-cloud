@@ -7,6 +7,7 @@ import com.lvhaifeng.cloud.common.context.BaseContextHandler;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @Description Feign 请求拦截

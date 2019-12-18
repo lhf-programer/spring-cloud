@@ -25,8 +25,8 @@ public interface IJWTInfo {
      */
     Date getExpireTime();
     /**
-     *
      * 获取其他信息
+     * @return
      */
     Map<String,String> getOtherInfo();
 
