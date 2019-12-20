@@ -36,8 +36,8 @@ public class LoginController {
 
     @RequestMapping(value = "token", method = RequestMethod.POST)
     @ApiOperation(value="登录获取 token", notes="登录获取 token")
-    public JSONObject token(@RequestParam(name="Authorization",required=true) String Authorization,
-                           @RequestParam(name="grant_type", defaultValue="password") String grant_type,
+    public JSONObject token(@RequestParam(name="Authorization",required=true,defaultValue = "Basic Y2xvdWQ6Y2xvdWQ=") String Authorization,
+                           @RequestParam(name="grant_type",defaultValue="password") String grant_type,
                            @RequestParam(name="username",required=true) String username,
                            @RequestParam(name="password",required=true) String password) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -57,7 +57,7 @@ public class LoginController {
 
     @RequestMapping(value = "token", method = RequestMethod.DELETE)
     @ApiOperation(value="退出登录", notes="退出登录")
-    public JSONObject token(@RequestParam(name="Authorization",required=true) String Authorization,
+    public JSONObject token(@RequestParam(name="Authorization",required=true,defaultValue = "Basic Y2xvdWQ6Y2xvdWQ=") String Authorization,
                            @RequestParam(name="access_token") String access_token) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 

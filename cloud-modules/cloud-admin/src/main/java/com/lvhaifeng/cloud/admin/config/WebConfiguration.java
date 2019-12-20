@@ -1,10 +1,9 @@
 package com.lvhaifeng.cloud.admin.config;
 
 import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.lvhaifeng.cloud.auth.client.interceptor.ServiceAuthRestInterceptor;
-import com.lvhaifeng.cloud.auth.client.interceptor.UserAuthRestInterceptor;
+import com.lvhaifeng.cloud.auth.client.interceptor.AuthClientInterceptor;
+import com.lvhaifeng.cloud.auth.user.interceptor.AuthUserInterceptor;
 import com.lvhaifeng.cloud.common.exception.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -47,13 +46,13 @@ public class WebConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    ServiceAuthRestInterceptor getServiceAuthRestInterceptor() {
-        return new ServiceAuthRestInterceptor();
+    AuthClientInterceptor getServiceAuthRestInterceptor() {
+        return new AuthClientInterceptor();
     }
 
     @Bean
-    UserAuthRestInterceptor getUserAuthRestInterceptor() {
-        return new UserAuthRestInterceptor();
+    AuthUserInterceptor getUserAuthRestInterceptor() {
+        return new AuthUserInterceptor();
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.lvhaifeng.cloud.admin;
 
 import com.lvhaifeng.cloud.auth.client.EnableAuthClient;
+import com.lvhaifeng.cloud.auth.user.EnableAuthUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,10 +23,10 @@ import java.net.UnknownHostException;
 @Slf4j
 @EnableCircuitBreaker
 @SpringBootApplication
-@EnableFeignClients({"com.lvhaifeng.cloud.auth.client.feign"})
+@EnableFeignClients({"com.lvhaifeng.cloud.auth.user.feign"})
 @EnableTransactionManagement
 @EnableSwagger2
-@EnableAuthClient
+@EnableAuthUser
 public class AdminBootstrap {
     public static void main(String[] args) throws UnknownHostException {
         ConfigurableApplicationContext application = SpringApplication.run(AdminBootstrap.class, args);

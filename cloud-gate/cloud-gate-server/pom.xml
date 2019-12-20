@@ -96,12 +96,6 @@
             <version>v1.1</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.lvhaifeng.cloud</groupId>
-            <artifactId>cloud-interface</artifactId>
-            <version>v1.1</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <build>

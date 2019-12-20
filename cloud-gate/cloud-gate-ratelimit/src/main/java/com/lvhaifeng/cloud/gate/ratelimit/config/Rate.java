@@ -10,9 +10,10 @@ import java.util.Date;
 
 /**
  * @Description 表示用户给定时间内的速率限制视图。
- * limit - 用户可以执行多少请求。映射到X-RateLimit-Limit
+ * key - jpa 限流器时使用
  * remaining - 当前窗口中还有多少请求。映射到X-RateLimit-Remaining头
  * reset - 比率受限制补充的时期。映射到X-RateLimit-Reset报头
+ * expiration - 仅给内存限流器与jpa 数据库限流器
  * @Author haifeng.lv
  * @Date 2019/12/16 17:52
  */

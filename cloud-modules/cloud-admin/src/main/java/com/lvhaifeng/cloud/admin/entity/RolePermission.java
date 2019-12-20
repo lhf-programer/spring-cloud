@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 /**
  * @Description: 角色权限
  * @Author: haifeng.lv
- * @Date: 2019-12-16 16:46
+ * @Date: 2019-12-19 10:36
  */
 @Data
 @TableName("role_permission")

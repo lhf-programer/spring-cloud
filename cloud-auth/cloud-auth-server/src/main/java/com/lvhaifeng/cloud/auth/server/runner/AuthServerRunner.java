@@ -3,13 +3,15 @@ package com.lvhaifeng.cloud.auth.server.runner;
 import com.alibaba.fastjson.JSON;
 import com.lvhaifeng.cloud.auth.server.configuration.KeyConfiguration;
 import com.lvhaifeng.cloud.auth.server.constant.RedisKeyConstant;
-import com.lvhaifeng.cloud.auth.server.jwt.AECUtil;
 import com.lvhaifeng.cloud.auth.server.modules.client.entity.GatewayRoute;
 import com.lvhaifeng.cloud.auth.server.modules.client.service.IGatewayRouteService;
 import com.lvhaifeng.cloud.common.constant.RedisKeyConstants;
-import com.lvhaifeng.cloud.common.util.RsaKeyHelper;
+import com.lvhaifeng.cloud.common.util.AesUtils;
+import com.lvhaifeng.cloud.common.util.EncoderUtils;
+import com.lvhaifeng.cloud.common.util.RsaKeyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -30,39 +32,43 @@ public class AuthServerRunner implements CommandLineRunner {
     @Autowired
     private KeyConfiguration keyConfiguration;
     @Autowired
-    private AECUtil aecUtil;
-    @Autowired
-    private RsaKeyHelper rsaKeyHelper;
-    @Autowired
     private IGatewayRouteService gatewayRouteService;
+
+    /**
+     * 加密用的Key 可以用26个字母和数字组成 此处使用AES-128-CBC加密模式，key需要为16位。
+     */
+    @Value("${redis.aec-key:abcdef0123456789}")
+    private String sKey;
+    @Value("${redis.aec-iv:0123456789abcdef}")
+    private String ivParameter;
 
     @Override
     public void run(String... args) throws Exception {
         boolean flag = false;
         if (redisTemplate.hasKey(RedisKeyConstant.REDIS_USER_PRI_KEY) && redisTemplate.hasKey(RedisKeyConstant.REDIS_USER_PUB_KEY)) {
             try {
-                keyConfiguration.setUserPriKey(rsaKeyHelper.toBytes(aecUtil.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PRI_KEY))));
-                keyConfiguration.setUserPubKey(rsaKeyHelper.toBytes(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PUB_KEY)));
+                keyConfiguration.setUserPriKey(EncoderUtils.toBytes(AesUtils.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PRI_KEY), sKey, ivParameter)));
+                keyConfiguration.setUserPubKey(EncoderUtils.toBytes(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PUB_KEY)));
             } catch (Exception e) {
                 log.error("初始化用户公钥/密钥异常...", e);
                 flag = true;
             }
         }
         if (flag) {
-            Map<String, byte[]> keyMap = rsaKeyHelper.generateKey(keyConfiguration.getUserSecret());
+            Map<String, byte[]> keyMap = RsaKeyUtils.generateKey(keyConfiguration.getUserSecret());
             keyConfiguration.setUserPriKey(keyMap.get("pri"));
             keyConfiguration.setUserPubKey(keyMap.get("pub"));
             // 密钥加密
-            redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_USER_PRI_KEY, aecUtil.encrypt(rsaKeyHelper.toHexString(keyMap.get("pri"))));
+            redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_USER_PRI_KEY, AesUtils.encrypt(EncoderUtils.toHexString(keyMap.get("pri")), sKey, ivParameter));
             // 公钥不加密
-            redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_USER_PUB_KEY, rsaKeyHelper.toHexString(keyMap.get("pub")));
+            redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_USER_PUB_KEY, EncoderUtils.toHexString(keyMap.get("pub")));
         }
         log.info("完成用户公钥/密钥的初始化...");
         flag = false;
         if (redisTemplate.hasKey(RedisKeyConstant.REDIS_SERVICE_PRI_KEY) && redisTemplate.hasKey(RedisKeyConstant.REDIS_SERVICE_PUB_KEY)) {
             try {
-                keyConfiguration.setServicePriKey(rsaKeyHelper.toBytes(aecUtil.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_SERVICE_PRI_KEY).toString())));
-                keyConfiguration.setServicePubKey(rsaKeyHelper.toBytes(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_SERVICE_PUB_KEY).toString()));
+                keyConfiguration.setServicePriKey(EncoderUtils.toBytes(AesUtils.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_SERVICE_PRI_KEY), sKey, ivParameter)));
+                keyConfiguration.setServicePubKey(EncoderUtils.toBytes(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_SERVICE_PUB_KEY).toString()));
             } catch (Exception e) {
                 log.error("初始化服务公钥/密钥异常...", e);
                 flag = true;
@@ -71,11 +77,11 @@ public class AuthServerRunner implements CommandLineRunner {
             flag = true;
         }
         if (flag) {
-            Map<String, byte[]> keyMap = rsaKeyHelper.generateKey(keyConfiguration.getServiceSecret());
+            Map<String, byte[]> keyMap = RsaKeyUtils.generateKey(keyConfiguration.getServiceSecret());
             keyConfiguration.setServicePriKey(keyMap.get("pri"));
             keyConfiguration.setServicePubKey(keyMap.get("pub"));
-            redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_SERVICE_PRI_KEY, aecUtil.encrypt(rsaKeyHelper.toHexString(keyMap.get("pri"))));
-            redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_SERVICE_PUB_KEY, rsaKeyHelper.toHexString(keyMap.get("pub")));
+            redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_SERVICE_PRI_KEY, AesUtils.encrypt(EncoderUtils.toHexString(keyMap.get("pri")), sKey, ivParameter));
+            redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_SERVICE_PUB_KEY, EncoderUtils.toHexString(keyMap.get("pub")));
         }
         log.info("完成服务公钥/密钥的初始化...");
         List<GatewayRoute> gatewayRoutes = gatewayRouteService.list();

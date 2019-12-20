@@ -1,14 +1,14 @@
 package com.lvhaifeng.cloud.common.exception;
 
+import com.lvhaifeng.cloud.common.exception.auth.ClientInvalidException;
 import com.lvhaifeng.cloud.common.exception.auth.ClientTokenException;
 import com.lvhaifeng.cloud.common.exception.auth.NonLoginException;
-import com.lvhaifeng.cloud.common.exception.auth.UserInvalidException;
 import com.lvhaifeng.cloud.common.exception.base.BaseException;
-import com.lvhaifeng.cloud.common.exception.base.BizInvalidResponseException;
 import com.lvhaifeng.cloud.common.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,8 +61,8 @@ public class GlobalExceptionHandler {
         return result;
     }
 
-    @ExceptionHandler(UserInvalidException.class)
-    public Result userInvalidExceptionHandler(HttpServletResponse response, UserInvalidException ex) {
+    @ExceptionHandler(ClientInvalidException.class)
+    public Result clientInvalidException(HttpServletResponse response, ClientInvalidException ex) {
         logger.error(ex.getMessage(), ex);
         Result result = new Result(ex.getMessage(), ex.getStatus());
         result.setSuccess(false);
@@ -70,12 +70,4 @@ public class GlobalExceptionHandler {
         return result;
     }
 
-    @ExceptionHandler(BizInvalidResponseException.class)
-    public Result invalidResponseExceptionHandler(HttpServletResponse response, BizInvalidResponseException ex) {
-        logger.error(ex.getMessage(), ex);
-        Result result = new Result(ex.getMessage(), ex.getStatus());
-        result.setSuccess(false);
-        response.setStatus(HttpStatus.OK.value());
-        return result;
-    }
 }

@@ -15,6 +15,7 @@
     <modules>
         <module>cloud-auth-client</module>
         <module>cloud-auth-server</module>
+        <module>cloud-auth-user</module>
     </modules>
 
 </project>

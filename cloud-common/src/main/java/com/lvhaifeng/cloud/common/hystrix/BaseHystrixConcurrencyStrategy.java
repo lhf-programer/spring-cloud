@@ -73,7 +73,7 @@ public class BaseHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy {
     @Override
     public <T> Callable<T> wrapCallable(Callable<T> callable) {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        return new WrappedCallable<>(callable, BaseContextHandler.getToken(), BaseContextHandler.getUserID(), requestAttributes);
+        return new WrappedCallable<>(callable, BaseContextHandler.getToken(), BaseContextHandler.getUserId(), requestAttributes);
     }
 
     @Override

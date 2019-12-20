@@ -6,6 +6,11 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * @Description 客户端token 转发
+ * @Author haifeng.lv
+ * @Date 2019/12/20 11:22
+ */
 public class ClientTokenInterceptor implements RequestInterceptor {
     @Autowired
     private ClientConfiguration clientConfiguration;

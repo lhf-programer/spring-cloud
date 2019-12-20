@@ -1,13 +1,13 @@
 package com.lvhaifeng.cloud.common.jwt;
 
 import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
-import com.lvhaifeng.cloud.common.util.RsaKeyHelper;
-import com.lvhaifeng.cloud.common.util.StringHelper;
+import com.lvhaifeng.cloud.common.util.RsaKeyUtils;
+import com.lvhaifeng.cloud.common.util.StringUtils;
 import io.jsonwebtoken.*;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,11 +17,7 @@ import java.util.Map;
  * @Author haifeng.lv
  * @Date 2019/12/16 17:45
  */
-@Component
 public class JWTHelper {
-    @Autowired
-    private RsaKeyHelper rsaKeyHelper;
-
     /**
      * @Description 密钥加密token
      * @Author haifeng.lv
@@ -31,13 +27,13 @@ public class JWTHelper {
      * @Date 2019/12/16 17:44
      * @return: java.lang.String
      */
-    public String generateToken(IJWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
+    public static String generateToken(IJWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
         String compactJws = Jwts.builder()
                 .setSubject(jwtInfo.getId())
                 .claim(CommonKeyConstants.JWT_KEY_USER_ID, jwtInfo.getId())
                 .claim(CommonKeyConstants.JWT_KEY_USER_NAME, jwtInfo.getName())
                 .claim(CommonKeyConstants.JWT_KEY_EXPIRE, DateTime.now().plusSeconds(expire).toDate().getTime())
-                .signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKey))
+                .signWith(SignatureAlgorithm.RS256, RsaKeyUtils.getPrivateKey(priKey))
                 .compact();
         return compactJws;
     }
@@ -52,7 +48,7 @@ public class JWTHelper {
      * @Date 2019/12/16 17:45
      * @return: java.lang.String
      */
-    public String generateToken(IJWTInfo jwtInfo, byte priKey[], Date expire, Map<String, String> otherInfo) throws Exception {
+    public static String generateToken(IJWTInfo jwtInfo, byte priKey[], Date expire, Map<String, String> otherInfo) throws Exception {
         JwtBuilder builder = Jwts.builder()
                 .setSubject(jwtInfo.getId())
                 .claim(CommonKeyConstants.JWT_KEY_USER_ID, jwtInfo.getId())
@@ -63,7 +59,7 @@ public class JWTHelper {
                 builder.claim(entry.getKey(), entry.getValue());
             }
         }
-        String compactJws = builder.signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKey))
+        String compactJws = builder.signWith(SignatureAlgorithm.RS256, RsaKeyUtils.getPrivateKey(priKey))
                 .compact();
         return compactJws;
     }
@@ -76,8 +72,8 @@ public class JWTHelper {
      * @Date 2019/12/16 17:45
      * @return: io.jsonwebtoken.Jws<io.jsonwebtoken.Claims>
      */
-    public Jws<Claims> parserToken(String token, byte[] pubKey) throws Exception {
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(rsaKeyHelper.getPublicKey(pubKey)).parseClaimsJws(token);
+    public static Jws<Claims> parserToken(String token, byte[] pubKey) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(RsaKeyUtils.getPublicKey(pubKey)).parseClaimsJws(token);
         return claimsJws;
     }
 
@@ -89,7 +85,7 @@ public class JWTHelper {
      * @Date 2019/12/16 17:45
      * @return: com.lvhaifeng.cloud.common.jwt.IJWTInfo
      */
-    public IJWTInfo getInfoFromToken(String token, byte[] pubKey) throws Exception {
+    public static IJWTInfo getInfoFromToken(String token, byte[] pubKey) throws InvalidKeySpecException, NoSuchAlgorithmException {
         Jws<Claims> claimsJws = parserToken(token, pubKey);
         Claims body = claimsJws.getBody();
         Map<String, String> otherInfo = new HashMap<>();
@@ -99,6 +95,6 @@ public class JWTHelper {
             }
             otherInfo.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
         }
-        return new JWTInfo(body.getSubject(), StringHelper.getObjectValue(body.get(CommonKeyConstants.JWT_KEY_USER_ID)), StringHelper.getObjectValue(body.get(CommonKeyConstants.JWT_KEY_USER_NAME)), new DateTime(body.get(CommonKeyConstants.JWT_KEY_EXPIRE)).toDate(), otherInfo);
+        return new JWTInfo(body.getSubject(), StringUtils.getObjectValue(body.get(CommonKeyConstants.JWT_KEY_USER_ID)), StringUtils.getObjectValue(body.get(CommonKeyConstants.JWT_KEY_USER_NAME)), new DateTime(body.get(CommonKeyConstants.JWT_KEY_EXPIRE)).toDate(), otherInfo);
     }
 }

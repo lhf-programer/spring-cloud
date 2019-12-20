@@ -12,6 +12,4 @@ import java.util.List;
  */
 public interface AuthClientMapper extends BaseMapper<AuthClient> {
     List<String> selectAllowedClient(String serviceId);
-
-    List<AuthClient> selectAuthorityServiceInfo(String clientId);
 }

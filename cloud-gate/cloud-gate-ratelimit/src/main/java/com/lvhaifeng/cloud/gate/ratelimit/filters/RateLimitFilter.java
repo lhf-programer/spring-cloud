@@ -1,9 +1,8 @@
 package com.lvhaifeng.cloud.gate.ratelimit.filters;
 
 import com.google.common.net.HttpHeaders;
-import com.lvhaifeng.cloud.gate.ratelimit.config.IUserPrincipal;
 import com.lvhaifeng.cloud.gate.ratelimit.config.Rate;
-import com.lvhaifeng.cloud.gate.ratelimit.config.RateLimiter;
+import com.lvhaifeng.cloud.gate.ratelimit.config.repository.limiter.RateLimiter;
 import com.lvhaifeng.cloud.gate.ratelimit.config.properties.RateLimitProperties;
 import com.lvhaifeng.cloud.gate.ratelimit.config.properties.RateLimitProperties.Policy;
 import com.lvhaifeng.cloud.gate.ratelimit.config.properties.RateLimitProperties.Policy.Type;
@@ -42,7 +41,6 @@ public class RateLimitFilter extends ZuulFilter {
     private final RateLimiter rateLimiter;
     private final RateLimitProperties properties;
     private final RouteLocator routeLocator;
-    private final IUserPrincipal userPrincipal;
 
     @Override
     public String filterType() {
@@ -80,7 +78,14 @@ public class RateLimitFilter extends ZuulFilter {
         return null;
     }
 
+    /**
+     * @Description 获取路由配置
+     * @Author haifeng.lv
+     * @Date 2019/12/18 14:41
+     * @return: org.springframework.cloud.netflix.zuul.filters.Route
+     */
     private Route route() {
+        // 获取请求地址
         String requestURI = URL_PATH_HELPER.getPathWithinApplication(RequestContext.getCurrentContext().getRequest());
         return routeLocator.getMatchingRoute(requestURI);
     }
@@ -93,10 +98,18 @@ public class RateLimitFilter extends ZuulFilter {
         return Optional.ofNullable(properties.getDefaultPolicy());
     }
 
+    /**
+     * @Description 组装 key
+     * @Author haifeng.lv
+     * @param: request
+     * @param: types
+     * @Date 2019/12/18 14:36
+     * @return: java.lang.String
+     */
     private String key(final HttpServletRequest request, final List<Type> types) {
         final Route route = route();
         if (null == route) {
-            // 没有查询到内容
+            // 没有找到路由
             throw new ZuulRuntimeException(new ZuulException(NO_CONTENT.toString(),
                     NO_CONTENT.value(), null));
         }
@@ -106,18 +119,25 @@ public class RateLimitFilter extends ZuulFilter {
         joiner.add(route.getId());
         if (!types.isEmpty()) {
             if (types.contains(Type.URL)) {
+                // 路径
                 joiner.add(route.getPath());
             }
             if (types.contains(Type.ORIGIN)) {
+                // 地址
                 joiner.add(getRemoteAddr(request));
             }
-            if (types.contains(Type.USER)) {
-                joiner.add(userPrincipal.getName(request) != null ? userPrincipal.getName(request) : ANONYMOUS_USER);
-            }
         }
+        joiner.add(ANONYMOUS_USER);
         return joiner.toString();
     }
 
+    /**
+     * @Description 获取地址
+     * @Author haifeng.lv
+     * @param: request
+     * @Date 2019/12/18 14:39
+     * @return: java.lang.String
+     */
     private String getRemoteAddr(final HttpServletRequest request) {
         if (properties.isBehindProxy() && request.getHeader(HttpHeaders.X_FORWARDED_FOR) != null) {
             return request.getHeader(HttpHeaders.X_FORWARDED_FOR);

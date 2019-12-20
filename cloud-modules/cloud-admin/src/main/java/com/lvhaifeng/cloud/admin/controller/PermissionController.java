@@ -16,12 +16,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
-import com.lvhaifeng.cloud.auth.client.annotation.CheckUserToken;
+import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 
  /**
  * @Description: 权限
  * @Author: haifeng.lv
- * @Date: 2019-12-16 16:45
+ * @Date: 2019-12-19 10:36
  */
 @Slf4j
 @Api(tags="权限")

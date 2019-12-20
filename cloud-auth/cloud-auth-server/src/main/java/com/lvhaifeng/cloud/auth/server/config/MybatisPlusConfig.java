@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan("com.lvhaifeng.cloud.auth.server.modules.*.mapper")
 public class MybatisPlusConfig {
-
     /**
      * 分页插件
      */
@@ -23,5 +22,4 @@ public class MybatisPlusConfig {
         // 设置sql的limit为无限制，默认是500
         return new PaginationInterceptor().setLimit(-1);
     }
-
 }

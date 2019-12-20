@@ -1,4 +1,3 @@
-
 package com.lvhaifeng.cloud.auth.client.annotation;
 
 import java.lang.annotation.ElementType;

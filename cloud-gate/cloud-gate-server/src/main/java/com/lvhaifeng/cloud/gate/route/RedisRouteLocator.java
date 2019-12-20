@@ -2,6 +2,7 @@ package com.lvhaifeng.cloud.gate.route;
 
 import com.alibaba.fastjson.JSON;
 import com.lvhaifeng.cloud.common.constant.RedisKeyConstants;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -71,6 +72,7 @@ public class RedisRouteLocator extends SimpleRouteLocator implements Refreshable
      */
     private Map<String, ZuulProperties.ZuulRoute> locateRoutesFromRedis() {
         Map<String, ZuulProperties.ZuulRoute> routes = new LinkedHashMap<>();
+        // 获取存在redis 中得路由
         List<ZuulRouteVO> results = JSON.parseArray(redisTemplate.opsForValue().get(RedisKeyConstants.ZUUL_ROUTE_KEY), ZuulRouteVO.class);
         for (ZuulRouteVO result : results) {
             if (!result.getEnabled()) {
@@ -102,22 +104,14 @@ public class RedisRouteLocator extends SimpleRouteLocator implements Refreshable
      * @Author haifeng.lv
      * @Date 2019/12/16 17:54
      */
-    @Getter
-    @Setter
+    @Data
     public static class ZuulRouteVO {
-
         private String id;
-
         private String path;
-
         private String serviceId;
-
         private String url;
-
-        private boolean stripPrefix = true;
-
+        private Boolean stripPrefix;
         private Boolean retryable;
-
         private Boolean enabled;
     }
 }

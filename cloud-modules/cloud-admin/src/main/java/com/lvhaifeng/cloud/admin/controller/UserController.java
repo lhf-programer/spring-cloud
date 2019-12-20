@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.lvhaifeng.cloud.api.vo.system.AuthUser;
 import com.lvhaifeng.cloud.auth.client.annotation.IgnoreClientToken;
-import com.lvhaifeng.cloud.auth.client.annotation.IgnoreUserToken;
+import com.lvhaifeng.cloud.auth.user.annotation.IgnoreUserToken;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.User;
 import com.lvhaifeng.cloud.admin.service.IUserService;
@@ -21,12 +21,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
-import com.lvhaifeng.cloud.auth.client.annotation.CheckUserToken;
+import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 
  /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2019-12-16 16:43
+ * @Date: 2019-12-19 10:35
  */
 @Slf4j
 @Api(tags="用户")
@@ -67,7 +67,7 @@ public class UserController {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 分页列表查询
 	 * @param user

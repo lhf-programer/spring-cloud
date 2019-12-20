@@ -50,7 +50,6 @@ public class RateLimitProperties {
     @Data
     @NoArgsConstructor
     public static class Policy {
-
         @NotNull
         private Long refreshInterval = TimeUnit.MINUTES.toSeconds(1L);
         @NotNull
@@ -59,7 +58,7 @@ public class RateLimitProperties {
         private List<Type> type = Lists.newArrayList();
 
         public enum Type {
-            ORIGIN, USER, URL
+            ORIGIN, URL
         }
     }
 }

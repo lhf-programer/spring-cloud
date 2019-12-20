@@ -109,13 +109,13 @@
         </dependency>
         <dependency>
             <groupId>com.lvhaifeng.cloud</groupId>
-            <artifactId>cloud-auth-client</artifactId>
+            <artifactId>cloud-interface</artifactId>
             <version>v1.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.lvhaifeng.cloud</groupId>
-            <artifactId>cloud-interface</artifactId>
+            <artifactId>cloud-auth-user</artifactId>
             <version>v1.1</version>
             <scope>compile</scope>
         </dependency>

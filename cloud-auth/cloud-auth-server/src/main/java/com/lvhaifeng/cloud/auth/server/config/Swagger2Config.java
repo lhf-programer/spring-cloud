@@ -64,7 +64,8 @@ public class Swagger2Config {
                 // 版本号
                 .version("1.0")
                 // 描述
-                .description("后台API接口 (授权头默认 Basic Y2xvdWQ6Y2xvdWQ=)")
+                .description("后台API接口 (授权头默认 Basic Y2xvdWQ6Y2xvdWQ=)," +
+                        "前端登录接口/oauth/token")
                 .license("The Apache License, Version 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .build();

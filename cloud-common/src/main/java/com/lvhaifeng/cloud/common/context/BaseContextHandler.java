@@ -1,7 +1,7 @@
 package com.lvhaifeng.cloud.common.context;
 
 import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
-import com.lvhaifeng.cloud.common.util.StringHelper;
+import com.lvhaifeng.cloud.common.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class BaseContextHandler {
         return map.get(key);
     }
 
-    public static String getUserID() {
+    public static String getUserId() {
         Object value = get(CommonKeyConstants.CONTEXT_KEY_USER_ID);
         return returnObjectValue(value);
     }
@@ -44,15 +44,15 @@ public class BaseContextHandler {
 
     public static String getToken() {
         Object value = get(CommonKeyConstants.CONTEXT_KEY_USER_TOKEN);
-        return StringHelper.getObjectValue(value);
+        return StringUtils.getObjectValue(value);
     }
 
     public static void setToken(String token) {
         set(CommonKeyConstants.CONTEXT_KEY_USER_TOKEN, token);
     }
 
-    public static void setUserID(String userID) {
-        set(CommonKeyConstants.CONTEXT_KEY_USER_ID, userID);
+    public static void setUserId(String userId) {
+        set(CommonKeyConstants.CONTEXT_KEY_USER_ID, userId);
     }
 
     public static void setUserName(String userName) {

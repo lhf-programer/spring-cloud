@@ -40,6 +40,12 @@ public class GateConfig {
         return registration;
     }
 
+    /**
+     * @Description 使用redis 路由
+     * @Author haifeng.lv
+     * @Date 2019/12/18 14:16
+     * @return: com.lvhaifeng.cloud.gate.route.RedisRouteLocator
+     */
     @Bean
     RedisRouteLocator redisRouteLocator() {
         RedisRouteLocator redisRouteLocator = new RedisRouteLocator(null == this.server.getServlet().getContextPath() ? "/":this.server.getServlet().getContextPath(), this.zuulProperties);

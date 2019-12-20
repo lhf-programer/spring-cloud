@@ -1,4 +1,3 @@
-
 package com.lvhaifeng.cloud.auth.client.config;
 
 import com.lvhaifeng.cloud.auth.client.interceptor.OkHttpTokenInterceptor;
@@ -13,11 +12,15 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @Description Ok Http 配置
+ * @Author haifeng.lv
+ * @Date 2019/12/18 16:08
+ */
 @AutoConfigureBefore(FeignAutoConfiguration.class)
 @Configuration
 @ConditionalOnClass(Feign.class)
 public class FeignOkHttpConfig {
-
     @Autowired
     OkHttpTokenInterceptor okHttpLoggingInterceptor;
 

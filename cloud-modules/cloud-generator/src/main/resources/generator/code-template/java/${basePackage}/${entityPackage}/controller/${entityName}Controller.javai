@@ -20,7 +20,7 @@ import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
 <#else>
 </#if>
 <#if tableVo.isCheckUser ==1>
-import com.lvhaifeng.cloud.auth.client.annotation.CheckUserToken;
+import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 <#else>
 </#if>
 

@@ -16,22 +16,12 @@
 
     <select id="selectAllowedClient" resultType="java.lang.String">
         SELECT
-            client.CODE
+            client.id
           FROM
               auth_client client
           INNER JOIN auth_client_service gcs ON gcs.client_id = client.id
         WHERE
             gcs.service_id = #{serviceId}
-    </select>
-
-    <select id="selectAuthorityServiceInfo" resultMap="BaseResultMap">
-        SELECT
-            client.*
-        FROM
-            auth_client client
-        INNER JOIN auth_client_service gcs ON gcs.service_id = client.id
-        WHERE
-            gcs.client_id = #{clientId}
     </select>
 
 </mapper>

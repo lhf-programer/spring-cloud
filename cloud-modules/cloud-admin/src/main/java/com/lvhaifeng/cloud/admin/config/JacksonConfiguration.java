@@ -1,7 +1,7 @@
 package com.lvhaifeng.cloud.admin.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lvhaifeng.cloud.common.util.JsonUtil;
+import com.lvhaifeng.cloud.common.util.JsonUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +14,6 @@ import org.springframework.context.annotation.Configuration;
 public class JacksonConfiguration {
     @Bean
     public ObjectMapper objectMapper() {
-        return JsonUtil.newObjectMapper();
+        return JsonUtils.newObjectMapper();
     }
 }

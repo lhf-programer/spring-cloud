@@ -3,8 +3,6 @@ package com.lvhaifeng.cloud.auth.server.modules.client.controller;
 import com.lvhaifeng.cloud.auth.server.modules.client.service.IAuthClientService;
 import com.lvhaifeng.cloud.common.constant.RequestHeaderConstants;
 import com.lvhaifeng.cloud.common.vo.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpoint;

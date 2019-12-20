@@ -36,13 +36,6 @@ public class AuthClientController {
         return result;
     }
 
-    @RequestMapping(value = "/allowedClient")
-    public Result<List<String>> getAllowedClient(String serviceId, String secret) {
-        Result<List<String>> result = new Result();
-        result.setResult(authClientService.getAllowedClient(serviceId, secret));
-        return result;
-    }
-
     @RequestMapping(value = "/servicePubKey",method = RequestMethod.POST)
     public Result<byte[]> getServicePublicKey(@RequestParam("clientId") String clientId, @RequestParam("secret") String secret) throws Exception {
         authClientService.validate(clientId, secret);
@@ -58,21 +51,5 @@ public class AuthClientController {
         result.setResult(keyConfiguration.getUserPubKey());
         return result;
     }
-
-     @RequestMapping(value = "/{id}/client", method = RequestMethod.PUT)
-     @ResponseBody
-     public Result modifyUsers(@PathVariable String id, String clients) {
-         authClientService.modifyClientServices(id, clients);
-         return new Result();
-     }
-
-     @RequestMapping(value = "/{id}/client", method = RequestMethod.GET)
-     @ResponseBody
-     public Result<List<AuthClient>> getUsers(@PathVariable String id) {
-         Result<List<AuthClient>> result = new Result<>();
-         List<AuthClient> clientServices = authClientService.getClientServices(id);
-         result.setResult(clientServices);
-         return result;
-     }
 
 }

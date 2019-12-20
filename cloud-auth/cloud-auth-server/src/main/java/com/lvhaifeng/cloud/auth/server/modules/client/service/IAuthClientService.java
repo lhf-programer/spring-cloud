@@ -12,10 +12,7 @@ import java.util.List;
  */
 public interface IAuthClientService extends IService<AuthClient> {
     String apply(String clientId, String secret) throws Exception;
-    List<String> getAllowedClient(String clientId, String secret);
     List<String> getAllowedClient(String clientId);
     void validate(String clientId, String secret) throws Exception;
     Boolean invalid(String token) throws Exception;
-    void modifyClientServices(String id, String clients);
-    List<AuthClient> getClientServices(String id);
 }
