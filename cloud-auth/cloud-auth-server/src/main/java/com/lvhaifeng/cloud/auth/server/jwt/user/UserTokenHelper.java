@@ -21,7 +21,7 @@ public class UserTokenHelper {
         return expire;
     }
 
-    @Value("${jwt.expire}")
+    @Value("${user.expire}")
     private int expire;
 
     @Autowired

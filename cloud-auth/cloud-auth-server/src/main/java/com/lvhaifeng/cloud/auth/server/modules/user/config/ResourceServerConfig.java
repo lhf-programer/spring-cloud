@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
  */
 @Configuration
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-    @Value("${resquest.skip}")
+    @Value("${request.skip}")
     private String matchers;
 
     @Autowired

@@ -58,7 +58,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     /**
      * 忽略拦截
      */
-    @Value("${resquest.skip}")
+    @Value("${request.skip}")
     private String matchers;
 
     private ArrayList<String> getExcludeCommonPathPatterns() {

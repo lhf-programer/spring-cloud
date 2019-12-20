@@ -37,7 +37,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         return builder.build();
     }
 
-    @Value("${resquest.skip}")
+    @Value("${request.skip}")
     private String matchers;
 
     @Override
