@@ -1,7 +1,7 @@
 package com.lvhaifeng.cloud.auth.server.modules.user.config;
 
 import com.lvhaifeng.cloud.auth.server.modules.user.exception.AuthExceptionEntryPoint;
-import com.lvhaifeng.cloud.auth.server.modules.user.exception.CustomAccessDeniedHandler;
+import com.lvhaifeng.cloud.auth.server.modules.user.exception.AccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -20,12 +20,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     private String matchers;
 
     @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
+    private AccessHandler accessHandler;
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.authenticationEntryPoint(new AuthExceptionEntryPoint());
-        resources.accessDeniedHandler(customAccessDeniedHandler);
+        resources.accessDeniedHandler(accessHandler);
     }
 
     @Override

@@ -67,8 +67,8 @@ public class AuthServerRunner implements CommandLineRunner {
         flag = false;
         if (redisTemplate.hasKey(RedisKeyConstant.REDIS_SERVICE_PRI_KEY) && redisTemplate.hasKey(RedisKeyConstant.REDIS_SERVICE_PUB_KEY)) {
             try {
-                keyConfiguration.setServicePriKey(EncoderUtils.toBytes(AesUtils.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_SERVICE_PRI_KEY), sKey, ivParameter)));
-                keyConfiguration.setServicePubKey(EncoderUtils.toBytes(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_SERVICE_PUB_KEY).toString()));
+                keyConfiguration.setClientPriKey(EncoderUtils.toBytes(AesUtils.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_SERVICE_PRI_KEY), sKey, ivParameter)));
+                keyConfiguration.setClientPubKey(EncoderUtils.toBytes(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_SERVICE_PUB_KEY).toString()));
             } catch (Exception e) {
                 log.error("初始化服务公钥/密钥异常...", e);
                 flag = true;
@@ -77,9 +77,9 @@ public class AuthServerRunner implements CommandLineRunner {
             flag = true;
         }
         if (flag) {
-            Map<String, byte[]> keyMap = RsaKeyUtils.generateKey(keyConfiguration.getServiceSecret());
-            keyConfiguration.setServicePriKey(keyMap.get("pri"));
-            keyConfiguration.setServicePubKey(keyMap.get("pub"));
+            Map<String, byte[]> keyMap = RsaKeyUtils.generateKey(keyConfiguration.getClientSecret());
+            keyConfiguration.setClientPriKey(keyMap.get("pri"));
+            keyConfiguration.setClientPubKey(keyMap.get("pub"));
             redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_SERVICE_PRI_KEY, AesUtils.encrypt(EncoderUtils.toHexString(keyMap.get("pri")), sKey, ivParameter));
             redisTemplate.opsForValue().set(RedisKeyConstant.REDIS_SERVICE_PUB_KEY, EncoderUtils.toHexString(keyMap.get("pub")));
         }

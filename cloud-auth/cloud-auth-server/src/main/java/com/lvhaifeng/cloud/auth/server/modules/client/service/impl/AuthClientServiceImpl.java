@@ -1,17 +1,13 @@
 package com.lvhaifeng.cloud.auth.server.modules.client.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lvhaifeng.cloud.auth.server.jwt.client.ClientTokenHelper;
-import com.lvhaifeng.cloud.auth.server.jwt.user.UserTokenHelper;
-import com.lvhaifeng.cloud.auth.server.modules.client.vo.ClientInfo;
+import com.lvhaifeng.cloud.auth.server.auth.client.ClientTokenHelper;
 import com.lvhaifeng.cloud.auth.server.modules.client.entity.AuthClient;
 import com.lvhaifeng.cloud.auth.server.modules.client.mapper.AuthClientMapper;
 import com.lvhaifeng.cloud.auth.server.modules.client.service.IAuthClientService;
 import com.lvhaifeng.cloud.common.exception.auth.ClientInvalidException;
-import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
-import com.lvhaifeng.cloud.common.util.RedisKeyUtils;
+import com.lvhaifeng.cloud.common.vo.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,11 +25,7 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
     @Resource
     private AuthClientMapper authClientMapper;
     @Autowired
-    private ClientTokenHelper clientTokenUtil;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-    @Autowired
-    private UserTokenHelper jwtTokenUtil;
+    private ClientTokenHelper clientTokenHelper;
 
     /**
      * @Description 获取服务鉴权token
@@ -44,9 +36,9 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
      * @return: java.lang.String
      */
     @Override
-    public String apply(String clientId, String secret) throws Exception {
+    public String getToken(String clientId, String secret) throws Exception {
         AuthClient authClient = getAuthClient(clientId, secret);
-        return clientTokenUtil.generateToken(new ClientInfo(authClient.getCode(), authClient.getName(), authClient.getId()));
+        return clientTokenHelper.generateToken(new AuthInfo(authClient.getId(), authClient.getName()));
     }
 
     /**
@@ -57,7 +49,7 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
      * @return: java.util.List<java.lang.String>
      */
     @Override
-    public List<String> getAllowedClient(String clientId) {
+    public List<String> findAllowedClient(String clientId) {
         AuthClient authClient = getAuthClient(clientId);
         List<String> clients = authClientMapper.selectAllowedClient(authClient.getId() + "");
         if (clients == null) {
@@ -79,21 +71,6 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
         if (authClient == null || !authClient.getSecret().equals(secret)) {
             throw new ClientInvalidException("客户端没有找到或者客户端密钥错误！");
         }
-    }
-
-    /**
-     * @description 验证
-     * @author haifeng.lv
-     * @param: token
-     * @updateTime 2019/12/12 17:10
-     * @return: java.lang.Boolean
-     */
-    @Override
-    public Boolean invalid(String token) throws Exception {
-        IJWTInfo infoFromToken = jwtTokenUtil.getInfoFromToken(token);
-        redisTemplate.delete(RedisKeyUtils.buildUserAbleKey(infoFromToken.getId(), infoFromToken.getExpireTime()));
-        redisTemplate.opsForValue().set(RedisKeyUtils.buildUserDisableKey(infoFromToken.getId(), infoFromToken.getExpireTime()), "1");
-        return true;
     }
 
     /**

@@ -46,10 +46,10 @@ public abstract class AbstractRateLimiter implements RateLimiter {
     }
 
     /**
-     * @description 刷新速率
-     * @author haifeng.lv
+     * @Description 刷新速率
+     * @Author haifeng.lv
      * @param: rate
-     * @updateTime 2019/11/29 15:24
+     * @Date 2019/12/21 17:39
      */
     private void updateRate(final Rate rate) {
         if (rate.getReset() > 0) {
@@ -60,10 +60,10 @@ public abstract class AbstractRateLimiter implements RateLimiter {
     }
 
     /**
-     * @description 是否过期
-     * @author haifeng.lv
+     * @Description 是否过期
+     * @Author haifeng.lv
      * @param: rate
-     * @updateTime 2019/11/29 15:25
+     * @Date 2019/12/21 17:40
      * @return: boolean
      */
     private boolean isExpired(final Rate rate) {

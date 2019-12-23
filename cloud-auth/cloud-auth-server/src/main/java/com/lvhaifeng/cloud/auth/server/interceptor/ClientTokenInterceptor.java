@@ -20,7 +20,7 @@ public class ClientTokenInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         try {
-            requestTemplate.header(clientConfiguration.getClientTokenHeader(), authClientService.apply(clientConfiguration.getClientId(), clientConfiguration.getClientSecret()));
+            requestTemplate.header(clientConfiguration.getClientTokenHeader(), authClientService.getToken(clientConfiguration.getClientId(), clientConfiguration.getClientSecret()));
         } catch (Exception e) {
             e.printStackTrace();
         }

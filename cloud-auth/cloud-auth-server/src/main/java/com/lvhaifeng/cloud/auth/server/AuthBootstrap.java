@@ -16,7 +16,7 @@ import java.net.UnknownHostException;
 
 @Slf4j
 @SpringBootApplication(scanBasePackages = {"com.lvhaifeng.cloud.auth.server", "com.lvhaifeng.cloud.common"})
-@EnableFeignClients
+@EnableFeignClients({"com.lvhaifeng.cloud.auth.server.feign"})
 @SessionAttributes("authorizationRequest")
 @EnableResourceServer
 @EnableSwagger2

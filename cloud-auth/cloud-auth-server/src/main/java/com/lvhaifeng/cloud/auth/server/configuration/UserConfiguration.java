@@ -12,6 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Data
 public class UserConfiguration {
-    @Value("${user.token-header}")
-    private String userTokenHeader;
+    @Value("${user.expire}")
+    private int userExpire;
+
+    public int getUserExpire() {
+        return userExpire;
+    }
 }

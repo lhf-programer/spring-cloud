@@ -19,6 +19,4 @@ public class AuthClientConfig {
     private String clientSecret;
     @Value("${auth.client.token-header}")
     private String tokenHeader;
-    @Value("${spring.application.name}")
-    private String applicationName;
 }

@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class AuthExceptionEntryPoint implements AuthenticationEntryPoint {
 		map.put("error", "401");
 		map.put("message", authException.getMessage());
 		map.put("path", request.getServletPath());
-		map.put("timestamp", LocalDateTime.now());
+		map.put("timestamp", LocalDateTime.now().toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		try {

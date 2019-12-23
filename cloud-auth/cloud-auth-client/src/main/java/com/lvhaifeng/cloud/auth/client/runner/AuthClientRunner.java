@@ -36,9 +36,9 @@ public class AuthClientRunner implements CommandLineRunner {
     @Scheduled(cron = "0 0/1 * * * ?")
     public void refreshServicePubKey() {
         log.info("refreshServicePubKey,clientId={},clientSecret={}",serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
-        Result<byte[]> servicePublicKey = authClientFeign.getServicePublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
-        if (servicePublicKey.isSuccess()) {
-            this.serviceAuthConfig.setPubKeyByte(servicePublicKey.getResult());
+        Result<byte[]> clientPubKey = authClientFeign.getClientPubKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
+        if (clientPubKey.isSuccess()) {
+            this.serviceAuthConfig.setPubKeyByte(clientPubKey.getResult());
         }
     }
 }

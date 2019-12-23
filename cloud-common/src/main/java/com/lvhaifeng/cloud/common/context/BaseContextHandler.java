@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.common.context;
 
-import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
 import com.lvhaifeng.cloud.common.util.StringUtils;
 
 import java.util.HashMap;
@@ -12,6 +11,9 @@ import java.util.Map;
  * @Date 2019/12/16 17:42
  */
 public class BaseContextHandler {
+    public static final String CONTEXT_KEY_USER_ID = "currentUserId";
+    public static final String CONTEXT_KEY_USER_NAME = "currentUserName";
+    public static final String CONTEXT_KEY_USER_TOKEN = "currentUserToken";
     public static ThreadLocal<Map<String, Object>> threadLocal = new ThreadLocal<Map<String, Object>>();
 
     public static void set(String key, Object value) {
@@ -33,30 +35,30 @@ public class BaseContextHandler {
     }
 
     public static String getUserId() {
-        Object value = get(CommonKeyConstants.CONTEXT_KEY_USER_ID);
+        Object value = get(CONTEXT_KEY_USER_ID);
         return returnObjectValue(value);
     }
 
     public static String getUserName() {
-        Object value = get(CommonKeyConstants.CONTEXT_KEY_USER_NAME);
+        Object value = get(CONTEXT_KEY_USER_NAME);
         return returnObjectValue(value);
     }
 
     public static String getToken() {
-        Object value = get(CommonKeyConstants.CONTEXT_KEY_USER_TOKEN);
+        Object value = get(CONTEXT_KEY_USER_TOKEN);
         return StringUtils.getObjectValue(value);
     }
 
     public static void setToken(String token) {
-        set(CommonKeyConstants.CONTEXT_KEY_USER_TOKEN, token);
+        set(CONTEXT_KEY_USER_TOKEN, token);
     }
 
     public static void setUserId(String userId) {
-        set(CommonKeyConstants.CONTEXT_KEY_USER_ID, userId);
+        set(CONTEXT_KEY_USER_ID, userId);
     }
 
     public static void setUserName(String userName) {
-        set(CommonKeyConstants.CONTEXT_KEY_USER_NAME, userName);
+        set(CONTEXT_KEY_USER_NAME, userName);
     }
 
     private static String returnObjectValue(Object value) {

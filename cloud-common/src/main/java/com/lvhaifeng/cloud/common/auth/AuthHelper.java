@@ -1,14 +1,16 @@
-package com.lvhaifeng.cloud.common.jwt;
+package com.lvhaifeng.cloud.common.auth;
 
-import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
+import com.lvhaifeng.cloud.common.constant.JwtKeyConstants;
 import com.lvhaifeng.cloud.common.util.RsaKeyUtils;
 import com.lvhaifeng.cloud.common.util.StringUtils;
+import com.lvhaifeng.cloud.common.vo.AuthInfo;
 import io.jsonwebtoken.*;
-import org.joda.time.DateTime;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ import java.util.Map;
  * @Author haifeng.lv
  * @Date 2019/12/16 17:45
  */
-public class JWTHelper {
+public class AuthHelper {
     /**
      * @Description 密钥加密token
      * @Author haifeng.lv
@@ -27,12 +29,11 @@ public class JWTHelper {
      * @Date 2019/12/16 17:44
      * @return: java.lang.String
      */
-    public static String generateToken(IJWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
+    public static String generateToken(AuthInfo authInfo, byte priKey[], int expire) throws Exception {
         String compactJws = Jwts.builder()
-                .setSubject(jwtInfo.getId())
-                .claim(CommonKeyConstants.JWT_KEY_USER_ID, jwtInfo.getId())
-                .claim(CommonKeyConstants.JWT_KEY_USER_NAME, jwtInfo.getName())
-                .claim(CommonKeyConstants.JWT_KEY_EXPIRE, DateTime.now().plusSeconds(expire).toDate().getTime())
+                .claim(JwtKeyConstants.JWT_KEY_ID, authInfo.getId())
+                .claim(JwtKeyConstants.JWT_KEY_NAME, authInfo.getName())
+                .claim(JwtKeyConstants.JWT_KEY_EXPIRE, LocalDateTime.now().plusSeconds(expire).toInstant(ZoneOffset.of("+8")).toEpochMilli())
                 .signWith(SignatureAlgorithm.RS256, RsaKeyUtils.getPrivateKey(priKey))
                 .compact();
         return compactJws;
@@ -48,12 +49,12 @@ public class JWTHelper {
      * @Date 2019/12/16 17:45
      * @return: java.lang.String
      */
-    public static String generateToken(IJWTInfo jwtInfo, byte priKey[], Date expire, Map<String, String> otherInfo) throws Exception {
+    public static String generateToken(AuthInfo authInfo, byte priKey[], LocalDateTime expire, Map<String, String> otherInfo) throws Exception {
         JwtBuilder builder = Jwts.builder()
-                .setSubject(jwtInfo.getId())
-                .claim(CommonKeyConstants.JWT_KEY_USER_ID, jwtInfo.getId())
-                .claim(CommonKeyConstants.JWT_KEY_USER_NAME, jwtInfo.getName())
-                .claim(CommonKeyConstants.JWT_KEY_EXPIRE, expire.getTime());
+                .setSubject(authInfo.getId())
+                .claim(JwtKeyConstants.JWT_KEY_ID, authInfo.getId())
+                .claim(JwtKeyConstants.JWT_KEY_NAME, authInfo.getName())
+                .claim(JwtKeyConstants.JWT_KEY_EXPIRE, expire.toInstant(ZoneOffset.of("+8")).toEpochMilli());
         if (otherInfo != null) {
             for (Map.Entry<String, String> entry : otherInfo.entrySet()) {
                 builder.claim(entry.getKey(), entry.getValue());
@@ -78,23 +79,24 @@ public class JWTHelper {
     }
 
     /**
-     * @Description 获取token中的用户信息
+     * @Description 获取 token中的信息
      * @Author haifeng.lv
      * @param: token
      * @param: pubKey 公钥
      * @Date 2019/12/16 17:45
      * @return: com.lvhaifeng.cloud.common.jwt.IJWTInfo
      */
-    public static IJWTInfo getInfoFromToken(String token, byte[] pubKey) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static AuthInfo getInfoFromToken(String token, byte[] pubKey) throws InvalidKeySpecException, NoSuchAlgorithmException {
         Jws<Claims> claimsJws = parserToken(token, pubKey);
         Claims body = claimsJws.getBody();
         Map<String, String> otherInfo = new HashMap<>();
         for (Map.Entry entry : body.entrySet()) {
-            if (Claims.SUBJECT.equals(entry.getKey()) || CommonKeyConstants.JWT_KEY_USER_ID.equals(entry.getKey()) || CommonKeyConstants.JWT_KEY_USER_NAME.equals(entry.getKey()) || CommonKeyConstants.JWT_KEY_EXPIRE.equals(entry.getKey())) {
+            if (JwtKeyConstants.JWT_KEY_ID.equals(entry.getKey()) || JwtKeyConstants.JWT_KEY_NAME.equals(entry.getKey()) || JwtKeyConstants.JWT_KEY_EXPIRE.equals(entry.getKey())) {
                 continue;
             }
             otherInfo.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
         }
-        return new JWTInfo(body.getSubject(), StringUtils.getObjectValue(body.get(CommonKeyConstants.JWT_KEY_USER_ID)), StringUtils.getObjectValue(body.get(CommonKeyConstants.JWT_KEY_USER_NAME)), new DateTime(body.get(CommonKeyConstants.JWT_KEY_EXPIRE)).toDate(), otherInfo);
+        return new AuthInfo(StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_ID)), StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_NAME)), Instant.ofEpochMilli(Long.parseLong(body.get(JwtKeyConstants.JWT_KEY_EXPIRE).toString())).atZone(ZoneOffset.ofHours(8)).toLocalDateTime(), otherInfo);
     }
+
 }

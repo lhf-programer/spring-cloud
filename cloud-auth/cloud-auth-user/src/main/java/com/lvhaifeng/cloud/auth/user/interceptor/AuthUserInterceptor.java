@@ -1,21 +1,15 @@
 package com.lvhaifeng.cloud.auth.user.interceptor;
 
-import com.alibaba.fastjson.JSON;
 import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 import com.lvhaifeng.cloud.auth.user.annotation.IgnoreUserToken;
 import com.lvhaifeng.cloud.auth.user.config.AuthUserConfig;
-import com.lvhaifeng.cloud.auth.user.jwt.AuthUserUtil;
+import com.lvhaifeng.cloud.auth.user.service.AuthUserService;
 import com.lvhaifeng.cloud.common.constant.RequestHeaderConstants;
 import com.lvhaifeng.cloud.common.context.BaseContextHandler;
-import com.lvhaifeng.cloud.common.exception.auth.NonLoginException;
-import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
-import com.lvhaifeng.cloud.common.vo.Result;
+import com.lvhaifeng.cloud.common.vo.AuthInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -29,11 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  * @Date 2019/12/16 17:32
  */
 public class AuthUserInterceptor extends HandlerInterceptorAdapter {
-    private Logger logger = LoggerFactory.getLogger(AuthUserInterceptor.class);
-
     @Autowired
-    private AuthUserUtil userAuthUtil;
-
+    private AuthUserService authUserService;
     @Autowired
     private AuthUserConfig userAuthConfig;
 
@@ -71,20 +62,11 @@ public class AuthUserInterceptor extends HandlerInterceptorAdapter {
                 token = token.substring(RequestHeaderConstants.JWT_TOKEN_TYPE.length());
             }
 
-            try {
-                // 解析 token
-                IJWTInfo infoFromToken = userAuthUtil.getInfoFromToken(token);
-                BaseContextHandler.setToken(token);
-                BaseContextHandler.setUserName(infoFromToken.getName());
-                BaseContextHandler.setUserId(infoFromToken.getId());
-            } catch (NonLoginException ex) {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                logger.error(ex.getMessage(), ex);
-                response.setContentType("text/html;charset=utf-8");
-                response.getWriter().println(JSON.toJSONString(new Result(ex.getMessage(), ex.getStatus())));
-                return false;
-            }
-
+            // 解析 token
+            AuthInfo authInfo = authUserService.getInfoFromToken(token);
+            BaseContextHandler.setToken(token);
+            BaseContextHandler.setUserName(authInfo.getName());
+            BaseContextHandler.setUserId(authInfo.getId());
             return super.preHandle(request, response, handler);
         }
     }

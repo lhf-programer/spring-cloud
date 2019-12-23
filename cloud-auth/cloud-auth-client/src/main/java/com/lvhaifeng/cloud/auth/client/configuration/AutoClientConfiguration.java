@@ -21,7 +21,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @ComponentScan({"com.lvhaifeng.cloud.auth.client"})
 public class AutoClientConfiguration {
     @Bean
-    AuthClientConfig getServiceAuthConfig() {
+    AuthClientConfig getAuthClientConfig() {
         return new AuthClientConfig();
     }
 

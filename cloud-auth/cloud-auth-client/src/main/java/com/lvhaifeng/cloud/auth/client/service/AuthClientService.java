@@ -1,10 +1,11 @@
-package com.lvhaifeng.cloud.auth.client.jwt;
+package com.lvhaifeng.cloud.auth.client.service;
 
 import com.lvhaifeng.cloud.auth.client.config.AuthClientConfig;
 import com.lvhaifeng.cloud.auth.client.feign.IAuthClientFeign;
+import com.lvhaifeng.cloud.common.exception.auth.ClientInvalidException;
 import com.lvhaifeng.cloud.common.exception.auth.ClientTokenException;
-import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
-import com.lvhaifeng.cloud.common.jwt.JWTHelper;
+import com.lvhaifeng.cloud.common.auth.AuthHelper;
+import com.lvhaifeng.cloud.common.vo.AuthInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -14,40 +15,55 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.Date;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * @Description 服务授权工具类
+ * @Description 客户端授权服务
  * @Author haifeng.lv
  * @Date 2019/12/16 17:32
  */
 @Configuration
 @Slf4j
 @EnableScheduling
-public class AuthClientUtil {
+public class AuthClientService {
     @Autowired
-    private AuthClientConfig serviceAuthConfig;
+    private AuthClientConfig authClientConfig;
     @Autowired
     private IAuthClientFeign authClientFeign;
-
     /**
      * 客户端 token
      */
     private String clientToken;
 
     /**
-     * 根据token获取客户端信息
-     * @author haifeng.lv
-     * @date 2019-07-30 17:57
+     * @Description 验证客户端 token
+     * @Author haifeng.lv
+     * @Date 2019/12/20 11:47
      */
-    public IJWTInfo getInfoFromToken(String token) throws Exception {
+    public AuthInfo getInfoFromToken(String token, String clientId) throws InvalidKeySpecException, NoSuchAlgorithmException {
         try {
-            IJWTInfo infoFromToken = JWTHelper.getInfoFromToken(token, serviceAuthConfig.getPubKeyByte());
-            Date current = infoFromToken.getExpireTime();
-            if (new Date().after(current)) {
+            AuthInfo authInfo = AuthHelper.getInfoFromToken(token, authClientConfig.getPubKeyByte());
+            LocalDateTime expireTime = authInfo.getExpireTime();
+            if (Duration.between(expireTime, LocalDateTime.now()).toMillis() > 0) {
                 throw new ClientTokenException("客户端 token过期！");
             }
-            return infoFromToken;
+            // 获取 jwt基本信息
+            String id = authInfo.getId();
+            // 获取所有允许的 client
+            List<String> allowedClient = authClientFeign.getAllowedClient(clientId).getResult();
+            if (!allowedClient.isEmpty()) {
+                for(String client: allowedClient){
+                    if(client.equals(id)){
+                        return authInfo;
+                    }
+                }
+            }
+
+            throw new ClientInvalidException("该客户端不被允许");
         } catch (ExpiredJwtException ex) {
             throw new ClientTokenException("客户端 token过期！");
         } catch (SignatureException ex) {
@@ -64,17 +80,17 @@ public class AuthClientUtil {
      */
     @Scheduled(cron = "0 0/10 * * * ?")
     public void refreshClientToken() {
-        log.debug("刷新客户端 token.....");
-        Result<String> accessToken = authClientFeign.getAccessToken(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
+        log.info("刷新客户端 token.....");
+        Result<String> accessToken = authClientFeign.getToken(authClientConfig.getClientId(), authClientConfig.getClientSecret());
         if (accessToken.isSuccess()) {
             this.clientToken = accessToken.getResult();
         }
     }
 
     /**
-     * @description 获取客户端 token
-     * @author haifeng.lv
-     * @updateTime 2019/12/3 14:09
+     * @Description 获取客户端 token
+     * @Author haifeng.lv
+     * @Date 2019/12/21 17:40
      * @return: java.lang.String
      */
     public String getClientToken() {

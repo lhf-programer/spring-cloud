@@ -2,6 +2,7 @@ package com.lvhaifeng.cloud.auth.server.modules.user.exception;
  
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @Date 2019/12/20 9:50
  */
 @Component
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+public class AccessHandler implements AccessDeniedHandler {
 	@Autowired
 	private ObjectMapper objectMapper;
  
@@ -34,7 +35,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		map.put("error", "403");
 		map.put("message", accessDeniedException.getMessage());
 		map.put("path", request.getServletPath());
-		map.put("timestamp", LocalDateTime.now());
+		map.put("timestamp", LocalDateTime.now().toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		response.getWriter().write(objectMapper.writeValueAsString(map));

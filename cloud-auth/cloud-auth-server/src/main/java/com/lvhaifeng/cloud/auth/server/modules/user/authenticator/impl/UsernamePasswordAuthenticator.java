@@ -2,13 +2,11 @@ package com.lvhaifeng.cloud.auth.server.modules.user.authenticator.impl;
 
 import com.lvhaifeng.cloud.auth.server.configuration.ClientConfiguration;
 import com.lvhaifeng.cloud.auth.server.feign.IUserFeign;
-import com.lvhaifeng.cloud.auth.server.jwt.client.ClientTokenHelper;
-import com.lvhaifeng.cloud.auth.server.modules.client.service.IAuthClientService;
+import com.lvhaifeng.cloud.auth.server.auth.client.ClientTokenHelper;
 import com.lvhaifeng.cloud.auth.server.modules.user.authenticator.AbstractPrepareIntegrationAuthenticator;
 import com.lvhaifeng.cloud.auth.server.modules.user.vo.OauthUser;
 import com.lvhaifeng.cloud.auth.server.modules.user.entity.IntegrationAuthentication;
 import com.lvhaifeng.cloud.common.exception.auth.ClientInvalidException;
-import com.lvhaifeng.cloud.common.jwt.IJWTInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +36,6 @@ public class UsernamePasswordAuthenticator extends AbstractPrepareIntegrationAut
     private ClientTokenHelper clientTokenHelper;
     @Autowired
     private ClientConfiguration clientConfiguration;
-
     @Autowired
     private IUserFeign iUserFeign;
 

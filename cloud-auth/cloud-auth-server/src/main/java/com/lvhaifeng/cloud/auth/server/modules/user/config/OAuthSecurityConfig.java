@@ -1,19 +1,19 @@
 package com.lvhaifeng.cloud.auth.server.modules.user.config;
 
 import com.lvhaifeng.cloud.auth.server.configuration.KeyConfiguration;
+import com.lvhaifeng.cloud.auth.server.configuration.UserConfiguration;
 import com.lvhaifeng.cloud.auth.server.constant.RedisKeyConstant;
 import com.lvhaifeng.cloud.auth.server.encoder.Sha256PasswordEncoder;
-import com.lvhaifeng.cloud.auth.server.jwt.user.UserTokenHelper;
 import com.lvhaifeng.cloud.auth.server.modules.user.exception.AuthExceptionEntryPoint;
 import com.lvhaifeng.cloud.auth.server.modules.user.vo.OauthUser;
 import com.lvhaifeng.cloud.auth.server.modules.user.filter.IntegrationAuthenticationFilter;
 import com.lvhaifeng.cloud.auth.server.modules.user.service.IntegrationUserDetailsService;
-import com.lvhaifeng.cloud.common.constant.CommonKeyConstants;
+import com.lvhaifeng.cloud.common.constant.JwtKeyConstants;
 import com.lvhaifeng.cloud.common.util.AesUtils;
 import com.lvhaifeng.cloud.common.util.EncoderUtils;
+import com.lvhaifeng.cloud.common.util.LocalDateTimeUtils;
 import com.lvhaifeng.cloud.common.util.RsaKeyUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -38,14 +38,12 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,15 +62,15 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
     @Autowired
-    private UserTokenHelper jwtTokenUtil;
-    @Autowired
     private KeyConfiguration keyConfiguration;
     @Autowired
     private RedisConnectionFactory redisConnectionFactory;
     @Autowired
     private IntegrationAuthenticationFilter integrationAuthenticationFilter;
     @Autowired
-    private WebResponseExceptionTranslator customWebResponseExceptionTranslator;
+    private WebResponseExceptionTranslator webResponseExceptionTranslator;
+    @Autowired
+    private UserConfiguration userConfiguration;
 
     /**
      * 加密用的Key 可以用26个字母和数字组成 此处使用AES-128-CBC加密模式，key需要为16位。
@@ -106,7 +104,7 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
         endpoints.authenticationManager(authenticationManager)
                 .tokenStore(redisTokenStore()).accessTokenConverter(accessTokenConverter());
         // 错误异常
-        endpoints.exceptionTranslator(customWebResponseExceptionTranslator);
+        endpoints.exceptionTranslator(webResponseExceptionTranslator);
     }
 
     @Override
@@ -142,7 +140,7 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
     }
 
     @Bean
-    public JwtAccessTokenConverter accessTokenConverter() throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public JwtAccessTokenConverter accessTokenConverter() throws InvalidKeySpecException, NoSuchAlgorithmException {
         byte[] pri, pub;
         try {
             pri = EncoderUtils.toBytes(AesUtils.decrypt(redisTemplate.opsForValue().get(RedisKeyConstant.REDIS_USER_PRI_KEY), sKey, ivParameter));
@@ -160,13 +158,16 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
              */
             @Override
             public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-                OauthUser user = (OauthUser) authentication.getUserAuthentication().getPrincipal();// 与登录时候放进去的UserDetail实现类一直查看link{SecurityConfiguration}
+                // 与登录时候放进去的UserDetail实现类一直查看link{SecurityConfiguration}
+                OauthUser user = (OauthUser) authentication.getUserAuthentication().getPrincipal();
+                LocalDateTime localDateTime = LocalDateTime.now().plusSeconds(userConfiguration.getUserExpire());
+                // 设置过期时间
+                ((DefaultOAuth2AccessToken) accessToken).setExpiration(LocalDateTimeUtils.localDateTimeToDate(localDateTime));
                 /** 自定义一些token属性 ***/
-                final Map<String, Object> additionalInformation = new HashMap<>();
-                Date expireTime = DateTime.now().plusSeconds(jwtTokenUtil.getExpire()).toDate();
-                additionalInformation.put(CommonKeyConstants.JWT_KEY_EXPIRE, expireTime);
-                additionalInformation.put(CommonKeyConstants.JWT_KEY_USER_ID, user.getId());
-                additionalInformation.put(CommonKeyConstants.JWT_KEY_USER_NAME, user.getUsername());
+                final Map<String, Object> additionalInformation = new HashMap<>(3);
+                additionalInformation.put(JwtKeyConstants.JWT_KEY_EXPIRE, localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
+                additionalInformation.put(JwtKeyConstants.JWT_KEY_ID, user.getId());
+                additionalInformation.put(JwtKeyConstants.JWT_KEY_NAME, user.getUsername());
                 ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInformation);
                 OAuth2AccessToken enhancedToken = super.enhance(accessToken, authentication);
 
@@ -175,8 +176,8 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
 
         };
 
-        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(pri));
-        RSAPublicKey rsaPublicKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(pub));
+        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) RsaKeyUtils.getPrivateKey(pri);
+        RSAPublicKey rsaPublicKey = (RSAPublicKey) RsaKeyUtils.getPublicKey(pub);
         accessTokenConverter.setKeyPair(new KeyPair(rsaPublicKey, rsaPrivateKey));
         return accessTokenConverter;
     }

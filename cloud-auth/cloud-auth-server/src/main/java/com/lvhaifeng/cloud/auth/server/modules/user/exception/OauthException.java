@@ -8,9 +8,9 @@ import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
  * @Author haifeng.lv
  * @Date 2019/12/20 9:52
  */
-@JsonSerialize(using = CustomOauthExceptionSerializer.class)
-public class CustomOauthException extends OAuth2Exception {
-    public CustomOauthException(String msg) {
+@JsonSerialize(using = OauthExceptionSerializer.class)
+public class OauthException extends OAuth2Exception {
+    public OauthException(String msg) {
         super(msg);
     }
 }

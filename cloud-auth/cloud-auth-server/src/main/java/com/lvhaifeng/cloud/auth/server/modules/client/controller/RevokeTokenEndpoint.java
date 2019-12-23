@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.auth.server.modules.client.controller;
 
-import com.lvhaifeng.cloud.auth.server.modules.client.service.IAuthClientService;
 import com.lvhaifeng.cloud.common.constant.RequestHeaderConstants;
 import com.lvhaifeng.cloud.common.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +22,16 @@ public class RevokeTokenEndpoint {
 
     @Autowired
     @Qualifier("consumerTokenServices")
-    ConsumerTokenServices consumerTokenServices;
-    @Autowired
-    private IAuthClientService authClientService;
+    private ConsumerTokenServices consumerTokenServices;
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/oauth/token")
     @ResponseBody
-    public Result<Boolean> revokeToken(String access_token) throws Exception {
+    public Result<Boolean> revokeToken(String access_token) {
         Result<Boolean> result = new Result<>();
 
         // 截取 token
         String realToken = getRealToken(access_token);
         if (consumerTokenServices.revokeToken(realToken)) {
-            authClientService.invalid(realToken);
             result.setResult(true);
             return result;
         } else {

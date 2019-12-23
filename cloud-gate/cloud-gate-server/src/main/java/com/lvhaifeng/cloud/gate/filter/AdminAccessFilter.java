@@ -1,7 +1,7 @@
 package com.lvhaifeng.cloud.gate.filter;
 
 import com.lvhaifeng.cloud.auth.client.config.AuthClientConfig;
-import com.lvhaifeng.cloud.auth.client.jwt.AuthClientUtil;
+import com.lvhaifeng.cloud.auth.client.service.AuthClientService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,9 @@ public class AdminAccessFilter extends ZuulFilter {
     @Value("${zuul.prefix}")
     private String zuulPrefix;
     @Autowired
-    private AuthClientConfig serviceAuthConfig;
+    private AuthClientConfig authClientConfig;
     @Autowired
-    private AuthClientUtil serviceAuthUtil;
+    private AuthClientService authClientService;
 
     @Override
     public String filterType() {
@@ -52,7 +52,7 @@ public class AdminAccessFilter extends ZuulFilter {
         // 不进行拦截的请求
         if (!HttpMethod.OPTIONS.matches(method)) {
             // 申请客户端密钥头
-            ctx.addZuulRequestHeader(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken());
+            ctx.addZuulRequestHeader(authClientConfig.getTokenHeader(), authClientService.getClientToken());
         }
 
         return null;

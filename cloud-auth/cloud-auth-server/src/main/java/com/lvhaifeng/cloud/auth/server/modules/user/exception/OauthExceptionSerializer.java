@@ -9,7 +9,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.ZoneOffset;
 import java.util.Map;
  
 /**
@@ -17,21 +17,21 @@ import java.util.Map;
  * @Author haifeng.lv
  * @Date 2019/12/20 9:52
  */
-public class CustomOauthExceptionSerializer extends StdSerializer<CustomOauthException> {
+public class OauthExceptionSerializer extends StdSerializer<OauthException> {
 	private static final long serialVersionUID = 1478842053473472921L;
  
-	public CustomOauthExceptionSerializer() {
-        super(CustomOauthException.class);
+	public OauthExceptionSerializer() {
+        super(OauthException.class);
     }
     @Override
-    public void serialize(CustomOauthException value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(OauthException value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         gen.writeStartObject();
         gen.writeStringField("error", String.valueOf(value.getHttpErrorCode()));
         gen.writeStringField("message", value.getMessage());
         gen.writeStringField("path", request.getServletPath());
-        gen.writeStringField("timestamp", LocalDateTime.now().toString());
+        gen.writeStringField("timestamp", String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.ofHours(8)).toEpochMilli()));
         if (value.getAdditionalInformation()!=null) {
         for (Map.Entry<String, String> entry :
             value.getAdditionalInformation().entrySet()) {

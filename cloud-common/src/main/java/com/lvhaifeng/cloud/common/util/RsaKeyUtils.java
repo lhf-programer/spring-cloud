@@ -34,7 +34,7 @@ public class RsaKeyUtils {
      * @Date 2019/12/16 17:48
      * @return: java.security.PrivateKey
      */
-    public static PrivateKey getPrivateKey(byte[] privateKey) throws Exception {
+    public static PrivateKey getPrivateKey(byte[] privateKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privateKey);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePrivate(spec);

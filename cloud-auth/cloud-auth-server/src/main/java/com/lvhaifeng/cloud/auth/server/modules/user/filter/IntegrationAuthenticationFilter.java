@@ -4,6 +4,7 @@ import com.lvhaifeng.cloud.auth.server.modules.user.authenticator.IntegrationAut
 import com.lvhaifeng.cloud.auth.server.modules.user.entity.IntegrationAuthentication;
 import com.lvhaifeng.cloud.auth.server.modules.user.entity.IntegrationAuthenticationContext;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;

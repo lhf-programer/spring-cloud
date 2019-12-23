@@ -11,8 +11,7 @@ import java.util.List;
  * @Date: 2019-12-05
  */
 public interface IAuthClientService extends IService<AuthClient> {
-    String apply(String clientId, String secret) throws Exception;
-    List<String> getAllowedClient(String clientId);
+    String getToken(String clientId, String secret) throws Exception;
+    List<String> findAllowedClient(String clientId);
     void validate(String clientId, String secret) throws Exception;
-    Boolean invalid(String token) throws Exception;
 }
