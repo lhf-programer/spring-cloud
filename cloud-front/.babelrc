@@ -1,0 +1,9 @@
+// 开启es6 语法
+{
+  "presets": [
+    ["env", { "modules": false }],
+    "stage-2"
+  ],
+  "plugins": ["transform-runtime"],
+  "comments": false
+}
