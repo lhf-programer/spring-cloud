@@ -25,7 +25,7 @@ const userMap = {
 }
 
 export default {
-  loginByEmail: config => {
+  login: config => {
     const { email } = JSON.parse(config.body);
     return userMap[email.split('@')[0]];
   },

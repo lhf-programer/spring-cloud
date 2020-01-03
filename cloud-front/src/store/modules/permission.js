@@ -2,7 +2,7 @@ import {
   asyncRouterMap,
   constantRouterMap
 } from 'src/router'
-import { getAllMenus } from 'api/login';
+// import { getAllMenus } from 'api/login';
 /**
  * 通过authority判断是否与当前用户权限匹配
  * @param menus
@@ -56,16 +56,16 @@ const permission = {
       commit
     }, menus) {
       return new Promise(resolve => {
-        getAllMenus().then(data => {
-          const menuDatas = {};
-          for (let i = 0; i < data.length; i++) {
-            menuDatas[data[i].code] = data[i];
-          }
-          const accessedRouters = filterAsyncRouter(asyncRouterMap, menus, menuDatas);
-          console.log(accessedRouters);
-          commit('SET_ROUTERS', accessedRouters);
-          resolve();
-        });
+        // getAllMenus().then(data => {
+        //   const menuDatas = {};
+        //   for (let i = 0; i < data.length; i++) {
+        //     menuDatas[data[i].code] = data[i];
+        //   }
+        //   const accessedRouters = filterAsyncRouter(asyncRouterMap, menus, menuDatas);
+        //   console.log(accessedRouters);
+        //   commit('SET_ROUTERS', accessedRouters);
+        //   resolve();
+        // });
       })
     }
   }

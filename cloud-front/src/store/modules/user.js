@@ -1,9 +1,10 @@
 import {
-  loginByEmail,
-  logout,
-  getInfo,
-  getMenus
+  login,
+  logout
 } from 'api/login';
+import {
+  getUserList
+} from 'api/admin';
 import {
   getToken,
   setToken,
@@ -70,8 +71,8 @@ const user = {
   },
 
   actions: {
-    // 邮箱登录
-    LoginByEmail({
+    // 登录
+    login({
       commit
     }, userInfo) {
       const username = userInfo.username.trim();
@@ -81,9 +82,17 @@ const user = {
       commit('SET_ELEMENTS', undefined);
       removeToken();
       return new Promise((resolve, reject) => {
-        loginByEmail(username, userInfo.password).then(response => {
-          setToken(response.data);
-          commit('SET_TOKEN', response.data);
+        let param = {
+          username: username,
+          password: userInfo.password,
+          grant_type: "password"
+        }
+        login(param).then(response => {
+          setToken(response.access_token);
+          commit('SET_TOKEN', response.access_token);
+          commit('SET_ROLES', 'admin');
+          commit('SET_NAME', response.name);
+          commit('SET_AVATAR', 'http://git.oschina.net/uploads/42/547642_geek_qi.png?1499487420');
           resolve();
         }).catch(error => {
           reject(error);
@@ -97,30 +106,31 @@ const user = {
       state
     }) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
+        getUserList(state.token).then(response => {
           const data = response;
+          console.info(data)
           commit('SET_ROLES', 'admin');
           commit('SET_NAME', data.name);
           commit('SET_AVATAR', 'http://git.oschina.net/uploads/42/547642_geek_qi.png?1499487420');
-          commit('SET_INTRODUCTION', data.description);
-          const menus = {};
-          for (let i = 0; i < data.menus.length; i++) {
-            menus[data.menus[i].code] = true;
-          }
-          commit('SET_MENUS', menus);
-          const elements = {};
-          for (let i = 0; i < data.elements.length; i++) {
-            elements[data.elements[i].code] = true;
-          }
-          commit('SET_ELEMENTS', elements);
+          // commit('SET_INTRODUCTION', data.description);
+          // const menus = {};
+          // for (let i = 0; i < data.menus.length; i++) {
+          //   menus[data.menus[i].code] = true;
+          // }
+          // commit('SET_MENUS', menus);
+          // const elements = {};
+          // for (let i = 0; i < data.elements.length; i++) {
+          //   elements[data.elements[i].code] = true;
+          // }
+          // commit('SET_ELEMENTS', elements);
           resolve(response);
         }).catch(error => {
           reject(error);
         });
-        getMenus(state.token).then(response => {
-          console.log(response)
-          commit('SET_PERMISSION_MENUS', response);
-        });
+        // getMenus(state.token).then(response => {
+        //   console.log(response)
+        //   commit('SET_PERMISSION_MENUS', response);
+        // });
       });
     },
 

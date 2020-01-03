@@ -74,37 +74,37 @@ export const asyncRouterMap = [{
   name: '基础配置管理',
   icon: 'setting',
   authority: 'baseManager',
-  children: [{
-    path: 'userManager',
-    icon: 'fa-user',
-    component: _import('admin/user/index'),
-    name: '用户管理',
-    authority: 'userManager'
-  }, {
-    path: 'menuManager',
-    icon: 'category',
-    component: _import('admin/menu/index'),
-    name: '菜单管理',
-    authority: 'menuManager'
-  }, {
-    path: 'groupManager',
-    icon: 'group_fill',
-    component: _import('admin/group/index'),
-    name: '角色权限管理',
-    authority: 'groupManager'
-  }, {
-    path: 'groupTypeManager',
-    icon: 'fa-users',
-    component: _import('admin/groupType/index'),
-    name: '角色类型管理',
-    authority: 'groupTypeManager'
-  }, {
-    path: 'gateLogManager',
-    icon: 'viewlist',
-    component: _import('admin/gateLog/index'),
-    name: '操作日志管理',
-    authority: 'gateLogManager'
-  }]
+  // children: [{
+  //   path: 'userManager',
+  //   icon: 'fa-user',
+  //   component: _import('admin/user/index'),
+  //   name: '用户管理',
+  //   authority: 'userManager'
+  // }, {
+  //   path: 'menuManager',
+  //   icon: 'category',
+  //   component: _import('admin/menu/index'),
+  //   name: '菜单管理',
+  //   authority: 'menuManager'
+  // }, {
+  //   path: 'groupManager',
+  //   icon: 'group_fill',
+  //   component: _import('admin/group/index'),
+  //   name: '角色权限管理',
+  //   authority: 'groupManager'
+  // }, {
+  //   path: 'groupTypeManager',
+  //   icon: 'fa-users',
+  //   component: _import('admin/groupType/index'),
+  //   name: '角色类型管理',
+  //   authority: 'groupTypeManager'
+  // }, {
+  //   path: 'gateLogManager',
+  //   icon: 'viewlist',
+  //   component: _import('admin/gateLog/index'),
+  //   name: '操作日志管理',
+  //   authority: 'gateLogManager'
+  // }]
 },
 {
   path: '/authManager',
@@ -112,12 +112,12 @@ export const asyncRouterMap = [{
   name: '基础配置管理',
   icon: 'setting',
   authority: 'authManager',
-  children: [{
-    path: 'serviceManager',
-    component: _import('auth/service/index'),
-    name: '用户管理',
-    authority: 'serviceManager'
-  }]
+  // children: [{
+  //   path: 'serviceManager',
+  //   component: _import('auth/service/index'),
+  //   name: '用户管理',
+  //   authority: 'serviceManager'
+  // }]
 },
 {
   path: '/monitorManager',
@@ -125,20 +125,20 @@ export const asyncRouterMap = [{
   name: '监控模块管理',
   icon: 'setting',
   authority: 'monitorManager',
-  children: [{
-    path: 'serviceEurekaManager',
-    component: _import('monitor/eureka/index'),
-    name: 'Eureka注册中心',
-    authority: 'serviceEurekaManager'
-  }, {
-    path: 'serviceMonitorManager',
-    component: _import('monitor/service/index'),
-    name: '服务状态监控',
-    authority: 'serviceMonitorManager'
-  }, {
-    path: 'serviceZipkinManager',
-    component: _import('monitor/zipkin/index'),
-    name: '服务状态监控',
-    authority: 'serviceZipkinManager'
-  }]
+  // children: [{
+  //   path: 'serviceEurekaManager',
+  //   component: _import('monitor/eureka/index'),
+  //   name: 'Eureka注册中心',
+  //   authority: 'serviceEurekaManager'
+  // }, {
+  //   path: 'serviceMonitorManager',
+  //   component: _import('monitor/service/index'),
+  //   name: '服务状态监控',
+  //   authority: 'serviceMonitorManager'
+  // }, {
+  //   path: 'serviceZipkinManager',
+  //   component: _import('monitor/zipkin/index'),
+  //   name: '服务状态监控',
+  //   authority: 'serviceZipkinManager'
+  // }]
 }];

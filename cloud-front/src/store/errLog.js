@@ -1,3 +1,4 @@
+// 生产错误日志
 const errLog = {
   state: {
     errLog: []

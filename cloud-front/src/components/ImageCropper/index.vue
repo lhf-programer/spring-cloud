@@ -105,7 +105,7 @@
 <script>
     /* eslint-disable */
     import {effectRipple, data2blob} from './utils';
-    import fetch from 'utils/fetch';
+    // import fetch from 'utils/fetch';
     import langBag from './lang';
     const mimes = {
         'jpg': 'image/jpeg',
@@ -672,21 +672,21 @@
             that.loading = 1;
             that.setStep(3);
             that.$emit('crop-success', createImgUrl, field, ki);
-            fetch({
-                url,
-                method: 'post',
-                data: fmData
-            }).then(resData=>{
-                that.loading = 2;
-                that.$emit('crop-upload-success', resData.data);
-            }).catch(err=>{
-                if (that.value) {
-                        that.loading = 3;
-                        that.hasError = true;
-                        that.errorMsg = lang.fail;
-                        that.$emit('crop-upload-fail', err, field, ki);
-                    }
-            });
+            // fetch({
+            //     url,
+            //     method: 'post',
+            //     data: fmData
+            // }).then(resData=>{
+            //     that.loading = 2;
+            //     that.$emit('crop-upload-success', resData.data);
+            // }).catch(err=>{
+            //     if (that.value) {
+            //             that.loading = 3;
+            //             that.hasError = true;
+            //             that.errorMsg = lang.fail;
+            //             that.$emit('crop-upload-fail', err, field, ki);
+            //         }
+            // });
             }
         }
     }

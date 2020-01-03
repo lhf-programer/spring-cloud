@@ -1,5 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import App from './App';
 import router from './router';
@@ -20,21 +18,21 @@ import vueWaves from './directive/waves';// 水波纹指令
 import errLog from 'store/errLog';// error log组件
 import './mock/index.js';  // 该项目所有请求使用mockjs模拟
 import { getToken } from 'utils/auth';
-import 'babel-polyfill';//支持IE执行原生script
+import 'babel-polyfill';// 支持IE执行原生script
 
-// register globally
+// 全局配置器
 Vue.component('multiselect', Multiselect);
 Vue.component('Sticky', Sticky);
 Vue.component('icon-svg', IconSvg)
 Vue.use(ElementUI);
 Vue.use(vueWaves);
 
-// register global utility filters.
+// 过滤器
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 });
 
-// register global progress.
+// 全局路由
 const whiteList = ['/login', '/authredirect'];// 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start(); // 开启Progress
@@ -43,20 +41,22 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' });
     } else {
       if (store.getters.menus === undefined) { // 判断当前用户是否已拉取完user_info信息
-        store.dispatch('GetInfo').then(info => { // 拉取user_info
-          const menus = {};
-          for (let i = 0; i < info.menus.length; i++) {
-            menus[info.menus[i].code] = true;
-          }
-          store.dispatch('GenerateRoutes', menus).then(() => { // 生成可访问的路由表
-            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-            next({ ...to }); // hack方法 确保addRoutes已完成
-          })
-        }).catch(() => {
-          store.dispatch('FedLogOut').then(() => {
-            next({ path: '/login' });
-          })
-        })
+        // store.dispatch('GetInfo').then(info => { // 拉取user_info
+        //   const menus = {};
+        //   for (let i = 0; i < info.menus.length; i++) {
+        //     menus[info.menus[i].code] = true;
+        //   }
+        //   store.dispatch('GenerateRoutes', menus).then(() => { // 生成可访问的路由表
+        //     router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+        //     next({ ...to }); // hack方法 确保addRoutes已完成
+        //   })
+        // }).catch(() => {
+        //   store.dispatch('FedLogOut').then(() => {
+        //     next({ path: '/login' });
+        //   })
+        // })
+
+        next();
       } else {
         next();
       }
