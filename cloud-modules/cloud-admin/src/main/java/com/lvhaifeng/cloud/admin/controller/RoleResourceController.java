@@ -5,9 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.RoleResource;
 import com.lvhaifeng.cloud.admin.service.IRoleResourceService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 角色资源
  * @Author: haifeng.lv
- * @Date: 2020-01-06 11:33
+ * @Date: 2020-01-06 14:26
  */
 @Slf4j
 @Api(tags="角色资源")
@@ -32,7 +30,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 public class RoleResourceController {
 	@Autowired
 	private IRoleResourceService roleResourceService;
-	
+
 	/**
 	 * 分页列表查询
 	 * @param roleResource
@@ -47,15 +45,13 @@ public class RoleResourceController {
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		Result<IPage<RoleResource>> result = new Result<>();
-		QueryWrapper<RoleResource> queryWrapper = new QueryWrapper<>();
-		Page<RoleResource> page = new Page<>(pageNo, pageSize);
-		IPage<RoleResource> pageList = roleResourceService.page(page, queryWrapper);
+        Result<IPage<RoleResource>> result = new Result<>();
+		IPage<RoleResource> pageList = roleResourceService.pageRoleResourceList(roleResource, pageNo, pageSize);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-	
+
 	/**
 	 * 添加
 	 * @param roleResource
@@ -66,15 +62,16 @@ public class RoleResourceController {
 	public Result<RoleResource> add(@RequestBody RoleResource roleResource) {
 		Result<RoleResource> result = new Result<>();
 		try {
-			roleResourceService.save(roleResource);
+			roleResourceService.saveRoleResource(roleResource);
 			result.success("添加成功！");
 		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+            e.printStackTrace();
+			log.error(e.getMessage(), e);
 			result.error500("操作失败");
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 编辑
 	 * @param roleResource
@@ -85,16 +82,17 @@ public class RoleResourceController {
 	public Result<RoleResource> edit(@RequestBody RoleResource roleResource) {
 		Result<RoleResource> result = new Result<>();
 		try {
-            roleResourceService.updateById(roleResource);
+            roleResourceService.updateByRoleResourceId(roleResource);
             result.success("编辑成功！");
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            e.printStackTrace();
+            log.error(e.getMessage(), e);
             result.error500("操作失败");
         }
 
 		return result;
 	}
-	
+
 	/**
 	 * 通过id删除
 	 * @param id
@@ -104,14 +102,15 @@ public class RoleResourceController {
 	@DeleteMapping(value = "/delete")
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		try {
-			roleResourceService.removeById(id);
+			roleResourceService.removeByRoleResourceId(id);
 		} catch (Exception e) {
-			log.error("删除失败",e.getMessage());
+		    e.printStackTrace();
+			log.error("删除失败", e.getMessage());
 			return Result.error("删除失败!");
 		}
 		return Result.ok("删除成功!");
 	}
-	
+
 	/**
 	 * 批量删除
 	 * @param ids
@@ -121,14 +120,15 @@ public class RoleResourceController {
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
         try {
-            roleResourceService.removeByIds(ids);
+            roleResourceService.removeByRoleResourceIds(ids);
         } catch (Exception e) {
-            log.error("删除失败",e.getMessage());
+            e.printStackTrace();
+            log.error("删除失败", e.getMessage());
             return Result.error("删除失败!");
         }
 		return Result.ok("删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 * @param id
@@ -138,7 +138,7 @@ public class RoleResourceController {
 	@GetMapping(value = "/queryById")
 	public Result<RoleResource> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<RoleResource> result = new Result<>();
-		RoleResource roleResource = roleResourceService.getById(id);
+		RoleResource roleResource = roleResourceService.getByRoleResourceId(id);
         result.setResult(roleResource);
         result.setSuccess(true);
 		return result;

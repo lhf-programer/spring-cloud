@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 /**
  * @Description: 用户角色
  * @Author: haifeng.lv
- * @Date: 2020-01-06 11:34
+ * @Date: 2020-01-06 14:27
  */
 @Data
 @TableName("user_role")

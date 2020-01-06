@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import java.io.Serializable;
@@ -24,14 +27,23 @@ import java.util.Collection;
 public class ${entityName}ServiceImpl extends ServiceImpl<${entityName}Mapper, ${entityName}> implements I${entityName}Service {
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean save(${entityName} ${entityName?uncap_first}) {
+    public IPage<${entityName}> page${entityName}List(${entityName} ${entityName?uncap_first}, Integer pageNo, Integer pageSize) {
+        QueryWrapper<${entityName}> queryWrapper = new QueryWrapper<>();
+        Page<${entityName}> page = new Page<>(pageNo, pageSize);
+        IPage<${entityName}> pageList = baseMapper.selectPage(page, queryWrapper);
+        return pageList;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean save${entityName}(${entityName} ${entityName?uncap_first}) {
         EntityUtils.setDefaultValue(${entityName?uncap_first});
         return super.save(${entityName?uncap_first});
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateById(${entityName} ${entityName?uncap_first}) {
+    public boolean updateBy${entityName}Id(${entityName} ${entityName?uncap_first}) {
         ${entityName} ${entityName?uncap_first}Entity = baseMapper.selectById(${entityName?uncap_first}.getId());
         if(${entityName?uncap_first}Entity == null) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
@@ -44,13 +56,13 @@ public class ${entityName}ServiceImpl extends ServiceImpl<${entityName}Mapper, $
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeById(Serializable id) {
+    public boolean removeBy${entityName}Id(Serializable id) {
         return super.removeById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeByIds(Collection<? extends Serializable> ids) {
+    public boolean removeBy${entityName}Ids(Collection<? extends Serializable> ids) {
         if(ids.isEmpty()) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         }else {
@@ -59,7 +71,7 @@ public class ${entityName}ServiceImpl extends ServiceImpl<${entityName}Mapper, $
     }
 
     @Override
-    public ${entityName} getById(Serializable id) {
+    public ${entityName} getBy${entityName}Id(Serializable id) {
         ${entityName} ${entityName?uncap_first} = super.getById(id);
         if (null == ${entityName?uncap_first}) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);

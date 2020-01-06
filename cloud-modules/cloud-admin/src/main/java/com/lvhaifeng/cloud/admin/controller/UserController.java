@@ -3,15 +3,14 @@ package com.lvhaifeng.cloud.admin.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lvhaifeng.cloud.api.vo.system.AuthUser;
 import com.lvhaifeng.cloud.auth.client.annotation.IgnoreClientToken;
 import com.lvhaifeng.cloud.auth.user.annotation.IgnoreUserToken;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.User;
 import com.lvhaifeng.cloud.admin.service.IUserService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2020-01-06 11:34
+ * @Date: 2020-01-06 14:25
  */
 @Slf4j
 @Api(tags="用户")
@@ -66,7 +65,7 @@ public class UserController {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 分页列表查询
 	 * @param user
@@ -81,15 +80,13 @@ public class UserController {
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		Result<IPage<User>> result = new Result<>();
-		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-		Page<User> page = new Page<>(pageNo, pageSize);
-		IPage<User> pageList = userService.page(page, queryWrapper);
+        Result<IPage<User>> result = new Result<>();
+		IPage<User> pageList = userService.pageUserList(user, pageNo, pageSize);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-	
+
 	/**
 	 * 添加
 	 * @param user
@@ -100,15 +97,16 @@ public class UserController {
 	public Result<User> add(@RequestBody User user) {
 		Result<User> result = new Result<>();
 		try {
-			userService.save(user);
+			userService.saveUser(user);
 			result.success("添加成功！");
 		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+            e.printStackTrace();
+			log.error(e.getMessage(), e);
 			result.error500("操作失败");
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 编辑
 	 * @param user
@@ -119,16 +117,17 @@ public class UserController {
 	public Result<User> edit(@RequestBody User user) {
 		Result<User> result = new Result<>();
 		try {
-            userService.updateById(user);
+            userService.updateByUserId(user);
             result.success("编辑成功！");
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            e.printStackTrace();
+            log.error(e.getMessage(), e);
             result.error500("操作失败");
         }
 
 		return result;
 	}
-	
+
 	/**
 	 * 通过id删除
 	 * @param id
@@ -138,14 +137,15 @@ public class UserController {
 	@DeleteMapping(value = "/delete")
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		try {
-			userService.removeById(id);
+			userService.removeByUserId(id);
 		} catch (Exception e) {
-			log.error("删除失败",e.getMessage());
+		    e.printStackTrace();
+			log.error("删除失败", e.getMessage());
 			return Result.error("删除失败!");
 		}
 		return Result.ok("删除成功!");
 	}
-	
+
 	/**
 	 * 批量删除
 	 * @param ids
@@ -155,14 +155,15 @@ public class UserController {
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
         try {
-            userService.removeByIds(ids);
+            userService.removeByUserIds(ids);
         } catch (Exception e) {
-            log.error("删除失败",e.getMessage());
+            e.printStackTrace();
+            log.error("删除失败", e.getMessage());
             return Result.error("删除失败!");
         }
 		return Result.ok("删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 * @param id
@@ -172,7 +173,7 @@ public class UserController {
 	@GetMapping(value = "/queryById")
 	public Result<User> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<User> result = new Result<>();
-		User user = userService.getById(id);
+		User user = userService.getByUserId(id);
         result.setResult(user);
         result.setSuccess(true);
 		return result;

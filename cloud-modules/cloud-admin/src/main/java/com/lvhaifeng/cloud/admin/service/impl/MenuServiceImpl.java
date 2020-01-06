@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.admin.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lvhaifeng.cloud.admin.constant.ResourceTypeEnum;
 import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.lvhaifeng.cloud.admin.entity.RoleResource;
@@ -10,21 +9,23 @@ import com.lvhaifeng.cloud.admin.vo.request.MenuInfo;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @Description: 菜单
  * @Author: haifeng.lv
- * @Date: 2020-01-06 11:17
+ * @Date: 2020-01-06 14:22
  */
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
@@ -33,7 +34,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean save(MenuInfo menuInfo) {
+    public IPage<Menu> pageMenuList(Menu menu, Integer pageNo, Integer pageSize) {
+        QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
+        Page<Menu> page = new Page<>(pageNo, pageSize);
+        IPage<Menu> pageList = baseMapper.selectPage(page, queryWrapper);
+        return pageList;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean saveMenu(MenuInfo menuInfo) {
         Menu menu = new Menu();
         BeanUtils.copyProperties(menuInfo, menu);
         EntityUtils.setDefaultValue(menu);
@@ -56,7 +66,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateById(MenuInfo menuInfo) {
+    public boolean updateByMenuId(MenuInfo menuInfo) {
         Menu menuEntity = baseMapper.selectById(menuInfo.getId());
         if(menuEntity == null) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
@@ -69,7 +79,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeById(Serializable id) {
+    public boolean removeByMenuId(Serializable id) {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("resource_id", id);
         roleResourceService.remove(queryWrapper);
@@ -78,7 +88,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeByIds(Collection<? extends Serializable> ids) {
+    public boolean removeByMenuIds(Collection<? extends Serializable> ids) {
         if(ids.isEmpty()) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         }else {
@@ -90,7 +100,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     }
 
     @Override
-    public Menu getById(Serializable id) {
+    public Menu getByMenuId(Serializable id) {
         Menu menu = super.getById(id);
         if (null == menu) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);

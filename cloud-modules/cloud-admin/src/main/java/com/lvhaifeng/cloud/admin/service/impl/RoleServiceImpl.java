@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import java.io.Serializable;
@@ -18,20 +21,29 @@ import java.util.Collection;
 /**
  * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2020-01-06 11:33
+ * @Date: 2020-01-06 14:26
  */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean save(Role role) {
+    public IPage<Role> pageRoleList(Role role, Integer pageNo, Integer pageSize) {
+        QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
+        Page<Role> page = new Page<>(pageNo, pageSize);
+        IPage<Role> pageList = baseMapper.selectPage(page, queryWrapper);
+        return pageList;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean saveRole(Role role) {
         EntityUtils.setDefaultValue(role);
         return super.save(role);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateById(Role role) {
+    public boolean updateByRoleId(Role role) {
         Role roleEntity = baseMapper.selectById(role.getId());
         if(roleEntity == null) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
@@ -44,13 +56,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeById(Serializable id) {
+    public boolean removeByRoleId(Serializable id) {
         return super.removeById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeByIds(Collection<? extends Serializable> ids) {
+    public boolean removeByRoleIds(Collection<? extends Serializable> ids) {
         if(ids.isEmpty()) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         }else {
@@ -59,7 +71,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     }
 
     @Override
-    public Role getById(Serializable id) {
+    public Role getByRoleId(Serializable id) {
         Role role = super.getById(id);
         if (null == role) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
