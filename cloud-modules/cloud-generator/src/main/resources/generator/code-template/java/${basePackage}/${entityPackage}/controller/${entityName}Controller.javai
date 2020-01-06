@@ -1,6 +1,6 @@
 package ${basePackage}.${entityPackage}.controller;
 
-import java.util.Arrays;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
 import ${basePackage}.${entityPackage}.entity.${entityName};
@@ -61,13 +61,13 @@ public class ${entityName}Controller {
 									  HttpServletRequest req) {
 		Result<IPage<${entityName}>> result = new Result<>();
 		QueryWrapper<${entityName}> queryWrapper = new QueryWrapper<>();
-		Page<${entityName}> page = new Page<${entityName}>(pageNo, pageSize);
+		Page<${entityName}> page = new Page<>(pageNo, pageSize);
 		IPage<${entityName}> pageList = ${entityName?uncap_first}Service.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-
+	
 	/**
 	 * 添加
 	 * @param ${entityName?uncap_first}
@@ -86,7 +86,7 @@ public class ${entityName}Controller {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 编辑
 	 * @param ${entityName?uncap_first}
@@ -96,19 +96,17 @@ public class ${entityName}Controller {
 	@PutMapping(value = "/edit")
 	public Result<${entityName}> edit(@RequestBody ${entityName} ${entityName?uncap_first}) {
 		Result<${entityName}> result = new Result<>();
-		${entityName} ${entityName?uncap_first}Entity = ${entityName?uncap_first}Service.getById(${entityName?uncap_first}.getId());
-		if(${entityName?uncap_first}Entity==null) {
-			result.error500("未找到对应实体");
-		}else {
-			boolean ok = ${entityName?uncap_first}Service.updateById(${entityName?uncap_first});
-			if(ok) {
-				result.success("修改成功!");
-			}
-		}
+		try {
+            ${entityName?uncap_first}Service.updateById(${entityName?uncap_first});
+            result.success("编辑成功！");
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            result.error500("操作失败");
+        }
 
 		return result;
 	}
-
+	
 	/**
 	 * 通过id删除
 	 * @param id
@@ -125,7 +123,7 @@ public class ${entityName}Controller {
 		}
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 批量删除
 	 * @param ids
@@ -133,17 +131,16 @@ public class ${entityName}Controller {
 	 */
 	@ApiOperation(value="${tableVo.ftlDescription}-批量删除", notes="${tableVo.ftlDescription}-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<${entityName}> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<${entityName}> result = new Result<>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
-		}else {
-			this.${entityName?uncap_first}Service.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
-		}
-		return result;
+	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+        try {
+            ${entityName?uncap_first}Service.removeByIds(ids);
+        } catch (Exception e) {
+            log.error("删除失败",e.getMessage());
+            return Result.error("删除失败!");
+        }
+		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 通过id查询
 	 * @param id
@@ -154,12 +151,8 @@ public class ${entityName}Controller {
 	public Result<${entityName}> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<${entityName}> result = new Result<>();
 		${entityName} ${entityName?uncap_first} = ${entityName?uncap_first}Service.getById(id);
-		if(${entityName?uncap_first}==null) {
-			result.error500("未找到对应实体");
-		}else {
-			result.setResult(${entityName?uncap_first});
-			result.setSuccess(true);
-		}
+        result.setResult(${entityName?uncap_first});
+        result.setSuccess(true);
 		return result;
 	}
 

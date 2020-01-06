@@ -1,6 +1,6 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import java.util.Arrays;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.lvhaifeng.cloud.admin.vo.request.MenuInfo;
@@ -23,7 +23,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 菜单
  * @Author: haifeng.lv
- * @Date: 2020-01-04 16:11
+ * @Date: 2020-01-06 11:17
  */
 @Slf4j
 @Api(tags="菜单")
@@ -51,13 +51,13 @@ public class MenuController {
 									  HttpServletRequest req) {
 		Result<IPage<Menu>> result = new Result<>();
 		QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
-		Page<Menu> page = new Page<Menu>(pageNo, pageSize);
+		Page<Menu> page = new Page<>(pageNo, pageSize);
 		IPage<Menu> pageList = menuService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-
+	
 	/**
 	 * 添加
 	 * @param menuInfo
@@ -76,7 +76,7 @@ public class MenuController {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 编辑
 	 * @param menuInfo
@@ -86,14 +86,17 @@ public class MenuController {
 	@PutMapping(value = "/edit")
 	public Result<Menu> edit(@RequestBody MenuInfo menuInfo) {
 		Result<Menu> result = new Result<>();
-		boolean ok = menuService.updateById(menuInfo);
-		if(ok) {
-			result.success("修改成功!");
-		}
+		try {
+            menuService.updateById(menuInfo);
+            result.success("编辑成功！");
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            result.error500("操作失败");
+        }
 
 		return result;
 	}
-
+	
 	/**
 	 * 通过id删除
 	 * @param id
@@ -105,12 +108,13 @@ public class MenuController {
 		try {
 			menuService.removeById(id);
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.error("删除失败",e.getMessage());
 			return Result.error("删除失败!");
 		}
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 批量删除
 	 * @param ids
@@ -118,17 +122,17 @@ public class MenuController {
 	 */
 	@ApiOperation(value="菜单-批量删除", notes="菜单-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<Menu> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<Menu> result = new Result<>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
-		}else {
-			this.menuService.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
-		}
-		return result;
+	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+        try {
+            menuService.removeByIds(ids);
+        } catch (Exception e) {
+        	e.printStackTrace();
+            log.error("删除失败",e.getMessage());
+            return Result.error("删除失败!");
+        }
+		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 通过id查询
 	 * @param id
@@ -139,12 +143,8 @@ public class MenuController {
 	public Result<Menu> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<Menu> result = new Result<>();
 		Menu menu = menuService.getById(id);
-		if(menu==null) {
-			result.error500("未找到对应实体");
-		}else {
-			result.setResult(menu);
-			result.setSuccess(true);
-		}
+        result.setResult(menu);
+        result.setSuccess(true);
 		return result;
 	}
 

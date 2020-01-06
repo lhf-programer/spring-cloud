@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 /**
  * @Description: 角色资源
  * @Author: haifeng.lv
- * @Date: 2020-01-04 16:12
+ * @Date: 2020-01-06 11:33
  */
 public interface RoleResourceMapper extends BaseMapper<RoleResource> {
 

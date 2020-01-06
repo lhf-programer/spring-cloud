@@ -1,6 +1,6 @@
 package com.lvhaifeng.cloud.admin.service.impl;
 
-import com.lvhaifeng.cloud.admin.constant.ErrCodeConstant;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lvhaifeng.cloud.admin.constant.ResourceTypeEnum;
 import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.lvhaifeng.cloud.admin.entity.RoleResource;
@@ -11,21 +11,24 @@ import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import javax.annotation.Resource;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @Description: 菜单
  * @Author: haifeng.lv
- * @Date: 2020-01-04 16:11
+ * @Date: 2020-01-06 11:17
  */
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
-    @Resource
+    @Autowired
     private RoleResourceServiceImpl roleResourceService;
 
     @Override
@@ -55,12 +58,44 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Transactional(rollbackFor = Exception.class)
     public boolean updateById(MenuInfo menuInfo) {
         Menu menuEntity = baseMapper.selectById(menuInfo.getId());
-        if(menuEntity==null) {
+        if(menuEntity == null) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         }else {
             BeanUtils.copyProperties(menuInfo, menuEntity);
         }
         EntityUtils.setDefaultValue(menuEntity);
         return super.updateById(menuEntity);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeById(Serializable id) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("resource_id", id);
+        roleResourceService.remove(queryWrapper);
+        return super.removeById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeByIds(Collection<? extends Serializable> ids) {
+        if(ids.isEmpty()) {
+            throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
+        }else {
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.in("resource_id", ids);
+            roleResourceService.remove(queryWrapper);
+            return super.removeByIds(ids);
+        }
+    }
+
+    @Override
+    public Menu getById(Serializable id) {
+        Menu menu = super.getById(id);
+        if (null == menu) {
+            throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
+        } else {
+            return menu;
+        }
     }
 }

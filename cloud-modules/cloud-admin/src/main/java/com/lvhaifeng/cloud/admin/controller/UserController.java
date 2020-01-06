@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,7 +25,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2019-12-19 10:35
+ * @Date: 2020-01-06 11:34
  */
 @Slf4j
 @Api(tags="用户")
@@ -39,12 +38,12 @@ public class UserController {
 	private IUserService userService;
 
 	/**
-	 * @Description 登入通过用户名获取用户信息
-	 * @Author haifeng.lv
-	 * @param: username
-	 * @Date 2019/12/16 16:43
-	 * @return: com.lvhaifeng.cloud.common.vo.Result<com.lvhaifeng.cloud.api.vo.system.AuthUser>
-	 */
+	* @Description 登入通过用户名获取用户信息
+	* @Author haifeng.lv
+	* @param: username
+	* @Date 2019/12/16 16:43
+	* @return: com.lvhaifeng.cloud.common.vo.Result<com.lvhaifeng.cloud.api.vo.system.AuthUser>
+	*/
 	@IgnoreClientToken
 	@IgnoreUserToken
 	@PostMapping("/getUserInfoByUsername")
@@ -67,7 +66,7 @@ public class UserController {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 分页列表查询
 	 * @param user
@@ -84,13 +83,13 @@ public class UserController {
 									  HttpServletRequest req) {
 		Result<IPage<User>> result = new Result<>();
 		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-		Page<User> page = new Page<User>(pageNo, pageSize);
+		Page<User> page = new Page<>(pageNo, pageSize);
 		IPage<User> pageList = userService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-
+	
 	/**
 	 * 添加
 	 * @param user
@@ -109,7 +108,7 @@ public class UserController {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 编辑
 	 * @param user
@@ -119,19 +118,17 @@ public class UserController {
 	@PutMapping(value = "/edit")
 	public Result<User> edit(@RequestBody User user) {
 		Result<User> result = new Result<>();
-		User userEntity = userService.getById(user.getId());
-		if(userEntity==null) {
-			result.error500("未找到对应实体");
-		}else {
-			boolean ok = userService.updateById(user);
-			if(ok) {
-				result.success("修改成功!");
-			}
-		}
+		try {
+            userService.updateById(user);
+            result.success("编辑成功！");
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            result.error500("操作失败");
+        }
 
 		return result;
 	}
-
+	
 	/**
 	 * 通过id删除
 	 * @param id
@@ -148,7 +145,7 @@ public class UserController {
 		}
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 批量删除
 	 * @param ids
@@ -156,17 +153,16 @@ public class UserController {
 	 */
 	@ApiOperation(value="用户-批量删除", notes="用户-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<User> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<User> result = new Result<>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
-		}else {
-			this.userService.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
-		}
-		return result;
+	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+        try {
+            userService.removeByIds(ids);
+        } catch (Exception e) {
+            log.error("删除失败",e.getMessage());
+            return Result.error("删除失败!");
+        }
+		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 通过id查询
 	 * @param id
@@ -177,12 +173,8 @@ public class UserController {
 	public Result<User> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<User> result = new Result<>();
 		User user = userService.getById(id);
-		if(user==null) {
-			result.error500("未找到对应实体");
-		}else {
-			result.setResult(user);
-			result.setSuccess(true);
-		}
+        result.setResult(user);
+        result.setSuccess(true);
 		return result;
 	}
 

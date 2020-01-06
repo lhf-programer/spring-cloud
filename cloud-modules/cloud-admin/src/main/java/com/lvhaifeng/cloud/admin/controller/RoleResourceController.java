@@ -1,6 +1,6 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import java.util.Arrays;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.RoleResource;
@@ -21,7 +21,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 角色资源
  * @Author: haifeng.lv
- * @Date: 2020-01-04 16:12
+ * @Date: 2020-01-06 11:33
  */
 @Slf4j
 @Api(tags="角色资源")
@@ -49,13 +49,13 @@ public class RoleResourceController {
 									  HttpServletRequest req) {
 		Result<IPage<RoleResource>> result = new Result<>();
 		QueryWrapper<RoleResource> queryWrapper = new QueryWrapper<>();
-		Page<RoleResource> page = new Page<RoleResource>(pageNo, pageSize);
+		Page<RoleResource> page = new Page<>(pageNo, pageSize);
 		IPage<RoleResource> pageList = roleResourceService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-
+	
 	/**
 	 * 添加
 	 * @param roleResource
@@ -74,7 +74,7 @@ public class RoleResourceController {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 编辑
 	 * @param roleResource
@@ -84,19 +84,17 @@ public class RoleResourceController {
 	@PutMapping(value = "/edit")
 	public Result<RoleResource> edit(@RequestBody RoleResource roleResource) {
 		Result<RoleResource> result = new Result<>();
-		RoleResource roleResourceEntity = roleResourceService.getById(roleResource.getId());
-		if(roleResourceEntity==null) {
-			result.error500("未找到对应实体");
-		}else {
-			boolean ok = roleResourceService.updateById(roleResource);
-			if(ok) {
-				result.success("修改成功!");
-			}
-		}
+		try {
+            roleResourceService.updateById(roleResource);
+            result.success("编辑成功！");
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            result.error500("操作失败");
+        }
 
 		return result;
 	}
-
+	
 	/**
 	 * 通过id删除
 	 * @param id
@@ -113,7 +111,7 @@ public class RoleResourceController {
 		}
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 批量删除
 	 * @param ids
@@ -121,17 +119,16 @@ public class RoleResourceController {
 	 */
 	@ApiOperation(value="角色资源-批量删除", notes="角色资源-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<RoleResource> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<RoleResource> result = new Result<>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
-		}else {
-			this.roleResourceService.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
-		}
-		return result;
+	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+        try {
+            roleResourceService.removeByIds(ids);
+        } catch (Exception e) {
+            log.error("删除失败",e.getMessage());
+            return Result.error("删除失败!");
+        }
+		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 通过id查询
 	 * @param id
@@ -142,12 +139,8 @@ public class RoleResourceController {
 	public Result<RoleResource> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<RoleResource> result = new Result<>();
 		RoleResource roleResource = roleResourceService.getById(id);
-		if(roleResource==null) {
-			result.error500("未找到对应实体");
-		}else {
-			result.setResult(roleResource);
-			result.setSuccess(true);
-		}
+        result.setResult(roleResource);
+        result.setSuccess(true);
 		return result;
 	}
 

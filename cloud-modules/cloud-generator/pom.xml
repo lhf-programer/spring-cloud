@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.github.lhf-programer</groupId>
             <artifactId>code-generator</artifactId>
-            <version>v1.3.2</version>
+            <version>1.3.4</version>
         </dependency>
     </dependencies>
 

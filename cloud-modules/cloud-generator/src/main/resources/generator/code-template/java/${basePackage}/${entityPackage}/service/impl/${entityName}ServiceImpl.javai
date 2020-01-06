@@ -3,9 +3,17 @@ package ${basePackage}.${entityPackage}.service.impl;
 import ${basePackage}.${entityPackage}.entity.${entityName};
 import ${basePackage}.${entityPackage}.mapper.${entityName}Mapper;
 import ${basePackage}.${entityPackage}.service.I${entityName}Service;
+import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
+import com.lvhaifeng.cloud.common.exception.BusinessException;
+import com.lvhaifeng.cloud.common.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @Description: ${tableVo.ftlDescription}
@@ -14,5 +22,49 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  */
 @Service
 public class ${entityName}ServiceImpl extends ServiceImpl<${entityName}Mapper, ${entityName}> implements I${entityName}Service {
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean save(${entityName} ${entityName?uncap_first}) {
+        EntityUtils.setDefaultValue(${entityName?uncap_first});
+        return super.save(${entityName?uncap_first});
+    }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateById(${entityName} ${entityName?uncap_first}) {
+        ${entityName} ${entityName?uncap_first}Entity = baseMapper.selectById(${entityName?uncap_first}.getId());
+        if(${entityName?uncap_first}Entity == null) {
+            throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
+        } else {
+            BeanUtils.copyProperties(${entityName?uncap_first}, ${entityName?uncap_first}Entity);
+        }
+        EntityUtils.setDefaultValue(${entityName?uncap_first}Entity);
+        return super.updateById(${entityName?uncap_first}Entity);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeById(Serializable id) {
+        return super.removeById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeByIds(Collection<? extends Serializable> ids) {
+        if(ids.isEmpty()) {
+            throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
+        }else {
+            return super.removeByIds(ids);
+        }
+    }
+
+    @Override
+    public ${entityName} getById(Serializable id) {
+        ${entityName} ${entityName?uncap_first} = super.getById(id);
+        if (null == ${entityName?uncap_first}) {
+            throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
+        } else {
+            return ${entityName?uncap_first};
+        }
+    }
 }

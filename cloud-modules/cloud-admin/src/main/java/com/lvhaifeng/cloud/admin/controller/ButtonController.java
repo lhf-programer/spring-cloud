@@ -1,6 +1,6 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import java.util.Arrays;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Button;
@@ -21,7 +21,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 按钮
  * @Author: haifeng.lv
- * @Date: 2020-01-04 16:11
+ * @Date: 2020-01-06 11:32
  */
 @Slf4j
 @Api(tags="按钮")
@@ -49,13 +49,13 @@ public class ButtonController {
 									  HttpServletRequest req) {
 		Result<IPage<Button>> result = new Result<>();
 		QueryWrapper<Button> queryWrapper = new QueryWrapper<>();
-		Page<Button> page = new Page<Button>(pageNo, pageSize);
+		Page<Button> page = new Page<>(pageNo, pageSize);
 		IPage<Button> pageList = buttonService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-
+	
 	/**
 	 * 添加
 	 * @param button
@@ -74,7 +74,7 @@ public class ButtonController {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 编辑
 	 * @param button
@@ -84,19 +84,17 @@ public class ButtonController {
 	@PutMapping(value = "/edit")
 	public Result<Button> edit(@RequestBody Button button) {
 		Result<Button> result = new Result<>();
-		Button buttonEntity = buttonService.getById(button.getId());
-		if(buttonEntity==null) {
-			result.error500("未找到对应实体");
-		}else {
-			boolean ok = buttonService.updateById(button);
-			if(ok) {
-				result.success("修改成功!");
-			}
-		}
+		try {
+            buttonService.updateById(button);
+            result.success("编辑成功！");
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            result.error500("操作失败");
+        }
 
 		return result;
 	}
-
+	
 	/**
 	 * 通过id删除
 	 * @param id
@@ -113,7 +111,7 @@ public class ButtonController {
 		}
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 批量删除
 	 * @param ids
@@ -121,17 +119,16 @@ public class ButtonController {
 	 */
 	@ApiOperation(value="按钮-批量删除", notes="按钮-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<Button> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<Button> result = new Result<>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
-		}else {
-			this.buttonService.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
-		}
-		return result;
+	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+        try {
+            buttonService.removeByIds(ids);
+        } catch (Exception e) {
+            log.error("删除失败",e.getMessage());
+            return Result.error("删除失败!");
+        }
+		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 通过id查询
 	 * @param id
@@ -142,12 +139,8 @@ public class ButtonController {
 	public Result<Button> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<Button> result = new Result<>();
 		Button button = buttonService.getById(id);
-		if(button==null) {
-			result.error500("未找到对应实体");
-		}else {
-			result.setResult(button);
-			result.setSuccess(true);
-		}
+        result.setResult(button);
+        result.setSuccess(true);
 		return result;
 	}
 

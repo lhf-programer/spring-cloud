@@ -1,6 +1,6 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import java.util.Arrays;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.UserRole;
@@ -19,12 +19,12 @@ import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
 import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 
  /**
- * @Description: 角色
+ * @Description: 用户角色
  * @Author: haifeng.lv
- * @Date: 2020-01-04 16:10
+ * @Date: 2020-01-06 11:34
  */
 @Slf4j
-@Api(tags="角色")
+@Api(tags="用户角色")
 @RestController
 @RequestMapping("/userRole")
 @CheckClientToken
@@ -41,7 +41,7 @@ public class UserRoleController {
 	 * @param req
 	 * @return
 	 */
-	@ApiOperation(value="角色-分页列表查询", notes="角色-分页列表查询")
+	@ApiOperation(value="用户角色-分页列表查询", notes="用户角色-分页列表查询")
 	@GetMapping(value = "/list")
 	public Result<IPage<UserRole>> queryPageList(UserRole userRole,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
@@ -49,19 +49,19 @@ public class UserRoleController {
 									  HttpServletRequest req) {
 		Result<IPage<UserRole>> result = new Result<>();
 		QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
-		Page<UserRole> page = new Page<UserRole>(pageNo, pageSize);
+		Page<UserRole> page = new Page<>(pageNo, pageSize);
 		IPage<UserRole> pageList = userRoleService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-
+	
 	/**
 	 * 添加
 	 * @param userRole
 	 * @return
 	 */
-	@ApiOperation(value="角色-添加", notes="角色-添加")
+	@ApiOperation(value="用户角色-添加", notes="用户角色-添加")
 	@PostMapping(value = "/add")
 	public Result<UserRole> add(@RequestBody UserRole userRole) {
 		Result<UserRole> result = new Result<>();
@@ -74,35 +74,33 @@ public class UserRoleController {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 编辑
 	 * @param userRole
 	 * @return
 	 */
-	@ApiOperation(value="角色-编辑", notes="角色-编辑")
+	@ApiOperation(value="用户角色-编辑", notes="用户角色-编辑")
 	@PutMapping(value = "/edit")
 	public Result<UserRole> edit(@RequestBody UserRole userRole) {
 		Result<UserRole> result = new Result<>();
-		UserRole userRoleEntity = userRoleService.getById(userRole.getId());
-		if(userRoleEntity==null) {
-			result.error500("未找到对应实体");
-		}else {
-			boolean ok = userRoleService.updateById(userRole);
-			if(ok) {
-				result.success("修改成功!");
-			}
-		}
+		try {
+            userRoleService.updateById(userRole);
+            result.success("编辑成功！");
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            result.error500("操作失败");
+        }
 
 		return result;
 	}
-
+	
 	/**
 	 * 通过id删除
 	 * @param id
 	 * @return
 	 */
-	@ApiOperation(value="角色-通过id删除", notes="角色-通过id删除")
+	@ApiOperation(value="用户角色-通过id删除", notes="用户角色-通过id删除")
 	@DeleteMapping(value = "/delete")
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		try {
@@ -113,41 +111,36 @@ public class UserRoleController {
 		}
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 批量删除
 	 * @param ids
 	 * @return
 	 */
-	@ApiOperation(value="角色-批量删除", notes="角色-批量删除")
+	@ApiOperation(value="用户角色-批量删除", notes="用户角色-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<UserRole> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<UserRole> result = new Result<>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
-		}else {
-			this.userRoleService.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
-		}
-		return result;
+	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+        try {
+            userRoleService.removeByIds(ids);
+        } catch (Exception e) {
+            log.error("删除失败",e.getMessage());
+            return Result.error("删除失败!");
+        }
+		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 通过id查询
 	 * @param id
 	 * @return
 	 */
-	@ApiOperation(value="角色-通过id查询", notes="角色-通过id查询")
+	@ApiOperation(value="用户角色-通过id查询", notes="用户角色-通过id查询")
 	@GetMapping(value = "/queryById")
 	public Result<UserRole> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<UserRole> result = new Result<>();
 		UserRole userRole = userRoleService.getById(id);
-		if(userRole==null) {
-			result.error500("未找到对应实体");
-		}else {
-			result.setResult(userRole);
-			result.setSuccess(true);
-		}
+        result.setResult(userRole);
+        result.setSuccess(true);
 		return result;
 	}
 

@@ -1,6 +1,6 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import java.util.Arrays;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Role;
@@ -21,7 +21,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2020-01-04 16:10
+ * @Date: 2020-01-06 11:33
  */
 @Slf4j
 @Api(tags="角色")
@@ -49,13 +49,13 @@ public class RoleController {
 									  HttpServletRequest req) {
 		Result<IPage<Role>> result = new Result<>();
 		QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-		Page<Role> page = new Page<Role>(pageNo, pageSize);
+		Page<Role> page = new Page<>(pageNo, pageSize);
 		IPage<Role> pageList = roleService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-
+	
 	/**
 	 * 添加
 	 * @param role
@@ -74,7 +74,7 @@ public class RoleController {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 编辑
 	 * @param role
@@ -84,19 +84,17 @@ public class RoleController {
 	@PutMapping(value = "/edit")
 	public Result<Role> edit(@RequestBody Role role) {
 		Result<Role> result = new Result<>();
-		Role roleEntity = roleService.getById(role.getId());
-		if(roleEntity==null) {
-			result.error500("未找到对应实体");
-		}else {
-			boolean ok = roleService.updateById(role);
-			if(ok) {
-				result.success("修改成功!");
-			}
-		}
+		try {
+            roleService.updateById(role);
+            result.success("编辑成功！");
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            result.error500("操作失败");
+        }
 
 		return result;
 	}
-
+	
 	/**
 	 * 通过id删除
 	 * @param id
@@ -113,7 +111,7 @@ public class RoleController {
 		}
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 批量删除
 	 * @param ids
@@ -121,17 +119,16 @@ public class RoleController {
 	 */
 	@ApiOperation(value="角色-批量删除", notes="角色-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<Role> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<Role> result = new Result<>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
-		}else {
-			this.roleService.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
-		}
-		return result;
+	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+        try {
+            roleService.removeByIds(ids);
+        } catch (Exception e) {
+            log.error("删除失败",e.getMessage());
+            return Result.error("删除失败!");
+        }
+		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 通过id查询
 	 * @param id
@@ -142,12 +139,8 @@ public class RoleController {
 	public Result<Role> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<Role> result = new Result<>();
 		Role role = roleService.getById(id);
-		if(role==null) {
-			result.error500("未找到对应实体");
-		}else {
-			result.setResult(role);
-			result.setSuccess(true);
-		}
+        result.setResult(role);
+        result.setSuccess(true);
 		return result;
 	}
 

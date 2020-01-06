@@ -3,11 +3,23 @@ package ${basePackage}.${entityPackage}.service;
 import ${basePackage}.${entityPackage}.entity.${entityName};
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.Serializable;
+import java.util.Collection;
+
 /**
  * @Description: ${tableVo.ftlDescription}
  * @Author: haifeng.lv
  * @Date: ${.now?string["yyyy-MM-dd HH:mm"]}
  */
 public interface I${entityName}Service extends IService<${entityName}> {
-
+    @Override
+    boolean save(${entityName} ${entityName?uncap_first});
+    @Override
+    boolean updateById(${entityName} ${entityName?uncap_first});
+    @Override
+    boolean removeById(Serializable id);
+    @Override
+    boolean removeByIds(Collection<? extends Serializable> ids);
+    @Override
+    ${entityName} getById(Serializable id);
 }

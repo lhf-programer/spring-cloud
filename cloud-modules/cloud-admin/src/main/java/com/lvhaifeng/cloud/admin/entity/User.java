@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2020-01-04 16:09
+ * @Date: 2020-01-06 11:34
  */
 @Data
 @TableName("user")
@@ -21,35 +21,35 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 @ApiModel(value="user对象", description="用户")
 public class User {
-
+    
 	/**创建时间*/
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
 	private java.time.LocalDateTime crtTime;
 	/**创建人*/
     @ApiModelProperty(value = "创建人")
-	private java.lang.String crtUser;
+	private String crtUser;
 	/**描述*/
     @ApiModelProperty(value = "描述")
-	private java.lang.String description;
+	private String description;
 	/**id*/
 	@TableId(type = IdType.UUID)
     @ApiModelProperty(value = "id")
-	private java.lang.String id;
+	private String id;
 	/**密码*/
     @ApiModelProperty(value = "密码")
-	private java.lang.String password;
+	private String password;
 	/**真实名称*/
     @ApiModelProperty(value = "真实名称")
-	private java.lang.String realname;
+	private String realname;
 	/**最后更新时间*/
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "最后更新时间")
 	private java.time.LocalDateTime updTime;
 	/**最后更新人*/
     @ApiModelProperty(value = "最后更新人")
-	private java.lang.String updUser;
+	private String updUser;
 	/**登录名*/
     @ApiModelProperty(value = "登录名")
-	private java.lang.String username;
+	private String username;
 }
