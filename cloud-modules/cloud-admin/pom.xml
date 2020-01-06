@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cloud-modules</artifactId>
         <groupId>com.lvhaifeng.cloud</groupId>
-        <version>v1.1</version>
+        <version>v1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -110,13 +110,13 @@
         <dependency>
             <groupId>com.lvhaifeng.cloud</groupId>
             <artifactId>cloud-interface</artifactId>
-            <version>v1.1</version>
+            <version>v1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.lvhaifeng.cloud</groupId>
             <artifactId>cloud-auth-user</artifactId>
-            <version>v1.1</version>
+            <version>v1.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

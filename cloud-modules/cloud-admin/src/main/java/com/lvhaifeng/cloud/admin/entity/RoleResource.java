@@ -11,16 +11,16 @@ import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * @Description: 角色权限
+ * @Description: 角色资源
  * @Author: haifeng.lv
- * @Date: 2019-12-19 10:36
+ * @Date: 2020-01-04 16:12
  */
 @Data
-@TableName("role_permission")
+@TableName("role_resource")
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="role_permission对象", description="角色权限")
-public class RolePermission {
+@ApiModel(value="role_resource对象", description="角色资源")
+public class RoleResource {
 
 	/**创建时间*/
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -29,16 +29,22 @@ public class RolePermission {
 	/**创建人*/
     @ApiModelProperty(value = "创建人")
 	private java.lang.String crtUser;
+	/**描述*/
+    @ApiModelProperty(value = "描述")
+	private java.lang.String description;
 	/**id*/
 	@TableId(type = IdType.UUID)
     @ApiModelProperty(value = "id")
 	private java.lang.String id;
-	/**权限id*/
-    @ApiModelProperty(value = "权限id")
-	private java.lang.String permissionId;
+	/**资源id*/
+    @ApiModelProperty(value = "资源id")
+	private java.lang.String resourceId;
 	/**角色id*/
     @ApiModelProperty(value = "角色id")
 	private java.lang.String roleId;
+	/**资源类型 0 菜单 1 按钮*/
+    @ApiModelProperty(value = "资源类型 0 菜单 1 按钮")
+	private java.lang.Integer type;
 	/**最后更新时间*/
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "最后更新时间")

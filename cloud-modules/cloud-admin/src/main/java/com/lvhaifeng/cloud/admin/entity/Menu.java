@@ -11,16 +11,16 @@ import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * @Description: 权限
+ * @Description: 菜单
  * @Author: haifeng.lv
- * @Date: 2019-12-19 10:36
+ * @Date: 2020-01-04 16:11
  */
 @Data
-@TableName("permission")
+@TableName("menu")
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="permission对象", description="权限")
-public class Permission {
+@ApiModel(value="menu对象", description="菜单")
+public class Menu {
 
 	/**创建时间*/
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -36,9 +36,12 @@ public class Permission {
 	@TableId(type = IdType.UUID)
     @ApiModelProperty(value = "id")
 	private java.lang.String id;
-	/**权限名称*/
-    @ApiModelProperty(value = "权限名称")
+	/**菜单名称*/
+    @ApiModelProperty(value = "菜单名称")
 	private java.lang.String name;
+	/**父菜单id*/
+    @ApiModelProperty(value = "父菜单id")
+	private java.lang.String parent;
 	/**最后更新时间*/
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "最后更新时间")
@@ -46,7 +49,7 @@ public class Permission {
 	/**最后更新人*/
     @ApiModelProperty(value = "最后更新人")
 	private java.lang.String updUser;
-	/**权限url*/
-    @ApiModelProperty(value = "权限url")
+	/**菜单路径*/
+    @ApiModelProperty(value = "菜单路径")
 	private java.lang.String url;
 }

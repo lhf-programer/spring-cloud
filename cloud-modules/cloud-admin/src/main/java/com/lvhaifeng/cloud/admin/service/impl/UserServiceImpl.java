@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2019-12-19 10:35
+ * @Date: 2020-01-04 16:09
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {

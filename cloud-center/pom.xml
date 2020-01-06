@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.lvhaifeng.cloud</groupId>
         <artifactId>spring-cloud</artifactId>
-        <version>v1.1</version>
+        <version>v1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

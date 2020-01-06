@@ -11,16 +11,16 @@ import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * @Description: 角色
+ * @Description: 按钮
  * @Author: haifeng.lv
- * @Date: 2020-01-04 16:10
+ * @Date: 2020-01-04 16:11
  */
 @Data
-@TableName("user_role")
+@TableName("button")
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="user_role对象", description="角色")
-public class UserRole {
+@ApiModel(value="button对象", description="按钮")
+public class Button {
 
 	/**创建时间*/
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -36,9 +36,12 @@ public class UserRole {
 	@TableId(type = IdType.UUID)
     @ApiModelProperty(value = "id")
 	private java.lang.String id;
-	/**角色id*/
-    @ApiModelProperty(value = "角色id")
-	private java.lang.String roleId;
+	/**所属菜单id*/
+    @ApiModelProperty(value = "所属菜单id")
+	private java.lang.String menuId;
+	/**按钮名称*/
+    @ApiModelProperty(value = "按钮名称")
+	private java.lang.String name;
 	/**最后更新时间*/
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "最后更新时间")
@@ -46,7 +49,7 @@ public class UserRole {
 	/**最后更新人*/
     @ApiModelProperty(value = "最后更新人")
 	private java.lang.String updUser;
-	/**用户id*/
-    @ApiModelProperty(value = "用户id")
-	private java.lang.String userId;
+	/**按钮路径*/
+    @ApiModelProperty(value = "按钮路径")
+	private java.lang.String url;
 }

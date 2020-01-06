@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 /**
- * @Description: 用户角色
+ * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2019-12-19 10:36
+ * @Date: 2020-01-04 16:10
  */
 @Service
 public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> implements IUserRoleService {

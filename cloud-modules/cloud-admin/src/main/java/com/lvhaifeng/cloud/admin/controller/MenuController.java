@@ -2,9 +2,11 @@ package com.lvhaifeng.cloud.admin.controller;
 
 import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
+
+import com.lvhaifeng.cloud.admin.vo.request.MenuInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
-import com.lvhaifeng.cloud.admin.entity.Permission;
-import com.lvhaifeng.cloud.admin.service.IPermissionService;
+import com.lvhaifeng.cloud.admin.entity.Menu;
+import com.lvhaifeng.cloud.admin.service.IMenuService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -19,38 +21,38 @@ import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
 import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 
  /**
- * @Description: 权限
+ * @Description: 菜单
  * @Author: haifeng.lv
- * @Date: 2019-12-19 10:36
+ * @Date: 2020-01-04 16:11
  */
 @Slf4j
-@Api(tags="权限")
+@Api(tags="菜单")
 @RestController
-@RequestMapping("/permission")
+@RequestMapping("/menu")
 @CheckClientToken
 @CheckUserToken
-public class PermissionController {
+public class MenuController {
 	@Autowired
-	private IPermissionService permissionService;
+	private IMenuService menuService;
 	
 	/**
 	 * 分页列表查询
-	 * @param permission
+	 * @param menu
 	 * @param pageNo
 	 * @param pageSize
 	 * @param req
 	 * @return
 	 */
-	@ApiOperation(value="权限-分页列表查询", notes="权限-分页列表查询")
+	@ApiOperation(value="菜单-分页列表查询", notes="菜单-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<IPage<Permission>> queryPageList(Permission permission,
+	public Result<IPage<Menu>> queryPageList(Menu menu,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		Result<IPage<Permission>> result = new Result<>();
-		QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
-		Page<Permission> page = new Page<Permission>(pageNo, pageSize);
-		IPage<Permission> pageList = permissionService.page(page, queryWrapper);
+		Result<IPage<Menu>> result = new Result<>();
+		QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
+		Page<Menu> page = new Page<Menu>(pageNo, pageSize);
+		IPage<Menu> pageList = menuService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
@@ -58,15 +60,15 @@ public class PermissionController {
 
 	/**
 	 * 添加
-	 * @param permission
+	 * @param menuInfo
 	 * @return
 	 */
-	@ApiOperation(value="权限-添加", notes="权限-添加")
+	@ApiOperation(value="菜单-添加", notes="菜单-添加")
 	@PostMapping(value = "/add")
-	public Result<Permission> add(@RequestBody Permission permission) {
-		Result<Permission> result = new Result<>();
+	public Result<Menu> add(@RequestBody MenuInfo menuInfo) {
+		Result<Menu> result = new Result<>();
 		try {
-			permissionService.save(permission);
+			menuService.save(menuInfo);
 			result.success("添加成功！");
 		} catch (Exception e) {
 			log.error(e.getMessage(),e);
@@ -77,21 +79,16 @@ public class PermissionController {
 
 	/**
 	 * 编辑
-	 * @param permission
+	 * @param menuInfo
 	 * @return
 	 */
-	@ApiOperation(value="权限-编辑", notes="权限-编辑")
+	@ApiOperation(value="菜单-编辑", notes="菜单-编辑")
 	@PutMapping(value = "/edit")
-	public Result<Permission> edit(@RequestBody Permission permission) {
-		Result<Permission> result = new Result<>();
-		Permission permissionEntity = permissionService.getById(permission.getId());
-		if(permissionEntity==null) {
-			result.error500("未找到对应实体");
-		}else {
-			boolean ok = permissionService.updateById(permission);
-			if(ok) {
-				result.success("修改成功!");
-			}
+	public Result<Menu> edit(@RequestBody MenuInfo menuInfo) {
+		Result<Menu> result = new Result<>();
+		boolean ok = menuService.updateById(menuInfo);
+		if(ok) {
+			result.success("修改成功!");
 		}
 
 		return result;
@@ -102,11 +99,11 @@ public class PermissionController {
 	 * @param id
 	 * @return
 	 */
-	@ApiOperation(value="权限-通过id删除", notes="权限-通过id删除")
+	@ApiOperation(value="菜单-通过id删除", notes="菜单-通过id删除")
 	@DeleteMapping(value = "/delete")
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		try {
-			permissionService.removeById(id);
+			menuService.removeById(id);
 		} catch (Exception e) {
 			log.error("删除失败",e.getMessage());
 			return Result.error("删除失败!");
@@ -119,14 +116,14 @@ public class PermissionController {
 	 * @param ids
 	 * @return
 	 */
-	@ApiOperation(value="权限-批量删除", notes="权限-批量删除")
+	@ApiOperation(value="菜单-批量删除", notes="菜单-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<Permission> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<Permission> result = new Result<>();
+	public Result<Menu> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+		Result<Menu> result = new Result<>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
 		}else {
-			this.permissionService.removeByIds(Arrays.asList(ids.split(",")));
+			this.menuService.removeByIds(Arrays.asList(ids.split(",")));
 			result.success("删除成功!");
 		}
 		return result;
@@ -137,15 +134,15 @@ public class PermissionController {
 	 * @param id
 	 * @return
 	 */
-	@ApiOperation(value="权限-通过id查询", notes="权限-通过id查询")
+	@ApiOperation(value="菜单-通过id查询", notes="菜单-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<Permission> queryById(@RequestParam(name="id",required=true) String id) {
-		Result<Permission> result = new Result<>();
-		Permission permission = permissionService.getById(id);
-		if(permission==null) {
+	public Result<Menu> queryById(@RequestParam(name="id",required=true) String id) {
+		Result<Menu> result = new Result<>();
+		Menu menu = menuService.getById(id);
+		if(menu==null) {
 			result.error500("未找到对应实体");
 		}else {
-			result.setResult(permission);
+			result.setResult(menu);
 			result.setSuccess(true);
 		}
 		return result;

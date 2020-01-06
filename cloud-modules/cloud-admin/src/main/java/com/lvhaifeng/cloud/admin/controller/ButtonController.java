@@ -3,8 +3,8 @@ package com.lvhaifeng.cloud.admin.controller;
 import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
-import com.lvhaifeng.cloud.admin.entity.RolePermission;
-import com.lvhaifeng.cloud.admin.service.IRolePermissionService;
+import com.lvhaifeng.cloud.admin.entity.Button;
+import com.lvhaifeng.cloud.admin.service.IButtonService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -19,38 +19,38 @@ import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
 import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 
  /**
- * @Description: 角色权限
+ * @Description: 按钮
  * @Author: haifeng.lv
- * @Date: 2019-12-19 10:36
+ * @Date: 2020-01-04 16:11
  */
 @Slf4j
-@Api(tags="角色权限")
+@Api(tags="按钮")
 @RestController
-@RequestMapping("/rolePermission")
+@RequestMapping("/button")
 @CheckClientToken
 @CheckUserToken
-public class RolePermissionController {
+public class ButtonController {
 	@Autowired
-	private IRolePermissionService rolePermissionService;
+	private IButtonService buttonService;
 	
 	/**
 	 * 分页列表查询
-	 * @param rolePermission
+	 * @param button
 	 * @param pageNo
 	 * @param pageSize
 	 * @param req
 	 * @return
 	 */
-	@ApiOperation(value="角色权限-分页列表查询", notes="角色权限-分页列表查询")
+	@ApiOperation(value="按钮-分页列表查询", notes="按钮-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<IPage<RolePermission>> queryPageList(RolePermission rolePermission,
+	public Result<IPage<Button>> queryPageList(Button button,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		Result<IPage<RolePermission>> result = new Result<>();
-		QueryWrapper<RolePermission> queryWrapper = new QueryWrapper<>();
-		Page<RolePermission> page = new Page<RolePermission>(pageNo, pageSize);
-		IPage<RolePermission> pageList = rolePermissionService.page(page, queryWrapper);
+		Result<IPage<Button>> result = new Result<>();
+		QueryWrapper<Button> queryWrapper = new QueryWrapper<>();
+		Page<Button> page = new Page<Button>(pageNo, pageSize);
+		IPage<Button> pageList = buttonService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
@@ -58,15 +58,15 @@ public class RolePermissionController {
 
 	/**
 	 * 添加
-	 * @param rolePermission
+	 * @param button
 	 * @return
 	 */
-	@ApiOperation(value="角色权限-添加", notes="角色权限-添加")
+	@ApiOperation(value="按钮-添加", notes="按钮-添加")
 	@PostMapping(value = "/add")
-	public Result<RolePermission> add(@RequestBody RolePermission rolePermission) {
-		Result<RolePermission> result = new Result<>();
+	public Result<Button> add(@RequestBody Button button) {
+		Result<Button> result = new Result<>();
 		try {
-			rolePermissionService.save(rolePermission);
+			buttonService.save(button);
 			result.success("添加成功！");
 		} catch (Exception e) {
 			log.error(e.getMessage(),e);
@@ -77,18 +77,18 @@ public class RolePermissionController {
 
 	/**
 	 * 编辑
-	 * @param rolePermission
+	 * @param button
 	 * @return
 	 */
-	@ApiOperation(value="角色权限-编辑", notes="角色权限-编辑")
+	@ApiOperation(value="按钮-编辑", notes="按钮-编辑")
 	@PutMapping(value = "/edit")
-	public Result<RolePermission> edit(@RequestBody RolePermission rolePermission) {
-		Result<RolePermission> result = new Result<>();
-		RolePermission rolePermissionEntity = rolePermissionService.getById(rolePermission.getId());
-		if(rolePermissionEntity==null) {
+	public Result<Button> edit(@RequestBody Button button) {
+		Result<Button> result = new Result<>();
+		Button buttonEntity = buttonService.getById(button.getId());
+		if(buttonEntity==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = rolePermissionService.updateById(rolePermission);
+			boolean ok = buttonService.updateById(button);
 			if(ok) {
 				result.success("修改成功!");
 			}
@@ -102,11 +102,11 @@ public class RolePermissionController {
 	 * @param id
 	 * @return
 	 */
-	@ApiOperation(value="角色权限-通过id删除", notes="角色权限-通过id删除")
+	@ApiOperation(value="按钮-通过id删除", notes="按钮-通过id删除")
 	@DeleteMapping(value = "/delete")
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		try {
-			rolePermissionService.removeById(id);
+			buttonService.removeById(id);
 		} catch (Exception e) {
 			log.error("删除失败",e.getMessage());
 			return Result.error("删除失败!");
@@ -119,14 +119,14 @@ public class RolePermissionController {
 	 * @param ids
 	 * @return
 	 */
-	@ApiOperation(value="角色权限-批量删除", notes="角色权限-批量删除")
+	@ApiOperation(value="按钮-批量删除", notes="按钮-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<RolePermission> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<RolePermission> result = new Result<>();
+	public Result<Button> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+		Result<Button> result = new Result<>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
 		}else {
-			this.rolePermissionService.removeByIds(Arrays.asList(ids.split(",")));
+			this.buttonService.removeByIds(Arrays.asList(ids.split(",")));
 			result.success("删除成功!");
 		}
 		return result;
@@ -137,15 +137,15 @@ public class RolePermissionController {
 	 * @param id
 	 * @return
 	 */
-	@ApiOperation(value="角色权限-通过id查询", notes="角色权限-通过id查询")
+	@ApiOperation(value="按钮-通过id查询", notes="按钮-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<RolePermission> queryById(@RequestParam(name="id",required=true) String id) {
-		Result<RolePermission> result = new Result<>();
-		RolePermission rolePermission = rolePermissionService.getById(id);
-		if(rolePermission==null) {
+	public Result<Button> queryById(@RequestParam(name="id",required=true) String id) {
+		Result<Button> result = new Result<>();
+		Button button = buttonService.getById(id);
+		if(button==null) {
 			result.error500("未找到对应实体");
 		}else {
-			result.setResult(rolePermission);
+			result.setResult(button);
 			result.setSuccess(true);
 		}
 		return result;

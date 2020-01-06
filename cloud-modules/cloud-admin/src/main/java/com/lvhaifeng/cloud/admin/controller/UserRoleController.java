@@ -19,12 +19,12 @@ import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
 import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 
  /**
- * @Description: 用户角色
+ * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2019-12-19 10:36
+ * @Date: 2020-01-04 16:10
  */
 @Slf4j
-@Api(tags="用户角色")
+@Api(tags="角色")
 @RestController
 @RequestMapping("/userRole")
 @CheckClientToken
@@ -41,7 +41,7 @@ public class UserRoleController {
 	 * @param req
 	 * @return
 	 */
-	@ApiOperation(value="用户角色-分页列表查询", notes="用户角色-分页列表查询")
+	@ApiOperation(value="角色-分页列表查询", notes="角色-分页列表查询")
 	@GetMapping(value = "/list")
 	public Result<IPage<UserRole>> queryPageList(UserRole userRole,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
@@ -61,7 +61,7 @@ public class UserRoleController {
 	 * @param userRole
 	 * @return
 	 */
-	@ApiOperation(value="用户角色-添加", notes="用户角色-添加")
+	@ApiOperation(value="角色-添加", notes="角色-添加")
 	@PostMapping(value = "/add")
 	public Result<UserRole> add(@RequestBody UserRole userRole) {
 		Result<UserRole> result = new Result<>();
@@ -80,7 +80,7 @@ public class UserRoleController {
 	 * @param userRole
 	 * @return
 	 */
-	@ApiOperation(value="用户角色-编辑", notes="用户角色-编辑")
+	@ApiOperation(value="角色-编辑", notes="角色-编辑")
 	@PutMapping(value = "/edit")
 	public Result<UserRole> edit(@RequestBody UserRole userRole) {
 		Result<UserRole> result = new Result<>();
@@ -102,7 +102,7 @@ public class UserRoleController {
 	 * @param id
 	 * @return
 	 */
-	@ApiOperation(value="用户角色-通过id删除", notes="用户角色-通过id删除")
+	@ApiOperation(value="角色-通过id删除", notes="角色-通过id删除")
 	@DeleteMapping(value = "/delete")
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		try {
@@ -119,7 +119,7 @@ public class UserRoleController {
 	 * @param ids
 	 * @return
 	 */
-	@ApiOperation(value="用户角色-批量删除", notes="用户角色-批量删除")
+	@ApiOperation(value="角色-批量删除", notes="角色-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<UserRole> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
 		Result<UserRole> result = new Result<>();
@@ -137,7 +137,7 @@ public class UserRoleController {
 	 * @param id
 	 * @return
 	 */
-	@ApiOperation(value="用户角色-通过id查询", notes="用户角色-通过id查询")
+	@ApiOperation(value="角色-通过id查询", notes="角色-通过id查询")
 	@GetMapping(value = "/queryById")
 	public Result<UserRole> queryById(@RequestParam(name="id",required=true) String id) {
 		Result<UserRole> result = new Result<>();

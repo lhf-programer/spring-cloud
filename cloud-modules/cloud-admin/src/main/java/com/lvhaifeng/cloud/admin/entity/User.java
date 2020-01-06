@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2019-12-19 10:35
+ * @Date: 2020-01-04 16:09
  */
 @Data
 @TableName("user")
@@ -29,6 +29,9 @@ public class User {
 	/**创建人*/
     @ApiModelProperty(value = "创建人")
 	private java.lang.String crtUser;
+	/**描述*/
+    @ApiModelProperty(value = "描述")
+	private java.lang.String description;
 	/**id*/
 	@TableId(type = IdType.UUID)
     @ApiModelProperty(value = "id")
