@@ -3,6 +3,7 @@ package com.lvhaifeng.cloud.admin.service;
 import com.lvhaifeng.cloud.admin.entity.User;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lvhaifeng.cloud.admin.vo.response.UserInfo;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -19,4 +20,5 @@ public interface IUserService extends IService<User> {
     boolean removeByUserId(Serializable id);
     boolean removeByUserIds(Collection<? extends Serializable> ids);
     User getByUserId(Serializable id);
+    UserInfo findUserInfoByToken(String token);
 }

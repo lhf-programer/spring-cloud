@@ -65,7 +65,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
     public boolean removeByUserRoleIds(Collection<? extends Serializable> ids) {
         if(ids.isEmpty()) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
-        }else {
+        } else {
             return super.removeByIds(ids);
         }
     }

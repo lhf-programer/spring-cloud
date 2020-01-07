@@ -1,11 +1,16 @@
 package com.lvhaifeng.cloud.admin.service.impl;
 
+import com.lvhaifeng.cloud.admin.constant.ResourceTypeEnum;
 import com.lvhaifeng.cloud.admin.entity.Button;
+import com.lvhaifeng.cloud.admin.entity.Menu;
+import com.lvhaifeng.cloud.admin.entity.RoleResource;
 import com.lvhaifeng.cloud.admin.mapper.ButtonMapper;
 import com.lvhaifeng.cloud.admin.service.IButtonService;
+import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.BeanUtils;
@@ -25,6 +30,9 @@ import java.util.Collection;
  */
 @Service
 public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> implements IButtonService {
+    @Autowired
+    private RoleResourceServiceImpl roleResourceService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public IPage<Button> pageButtonList(Button button, Integer pageNo, Integer pageSize) {
@@ -36,19 +44,35 @@ public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveButton(Button button) {
+    public boolean saveButton(ResourceInfo resourceInfo) {
+        Button button = new Button();
+        BeanUtils.copyProperties(resourceInfo, button);
         EntityUtils.setDefaultValue(button);
-        return super.save(button);
+
+        if (super.save(button)) {
+            RoleResource roleResource = new RoleResource();
+            EntityUtils.setDefaultValue(roleResource);
+            roleResource.setDescription(resourceInfo.getDescription());
+            // 资源类型
+            roleResource.setType(ResourceTypeEnum.BUTTON.getType());
+            // 角色 id
+            roleResource.setRoleId(resourceInfo.getRoleId());
+            roleResource.setResourceId(button.getId());
+
+            return roleResourceService.save(roleResource);
+        } else {
+            return false;
+        }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateByButtonId(Button button) {
-        Button buttonEntity = baseMapper.selectById(button.getId());
+    public boolean updateByButtonId(ResourceInfo resourceInfo) {
+        Button buttonEntity = baseMapper.selectById(resourceInfo.getId());
         if(buttonEntity == null) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
-            BeanUtils.copyProperties(button, buttonEntity);
+            BeanUtils.copyProperties(resourceInfo, buttonEntity);
         }
         EntityUtils.setDefaultValue(buttonEntity);
         return super.updateById(buttonEntity);
@@ -57,6 +81,9 @@ public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean removeByButtonId(Serializable id) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("resource_id", id);
+        roleResourceService.remove(queryWrapper);
         return super.removeById(id);
     }
 
@@ -65,7 +92,10 @@ public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> impleme
     public boolean removeByButtonIds(Collection<? extends Serializable> ids) {
         if(ids.isEmpty()) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
-        }else {
+        } else {
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.in("resource_id", ids);
+            roleResourceService.remove(queryWrapper);
             return super.removeByIds(ids);
         }
     }

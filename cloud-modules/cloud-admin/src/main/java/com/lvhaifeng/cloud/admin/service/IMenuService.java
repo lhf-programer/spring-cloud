@@ -3,10 +3,11 @@ package com.lvhaifeng.cloud.admin.service;
 import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lvhaifeng.cloud.admin.vo.request.MenuInfo;
+import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @Description: 菜单
@@ -15,9 +16,10 @@ import java.util.Collection;
  */
 public interface IMenuService extends IService<Menu> {
     IPage<Menu> pageMenuList(Menu menu, Integer pageNo, Integer pageSize);
-    boolean saveMenu(MenuInfo menuInfo);
-    boolean updateByMenuId(MenuInfo menuInfo);
+    boolean saveMenu(ResourceInfo resourceInfo);
+    boolean updateByMenuId(ResourceInfo resourceInfo);
     boolean removeByMenuId(Serializable id);
     boolean removeByMenuIds(Collection<? extends Serializable> ids);
     Menu getByMenuId(Serializable id);
+    List<Menu> getMenuByRoleId(String id);
 }

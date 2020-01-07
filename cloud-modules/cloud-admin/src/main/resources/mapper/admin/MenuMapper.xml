@@ -2,4 +2,57 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lvhaifeng.cloud.admin.mapper.MenuMapper">
 
+    <resultMap id="getMenuInfos" type="com.lvhaifeng.cloud.admin.vo.response.MenuInfo">
+        <id column="id" property="id"></id>
+        <id column="parent" property="parentId"></id>
+        <association property="parent" select="selectParentMenu" column="{parent=parentId}"></association>
+        <collection property="children" select="selectMenuByRoleId" column="{id=id}">
+        </collection>
+        <collection property="buttonList" select="selectButtonInfos" column="{menuId=id}">
+        </collection>
+    </resultMap>
+
+    <!-- 查询所有按钮信息 -->
+    <select id="selectButtonInfos" resultType="com.lvhaifeng.cloud.admin.entity.Button">
+        select
+            *
+        from
+            button
+        where menu_id = #{menuId}
+    </select>
+
+    <!-- 查询父菜单 -->
+    <select id="selectParentMenu" resultType="com.lvhaifeng.cloud.admin.vo.response.MenuInfo">
+        select
+            m.id,
+            m.name,
+            parent as parentId,
+            m.url
+        from
+            menu m
+        where 1=1
+        <if test="parent!= null">
+            and m.id = #{parent}
+        </if>
+    </select>
+
+    <!-- 根据角色 id查询菜单 -->
+    <select id="selectMenuByRoleId" resultMap="getMenuInfos">
+        select
+            m.id,
+            m.name,
+            parent as parentId,
+            m.url
+        from
+            menu m
+        left join role_resource r_r on r_r.resource_id = m.id
+        where 1=1
+        <if test="id!= null">
+            and m.parent = #{id}
+        </if>
+        <if test="roleId!= null">
+            and r_r.role_id = #{roleId}
+        </if>
+    </select>
+
 </mapper>

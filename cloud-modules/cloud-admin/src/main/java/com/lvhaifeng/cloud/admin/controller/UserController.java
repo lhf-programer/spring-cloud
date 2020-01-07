@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lvhaifeng.cloud.admin.vo.response.UserInfo;
 import com.lvhaifeng.cloud.api.vo.system.AuthUser;
 import com.lvhaifeng.cloud.auth.client.annotation.IgnoreClientToken;
 import com.lvhaifeng.cloud.auth.user.annotation.IgnoreUserToken;
@@ -63,6 +64,24 @@ public class UserController {
 		} else {
 			result.error500("没有查询到该用户");
 		}
+		return result;
+	}
+
+	/**
+	 * @Description 通过token 来获取用户信息
+	 * @Author haifeng.lv
+	 * @param: token
+	 * @Date 2020/1/6 17:06
+	 * @return: com.lvhaifeng.cloud.common.vo.Result<com.lvhaifeng.cloud.admin.vo.response.UserInfo>
+	 */
+	@IgnoreClientToken
+	@IgnoreUserToken
+	@PostMapping("/getUserInfoByToken")
+	public Result<UserInfo> getUserInfoByToken(@RequestParam("token") String token) {
+		Result<UserInfo> result = new Result();
+		UserInfo userInfo = userService.findUserInfoByToken(token);
+		result.setResult(userInfo);
+		result.setSuccess(true);
 		return result;
 	}
 

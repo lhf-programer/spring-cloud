@@ -3,7 +3,7 @@ package com.lvhaifeng.cloud.admin.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
-import com.lvhaifeng.cloud.admin.vo.request.MenuInfo;
+import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.lvhaifeng.cloud.admin.service.IMenuService;
@@ -56,15 +56,15 @@ public class MenuController {
 
 	/**
 	 * 添加
-	 * @param menuInfo
+	 * @param resourceInfo
 	 * @return
 	 */
 	@ApiOperation(value="菜单-添加", notes="菜单-添加")
 	@PostMapping(value = "/add")
-	public Result<Menu> add(@RequestBody MenuInfo menuInfo) {
+	public Result<Menu> add(@RequestBody ResourceInfo resourceInfo) {
 		Result<Menu> result = new Result<>();
 		try {
-			menuService.saveMenu(menuInfo);
+			menuService.saveMenu(resourceInfo);
 			result.success("添加成功！");
 		} catch (Exception e) {
             e.printStackTrace();
@@ -76,15 +76,15 @@ public class MenuController {
 
 	/**
 	 * 编辑
-	 * @param menuInfo
+	 * @param resourceInfo
 	 * @return
 	 */
 	@ApiOperation(value="菜单-编辑", notes="菜单-编辑")
 	@PutMapping(value = "/edit")
-	public Result<Menu> edit(@RequestBody MenuInfo menuInfo) {
+	public Result<Menu> edit(@RequestBody ResourceInfo resourceInfo) {
 		Result<Menu> result = new Result<>();
 		try {
-            menuService.updateByMenuId(menuInfo);
+            menuService.updateByMenuId(resourceInfo);
             result.success("编辑成功！");
         } catch (Exception e) {
             e.printStackTrace();
