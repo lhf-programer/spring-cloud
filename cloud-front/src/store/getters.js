@@ -8,10 +8,10 @@ const getters = {
   status: state => state.user.status,
   roles: state => state.user.roles,
   menus: state => state.user.menus,
-  elements: state => state.user.elements,
+  buttons: state => state.user.buttons,
   setting: state => state.user.setting,
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
-  permissionMenus: state => state.user.permissionMenus
+  permissionMenus: state => state.permission.permissionMenus
 };
 export default getters

@@ -1,15 +1,16 @@
 import {
   login,
   logout
-} from 'api/login';
+} from 'api/admin/login';
 import {
-  getUserList
-} from 'api/admin';
+  getUserInfoByToken
+} from 'api/admin/user';
 import {
   getToken,
   setToken,
   removeToken
 } from 'utils/auth';
+
 const user = {
   state: {
     user: '',
@@ -21,8 +22,7 @@ const user = {
     introduction: '',
     roles: [],
     menus: undefined,
-    eleemnts: undefined,
-    permissionMenus: undefined,
+    buttons: undefined,
     setting: {
       articlePlatform: []
     }
@@ -56,30 +56,27 @@ const user = {
     SET_MENUS: (state, menus) => {
       state.menus = menus;
     },
-    SET_ELEMENTS: (state, elements) => {
-      state.elements = elements;
+    SET_BUTTONS: (state, buttons) => {
+      state.buttons = buttons;
     },
     LOGIN_SUCCESS: () => {
       console.log('login success')
     },
     LOGOUT_USER: state => {
       state.user = '';
-    },
-    SET_PERMISSION_MENUS: (state, permissionMenus) => {
-      state.permissionMenus = permissionMenus;
     }
   },
 
   actions: {
     // 登录
-    login({
+    Login({
       commit
     }, userInfo) {
       const username = userInfo.username.trim();
       commit('SET_TOKEN', '');
       commit('SET_ROLES', []);
       commit('SET_MENUS', undefined);
-      commit('SET_ELEMENTS', undefined);
+      commit('SET_BUTTONS', undefined);
       removeToken();
       return new Promise((resolve, reject) => {
         let param = {
@@ -90,9 +87,6 @@ const user = {
         login(param).then(response => {
           setToken(response.access_token);
           commit('SET_TOKEN', response.access_token);
-          commit('SET_ROLES', 'admin');
-          commit('SET_NAME', response.name);
-          commit('SET_AVATAR', 'http://git.oschina.net/uploads/42/547642_geek_qi.png?1499487420');
           resolve();
         }).catch(error => {
           reject(error);
@@ -101,50 +95,30 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo({
+    GetUserInfoByToken({
       commit,
       state
     }) {
       return new Promise((resolve, reject) => {
-        getUserList(state.token).then(response => {
+        var param = {
+          token: state.token
+        }
+        getUserInfoByToken(param).then(response => {
           const data = response;
-          console.info(data)
-          commit('SET_ROLES', 'admin');
-          commit('SET_NAME', data.name);
+          commit('SET_ROLES', data.result.roleName);
+          commit('SET_NAME', data.result.name);
           commit('SET_AVATAR', 'http://git.oschina.net/uploads/42/547642_geek_qi.png?1499487420');
-          // commit('SET_INTRODUCTION', data.description);
-          // const menus = {};
-          // for (let i = 0; i < data.menus.length; i++) {
-          //   menus[data.menus[i].code] = true;
-          // }
-          // commit('SET_MENUS', menus);
-          // const elements = {};
-          // for (let i = 0; i < data.elements.length; i++) {
-          //   elements[data.elements[i].code] = true;
-          // }
-          // commit('SET_ELEMENTS', elements);
-          resolve(response);
-        }).catch(error => {
-          reject(error);
-        });
-        // getMenus(state.token).then(response => {
-        //   console.log(response)
-        //   commit('SET_PERMISSION_MENUS', response);
-        // });
-      });
-    },
+          commit('SET_INTRODUCTION', data.result.description);
 
-    // 第三方验证登录
-    LoginByThirdparty({
-      commit,
-      state
-    }, code) {
-      return new Promise((resolve, reject) => {
-        commit('SET_CODE', code);
-        loginByThirdparty(state.status, state.email, state.code).then(response => {
-          commit('SET_TOKEN', response.data.token);
-          setToken(response.data.token);
-          resolve();
+          const menus = {}
+          const buttons = {}
+          data.result.menusList.forEach((item, index, array) => {
+            resolverResourceList(item, menus, buttons)
+          })
+          
+          commit('SET_MENUS', menus);
+          commit('SET_BUTTONS', buttons);
+          resolve(response);
         }).catch(error => {
           reject(error);
         });
@@ -161,8 +135,7 @@ const user = {
           commit('SET_TOKEN', '');
           commit('SET_ROLES', []);
           commit('SET_MENUS', undefined);
-          commit('SET_ELEMENTS', undefined);
-          commit('SET_PERMISSION_MENUS', undefined);
+          commit('SET_BUTTONS', undefined);
           removeToken();
           resolve();
         }).catch(error => {
@@ -172,31 +145,32 @@ const user = {
     },
 
     // 前端 登出
-    FedLogOut({
+    FrontLogOut({
       commit
     }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '');
         commit('SET_MENUS', undefined);
-        commit('SET_ELEMENTS', undefined);
-        commit('SET_PERMISSION_MENUS', undefined);
+        commit('SET_BUTTONS', undefined);
         removeToken();
         resolve();
       });
-    },
-
-    // 动态修改权限
-    ChangeRole({
-      commit
-    }, role) {
-      return new Promise(resolve => {
-        commit('SET_ROLES', [role]);
-        commit('SET_TOKEN', role);
-        setToken(role);
-        resolve();
-      })
     }
   }
 };
+
+// 解析资源列表
+function resolverResourceList(data, menus, buttons) {
+  menus[data.url] = true;
+  data.buttonList.forEach((item, index, array) => {
+    buttons[item.url] = true
+  })
+
+  if (data.children != undefined && data.children.length != 0) {
+    data.children.forEach((item, index, array) => {
+      resolverResourceList(item, menus, buttons)
+    })
+  }
+}
 
 export default user;

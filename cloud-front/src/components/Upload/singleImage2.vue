@@ -17,8 +17,6 @@
 </template>
 
 <script>
-	// 预览效果见专题
-	import { getToken } from 'api/qiniu';
 	export default {
 	  name: 'singleImageUpload2',
 	  props: {

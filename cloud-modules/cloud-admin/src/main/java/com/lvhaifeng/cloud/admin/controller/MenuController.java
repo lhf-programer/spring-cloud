@@ -54,6 +54,16 @@ public class MenuController {
 		return result;
 	}
 
+	 @ApiOperation(value="菜单-列表查询", notes="菜单-列表查询")
+	 @GetMapping(value = "/getAllMenus")
+	 public Result<List<Menu>> getAllMenu() {
+		 Result<List<Menu>> result = new Result<>();
+		 List<Menu> response = menuService.list();
+		 result.setSuccess(true);
+		 result.setResult(response);
+		 return result;
+	 }
+
 	/**
 	 * 添加
 	 * @param resourceInfo

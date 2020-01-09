@@ -9,6 +9,7 @@ import com.lvhaifeng.cloud.admin.service.IMenuService;
 import com.lvhaifeng.cloud.admin.service.IRoleService;
 import com.lvhaifeng.cloud.admin.service.IUserRoleService;
 import com.lvhaifeng.cloud.admin.service.IUserService;
+import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.admin.vo.response.UserInfo;
 import com.lvhaifeng.cloud.auth.user.service.AuthUserService;
 import com.lvhaifeng.cloud.common.auth.AuthHelper;
@@ -126,19 +127,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             // 查询所有用户角色
             List<UserRole> userRoles = userRoleService.list(queryRoleWrapper);
             StringBuilder roleNames = new StringBuilder();
-            List<Menu> menus = new ArrayList<>();
+            List<MenuInfo> menus = new ArrayList<>();
 
             userRoles.forEach(userRole -> {
                 // 查询角色
-                Role role = roleService.getByRoleId(userRole.getRoleId());
+                Role role = roleService.findRoleById(userRole.getRoleId());
                 roleNames.append(role.getName() + ",");
-                List<Menu> menuByRoleId = menuService.getMenuByRoleId(role.getId());
+                List<MenuInfo> menuByRoleId = menuService.getMenuByRoleId(role.getId());
                 menus.addAll(menuByRoleId);
             });
             // 用户权限菜单
             userInfo.setMenusList(menus);
             // 用户角色名称
             userInfo.setRoleName(StringUtils.isNotBlank(roleNames.toString())?roleNames.toString().substring(0, roleNames.toString().length() - 1):"");
+            // 描述
+            userInfo.setDescription(user.getDescription());
 
             return userInfo;
         } catch (Exception e) {

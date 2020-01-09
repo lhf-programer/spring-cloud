@@ -2,7 +2,7 @@ import {
   asyncRouterMap,
   constantRouterMap
 } from 'src/router'
-// import { getAllMenus } from 'api/login';
+
 /**
  * 通过authority判断是否与当前用户权限匹配
  * @param menus
@@ -23,15 +23,13 @@ function hasPermission(menus, route) {
 /**
  * 递归过滤异步路由表，返回符合用户角色权限的路由表
  * @param asyncRouterMap
- * @param roles
+ * @param menus
  */
-function filterAsyncRouter(asyncRouterMap, menus, menuDatas) {
+function filterAsyncRouter(asyncRouterMap, menus) {
   const accessedRouters = asyncRouterMap.filter(route => {
     if (hasPermission(menus, route)) {
-      route.name = menuDatas[route.authority].title;
-      route.icon = menuDatas[route.authority].icon;
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, menus, menuDatas);
+        route.children = filterAsyncRouter(route.children, menus);
       }
       return true
     }
@@ -43,12 +41,16 @@ function filterAsyncRouter(asyncRouterMap, menus, menuDatas) {
 const permission = {
   state: {
     routers: constantRouterMap,
+    permissionMenus: undefined,
     addRouters: []
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
+    },
+    SET_PERMISSION_MENUS: (state, permissionMenus) => {
+      state.permissionMenus = permissionMenus;
     }
   },
   actions: {
@@ -56,16 +58,15 @@ const permission = {
       commit
     }, menus) {
       return new Promise(resolve => {
-        // getAllMenus().then(data => {
-        //   const menuDatas = {};
-        //   for (let i = 0; i < data.length; i++) {
-        //     menuDatas[data[i].code] = data[i];
-        //   }
-        //   const accessedRouters = filterAsyncRouter(asyncRouterMap, menus, menuDatas);
-        //   console.log(accessedRouters);
-        //   commit('SET_ROUTERS', accessedRouters);
-        //   resolve();
-        // });
+        const accessedRouters = filterAsyncRouter(asyncRouterMap, menus);
+        commit('SET_PERMISSION_MENUS', [{
+          path: '/',
+          name: '权限管理系统',
+          icon: 'setting',
+          children: accessedRouters
+        }]);
+        commit('SET_ROUTERS', accessedRouters);
+        resolve();
       })
     }
   }

@@ -2,6 +2,7 @@ package com.lvhaifeng.cloud.admin.mapper;
 
 import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,5 +21,5 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @Date 2020/1/6 17:21
      * @return: java.util.List<com.lvhaifeng.cloud.admin.entity.Menu>
      */
-    List<Menu> selectMenuByRoleId(@Param("roleId") String roleId,@Param("id") String id);
+    List<MenuInfo> selectMenuByRoleId(@Param("roleId") String roleId, @Param("id") String id);
 }

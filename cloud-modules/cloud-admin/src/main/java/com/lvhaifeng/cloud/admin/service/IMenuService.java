@@ -4,6 +4,7 @@ import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
+import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -21,5 +22,5 @@ public interface IMenuService extends IService<Menu> {
     boolean removeByMenuId(Serializable id);
     boolean removeByMenuIds(Collection<? extends Serializable> ids);
     Menu getByMenuId(Serializable id);
-    List<Menu> getMenuByRoleId(String id);
+    List<MenuInfo> getMenuByRoleId(String id);
 }

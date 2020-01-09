@@ -1,6 +1,7 @@
 package ${basePackage}.${entityPackage}.service;
 
 import ${basePackage}.${entityPackage}.entity.${entityName};
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,10 +14,10 @@ import java.util.Collection;
  * @Date: ${.now?string["yyyy-MM-dd HH:mm"]}
  */
 public interface I${entityName}Service extends IService<${entityName}> {
-    IPage<${entityName}> page${entityName}List(${entityName} ${entityName?uncap_first}, Integer pageNo, Integer pageSize);
-    boolean save${entityName}(${entityName} ${entityName?uncap_first});
-    boolean updateBy${entityName}Id(${entityName} ${entityName?uncap_first});
-    boolean removeBy${entityName}Id(Serializable id);
-    boolean removeBy${entityName}Ids(Collection<? extends Serializable> ids);
-    ${entityName} getBy${entityName}Id(Serializable id);
+    IPage<${entityName}> find${entityName}PageList(${entityName} ${entityName?uncap_first}, Integer pageNo, Integer pageSize);
+    boolean create${entityName}(${entityName} ${entityName?uncap_first});
+    boolean alter${entityName}ById(${entityName} ${entityName?uncap_first});
+    boolean drop${entityName}(Serializable id);
+    boolean drop${entityName}Batch(Collection<? extends Serializable> ids);
+    ${entityName} find${entityName}ById(Serializable id);
 }

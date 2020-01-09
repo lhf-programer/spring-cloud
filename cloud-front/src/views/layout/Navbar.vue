@@ -56,7 +56,7 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      this.$store.dispatch('FedLogOut')
+      this.$store.dispatch('FrontLogOut')
         .then(() => {
           location.reload(); // 为了重新实例化vue-router对象 避免bug
         });

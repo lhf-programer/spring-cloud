@@ -19,7 +19,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2020-01-06 14:26
+ * @Date: 2020-01-09 14:37
  */
 @Slf4j
 @Api(tags="角色")
@@ -30,7 +30,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 public class RoleController {
 	@Autowired
 	private IRoleService roleService;
-
+	
 	/**
 	 * 分页列表查询
 	 * @param role
@@ -40,29 +40,29 @@ public class RoleController {
 	 * @return
 	 */
 	@ApiOperation(value="角色-分页列表查询", notes="角色-分页列表查询")
-	@GetMapping(value = "/list")
-	public Result<IPage<Role>> queryPageList(Role role,
+	@GetMapping(value = "/getRolePageList")
+	public Result<IPage<Role>> getRolePageList(Role role,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
         Result<IPage<Role>> result = new Result<>();
-		IPage<Role> pageList = roleService.pageRoleList(role, pageNo, pageSize);
+		IPage<Role> pageList = roleService.findRolePageList(role, pageNo, pageSize);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-
+	
 	/**
 	 * 添加
 	 * @param role
 	 * @return
 	 */
 	@ApiOperation(value="角色-添加", notes="角色-添加")
-	@PostMapping(value = "/add")
-	public Result<Role> add(@RequestBody Role role) {
+	@PostMapping(value = "/generateRole")
+	public Result<Role> generateRole(@RequestBody Role role) {
 		Result<Role> result = new Result<>();
 		try {
-			roleService.saveRole(role);
+			roleService.createRole(role);
 			result.success("添加成功！");
 		} catch (Exception e) {
             e.printStackTrace();
@@ -71,18 +71,18 @@ public class RoleController {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 编辑
 	 * @param role
 	 * @return
 	 */
 	@ApiOperation(value="角色-编辑", notes="角色-编辑")
-	@PutMapping(value = "/edit")
-	public Result<Role> edit(@RequestBody Role role) {
+	@PutMapping(value = "/changeRoleById")
+	public Result<Role> changeRoleById(@RequestBody Role role) {
 		Result<Role> result = new Result<>();
 		try {
-            roleService.updateByRoleId(role);
+            roleService.alterRoleById(role);
             result.success("编辑成功！");
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,17 +92,17 @@ public class RoleController {
 
 		return result;
 	}
-
+	
 	/**
 	 * 通过id删除
 	 * @param id
 	 * @return
 	 */
 	@ApiOperation(value="角色-通过id删除", notes="角色-通过id删除")
-	@DeleteMapping(value = "/delete")
-	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
+	@DeleteMapping(value = "/expurgateRole")
+	public Result<?> expurgateRole(@RequestParam(name="id",required=true) String id) {
 		try {
-			roleService.removeByRoleId(id);
+			roleService.dropRole(id);
 		} catch (Exception e) {
 		    e.printStackTrace();
 			log.error("删除失败", e.getMessage());
@@ -110,17 +110,17 @@ public class RoleController {
 		}
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 批量删除
 	 * @param ids
 	 * @return
 	 */
 	@ApiOperation(value="角色-批量删除", notes="角色-批量删除")
-	@DeleteMapping(value = "/deleteBatch")
-	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+	@DeleteMapping(value = "/expurgateRoleBatch")
+	public Result<?> expurgateRoleBatch(@RequestParam(name="ids",required=true) List<String> ids) {
         try {
-            roleService.removeByRoleIds(ids);
+            roleService.dropRoleBatch(ids);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("删除失败", e.getMessage());
@@ -128,17 +128,17 @@ public class RoleController {
         }
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 通过id查询
 	 * @param id
 	 * @return
 	 */
 	@ApiOperation(value="角色-通过id查询", notes="角色-通过id查询")
-	@GetMapping(value = "/queryById")
-	public Result<Role> queryById(@RequestParam(name="id",required=true) String id) {
+	@GetMapping(value = "/getRoleById")
+	public Result<Role> getRoleById(@RequestParam(name="id",required=true) String id) {
 		Result<Role> result = new Result<>();
-		Role role = roleService.getByRoleId(id);
+		Role role = roleService.findRoleById(id);
         result.setResult(role);
         result.setSuccess(true);
 		return result;

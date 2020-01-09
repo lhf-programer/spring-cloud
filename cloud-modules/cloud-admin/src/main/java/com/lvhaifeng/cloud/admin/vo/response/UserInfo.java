@@ -19,5 +19,10 @@ public class UserInfo {
      */
     private String roleName;
 
-    private List<Menu> menusList;
+    private List<MenuInfo> menusList;
+
+    /**
+     * 描述
+     */
+    private String description;
 }

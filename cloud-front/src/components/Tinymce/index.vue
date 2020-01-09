@@ -5,7 +5,6 @@
 </template>
 
 <script>
-    // import { getToken, upload } from 'api/qiniu'; // 七牛
   export default {
         name: 'tinymce',
         props: {

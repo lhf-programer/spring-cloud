@@ -6,6 +6,7 @@ import com.lvhaifeng.cloud.admin.entity.RoleResource;
 import com.lvhaifeng.cloud.admin.mapper.MenuMapper;
 import com.lvhaifeng.cloud.admin.service.IMenuService;
 import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
+import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
@@ -130,7 +131,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      * @return: java.util.List<com.lvhaifeng.cloud.admin.entity.Menu>
      */
     @Override
-    public List<Menu> getMenuByRoleId(String id) {
+    public List<MenuInfo> getMenuByRoleId(String id) {
         return menuMapper.selectMenuByRoleId(id, "0");
     }
 }
