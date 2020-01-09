@@ -14,25 +14,25 @@
         align="center"
         width="50"
       />
-    <el-table-column width="200" align="center" label="姓名"> <template scope="scope">
+    <el-table-column width="200" align="center" label="姓名"> <template slot-scope="scope">
         <span>{{scope.row.name}}</span>
       </template> </el-table-column>
-    <el-table-column width="110" align="center" label="账户"> <template scope="scope">
+    <el-table-column width="110" align="center" label="账户"> <template slot-scope="scope">
             <span>{{scope.row.username}}</span>
           </template> </el-table-column>
-    <el-table-column width="110" align="center" label="性别"> <template scope="scope">
+    <el-table-column width="110" align="center" label="性别"> <template slot-scope="scope">
             <span>{{scope.row.sex}}</span>
           </template> </el-table-column>
-    <el-table-column width="300" align="center" label="备注"> <template scope="scope">
+    <el-table-column width="300" align="center" label="备注"> <template slot-scope="scope">
             <span>{{scope.row.description}}</span>
           </template> </el-table-column>
-    <el-table-column width="180" align="center" label="最后时间"> <template scope="scope">
+    <el-table-column width="180" align="center" label="最后时间"> <template slot-scope="scope">
           <span>{{scope.row.updTime}}</span>
         </template> </el-table-column>
-    <el-table-column width="200" align="center" label="最后更新人"> <template scope="scope">
+    <el-table-column width="200" align="center" label="最后更新人"> <template slot-scope="scope">
             <span>{{scope.row.updName}}</span>
           </template> </el-table-column>
-    <el-table-column align="center" label="操作" width="150"> <template scope="scope">
+    <el-table-column align="center" label="操作" width="150"> <template slot-scope="scope">
         <el-button v-if="userManager_btn_edit" size="small" type="success" @click="handleUpdate(scope.row)">编辑
         </el-button>
         <el-button v-if="userManager_btn_del" size="small" type="danger" @click="handleDelete(scope.row)">删除
