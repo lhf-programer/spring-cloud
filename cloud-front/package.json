@@ -81,7 +81,8 @@
     "webpack-dev-middleware": "2.0.6",
     "webpack-hot-middleware": "2.18.0",
     "webpack-merge": "4.1.0",
-	  "babel-polyfill": "^6.22.0"
+    "babel-polyfill": "^6.22.0",
+    "mem": "4.0.0"
   },
   "engines": {
     "node": ">= 4.0.0",
