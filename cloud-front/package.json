@@ -48,10 +48,10 @@
     "copy-webpack-plugin": "4.0.1",
     "cross-env": "5.0.1",
     "css-loader": "0.28.4",
-    "eslint": "4.18.2",
+    "eslint": "6.0.0",
     "eslint-friendly-formatter": "3.0.0",
     "eslint-import-resolver-webpack": "0.9.0",
-    "eslint-loader": "2.1.2",
+    "eslint-loader": "2.2.1",
     "eslint-plugin-html": "3.0.0",
     "eslint-plugin-import": "2.19.1",
     "eventsource-polyfill": "0.9.6",
@@ -81,8 +81,7 @@
     "webpack-dev-middleware": "2.0.6",
     "webpack-hot-middleware": "2.18.0",
     "webpack-merge": "4.1.0",
-    "babel-polyfill": "^6.22.0",
-    "js-yaml": "3.13.1"
+    "babel-polyfill": "^6.22.0"
   },
   "engines": {
     "node": ">= 4.0.0",
