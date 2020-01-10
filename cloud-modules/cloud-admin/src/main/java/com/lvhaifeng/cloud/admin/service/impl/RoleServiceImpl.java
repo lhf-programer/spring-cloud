@@ -5,6 +5,7 @@ import com.lvhaifeng.cloud.admin.mapper.RoleMapper;
 import com.lvhaifeng.cloud.admin.service.IRoleService;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
+import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -27,8 +29,8 @@ import java.util.Collection;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<Role> findRolePageList(Role role, Integer pageNo, Integer pageSize) {
-        QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
+    public IPage<Role> findRolePageList(Role role, Integer pageNo, Integer pageSize, HttpServletRequest req) {
+        QueryWrapper<Role> queryWrapper = QueryGenerator.initQueryWrapper(role, req.getParameterMap());
         Page<Role> page = new Page<>(pageNo, pageSize);
         IPage<Role> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;

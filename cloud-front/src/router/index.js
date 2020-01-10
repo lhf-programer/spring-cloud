@@ -69,17 +69,23 @@ export default new Router({
 });
 
 export const asyncRouterMap = [{
-  path: '/system',
+  path: '/admin',
   component: Layout,
   name: '系统管理配置',
   icon: 'setting',
-  authority: '/system',
+  authority: '/admin',
   children: [{
-    path: '/system/user',
+    path: '/admin/user',
     icon: 'fa-user',
     component: _import('admin/user/index'),
     name: '用户管理',
-    authority: '/system/user'
+    authority: '/admin/user'
+  },{
+    path: '/admin/role',
+    icon: 'fa-user',
+    component: _import('admin/role/index'),
+    name: '角色管理',
+    authority: '/admin/role'
   }]
 },
 {

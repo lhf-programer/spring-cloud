@@ -9,4 +9,9 @@ public class CommonConstant {
     public static final Integer SC_OK_200 = 200;
     public static final Integer SC_INTERNAL_SERVER_ERROR_500 = 500;
     public static final Integer SC_CLOUD_NO_AUTHZ = 301;
+
+    /**
+     * 字典翻译文本后缀
+     */
+    public static final String DICT_TEXT_SUFFIX = "_dictText";
 }

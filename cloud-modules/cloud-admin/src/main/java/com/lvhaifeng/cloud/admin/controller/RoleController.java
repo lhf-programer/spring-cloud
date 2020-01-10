@@ -46,7 +46,7 @@ public class RoleController {
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
         Result<IPage<Role>> result = new Result<>();
-		IPage<Role> pageList = roleService.findRolePageList(role, pageNo, pageSize);
+		IPage<Role> pageList = roleService.findRolePageList(role, pageNo, pageSize, req);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
