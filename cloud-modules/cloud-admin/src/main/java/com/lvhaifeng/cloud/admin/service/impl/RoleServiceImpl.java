@@ -7,6 +7,7 @@ import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.BeanUtils;
@@ -18,12 +19,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Arrays;
 
 /**
  * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2020-01-09 14:37
+ * @Date: 2020-01-11 16:39
  */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
@@ -58,17 +59,17 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean dropRole(Serializable id) {
+    public boolean dropRoleById(Serializable id) {
         return super.removeById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean dropRoleBatch(Collection<? extends Serializable> ids) {
-        if(ids.isEmpty()) {
+    public boolean dropRoleBatch(String ids) {
+        if(StringUtils.isBlank(ids)) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
-            return super.removeByIds(ids);
+            return super.removeByIds(Arrays.asList(ids.split(",")));
         }
     }
 

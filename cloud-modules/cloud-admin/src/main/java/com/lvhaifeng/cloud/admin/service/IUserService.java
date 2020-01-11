@@ -20,5 +20,5 @@ public interface IUserService extends IService<User> {
     boolean removeByUserId(Serializable id);
     boolean removeByUserIds(Collection<? extends Serializable> ids);
     User getByUserId(Serializable id);
-    UserInfo findUserInfoByToken(String token);
+    UserInfo findUserInfoByToken(String token) throws Exception;
 }

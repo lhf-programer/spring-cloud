@@ -3,6 +3,7 @@ package com.lvhaifeng.cloud.auth.server.modules.user.exception;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
  
@@ -29,7 +30,11 @@ public class OauthExceptionSerializer extends StdSerializer<OauthException> {
 
         gen.writeStartObject();
         gen.writeStringField("error", String.valueOf(value.getHttpErrorCode()));
-        gen.writeStringField("message", value.getMessage());
+        if (value.getHttpErrorCode() == HttpStatus.BAD_REQUEST.value()) {
+            gen.writeStringField("message", "用户名或密码错误");
+        } else {
+            gen.writeStringField("message", value.getMessage());
+        }
         gen.writeStringField("path", request.getServletPath());
         gen.writeStringField("timestamp", String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.ofHours(8)).toEpochMilli()));
         if (value.getAdditionalInformation()!=null) {

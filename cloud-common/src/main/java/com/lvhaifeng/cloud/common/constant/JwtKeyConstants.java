@@ -9,4 +9,5 @@ public class JwtKeyConstants {
     public static final String JWT_KEY_ID = "id";
     public static final String JWT_KEY_NAME = "name";
     public static final String JWT_KEY_EXPIRE = "expire";
+    public static final String JWT_KEY_CODE = "code";
 }

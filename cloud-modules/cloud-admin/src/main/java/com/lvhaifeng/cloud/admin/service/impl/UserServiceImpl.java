@@ -114,39 +114,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @return: com.lvhaifeng.cloud.admin.vo.response.UserInfo
      */
     @Override
-    public UserInfo findUserInfoByToken(String token) {
-        try {
-            UserInfo userInfo = new UserInfo();
+    public UserInfo findUserInfoByToken(String token) throws Exception {
+        UserInfo userInfo = new UserInfo();
 
-            AuthInfo authInfo = authUserService.getInfoFromToken(token);
-            User user = baseMapper.selectById(authInfo.getId());
-            userInfo.setName(user.getUsername());
+        AuthInfo authInfo = authUserService.getInfoFromToken(token);
+        User user = baseMapper.selectById(authInfo.getId());
+        userInfo.setName(user.getUsername());
 
-            QueryWrapper queryRoleWrapper = new QueryWrapper();
-            queryRoleWrapper.eq("user_id", user.getId());
-            // 查询所有用户角色
-            List<UserRole> userRoles = userRoleService.list(queryRoleWrapper);
-            StringBuilder roleNames = new StringBuilder();
-            List<MenuInfo> menus = new ArrayList<>();
+        QueryWrapper queryRoleWrapper = new QueryWrapper();
+        queryRoleWrapper.eq("user_id", user.getId());
+        // 查询所有用户角色
+        List<UserRole> userRoles = userRoleService.list(queryRoleWrapper);
+        StringBuilder roleNames = new StringBuilder();
+        List<MenuInfo> menus = new ArrayList<>();
 
-            userRoles.forEach(userRole -> {
-                // 查询角色
-                Role role = roleService.findRoleById(userRole.getRoleId());
-                roleNames.append(role.getName() + ",");
-                List<MenuInfo> menuByRoleId = menuService.getMenuByRoleId(role.getId());
-                menus.addAll(menuByRoleId);
-            });
-            // 用户权限菜单
-            userInfo.setMenusList(menus);
-            // 用户角色名称
-            userInfo.setRoleName(StringUtils.isNotBlank(roleNames.toString())?roleNames.toString().substring(0, roleNames.toString().length() - 1):"");
-            // 描述
-            userInfo.setDescription(user.getDescription());
+        userRoles.forEach(userRole -> {
+            // 查询角色
+            Role role = roleService.findRoleById(userRole.getRoleId());
+            roleNames.append(role.getName() + ",");
+            List<MenuInfo> menuByRoleId = menuService.getMenuByRoleId(role.getId());
+            menus.addAll(menuByRoleId);
+        });
+        // 用户权限菜单
+        userInfo.setMenusList(menus);
+        // 用户角色名称
+        userInfo.setRoleName(StringUtils.isNotBlank(roleNames.toString())?roleNames.toString().substring(0, roleNames.toString().length() - 1):"");
+        // 描述
+        userInfo.setDescription(user.getDescription());
 
-            return userInfo;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new NonLoginException("查询用户信息失败");
-        }
+        return userInfo;
     }
 }

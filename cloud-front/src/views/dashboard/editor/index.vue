@@ -63,9 +63,6 @@
 		</el-row>
 
 		<el-row :gutter="20">
-			<el-col :span="15">
-				<line-chart></line-chart>
-			</el-col>
 			<el-col :span="9">
 				<todo-list></todo-list>
 			</el-col>
@@ -79,12 +76,11 @@
 	import panThumb from 'components/PanThumb';
 	import pieChart from './pieChart';
 	import barChart from './barChart';
-	import lineChart from './lineChart';
 	import countTo from 'vue-count-to';
 	import todoList from 'components/TodoList';
 	export default {
 	  name: 'dashboard-editor',
-	  components: { panThumb, countTo, pieChart, lineChart, barChart, todoList },
+	  components: { panThumb, countTo, pieChart, barChart, todoList },
 	  data() {
     return {
 	      statisticsData: {

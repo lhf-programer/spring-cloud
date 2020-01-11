@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Role;
@@ -19,7 +18,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2020-01-09 14:37
+ * @Date: 2020-01-11 16:39
  */
 @Slf4j
 @Api(tags="角色")
@@ -99,10 +98,10 @@ public class RoleController {
 	 * @return
 	 */
 	@ApiOperation(value="角色-通过id删除", notes="角色-通过id删除")
-	@DeleteMapping(value = "/expurgateRole")
-	public Result<?> expurgateRole(@RequestParam(name="id",required=true) String id) {
+	@DeleteMapping(value = "/expurgateRoleById")
+	public Result<?> expurgateRoleById(@RequestParam(name="id",required=true) String id) {
 		try {
-			roleService.dropRole(id);
+			roleService.dropRoleById(id);
 		} catch (Exception e) {
 		    e.printStackTrace();
 			log.error("删除失败", e.getMessage());
@@ -118,7 +117,7 @@ public class RoleController {
 	 */
 	@ApiOperation(value="角色-批量删除", notes="角色-批量删除")
 	@DeleteMapping(value = "/expurgateRoleBatch")
-	public Result<?> expurgateRoleBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+	public Result<?> expurgateRoleBatch(@RequestParam(name="ids",required=true) String ids) {
         try {
             roleService.dropRoleBatch(ids);
         } catch (Exception e) {

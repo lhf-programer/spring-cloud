@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import router from '@/router'
 import { getToken } from '@/utils/auth'
 
 // 格式: Basic cloud:cloud
 const clientToken = "Basic Y2xvdWQ6Y2xvdWQ="
+const loginUrl = "/api/auth/oauth/token"
 
 // 创建请求实列
 const service = axios.create({
@@ -20,7 +20,7 @@ service.interceptors.request.use(
     if (store.getters.token) {
       // 携带用户 token
       config.headers['Authorization'] = getToken()
-    } else if(config.url === '/api/auth/oauth/token') {
+    } else if(config.url === loginUrl) {
       // 携带登录认证客户端 token
       config.headers['Authorization'] = clientToken
     }
@@ -47,7 +47,8 @@ service.interceptors.response.use(
      * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中
      */
     const res = response.data;
-    if (response.status === 401 || res.status === 40101) {
+
+    if (response.status === 401) {
       MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
         confirmButtonText: '重新登录',
         cancelButtonText: '取消',
@@ -59,58 +60,24 @@ service.interceptors.response.use(
       })
       return Promise.reject('error');
     }
-    if (res.status === 40301) {
-      Message({
-        message: '当前用户无相关操作权限！',
-        type: 'error',
-        duration: 5 * 1000
-      });
-      return Promise.reject('error');
-    }
-    if (res.status === 40001) {
-      Message({
-        message: '账户或密码错误！',
-        type: 'warning'
-      });
-      return Promise.reject('error');
-    }
-    if (response.status !== 200 && res.status !== 200) {
+    if (response.status !== 200 || res.code !== 200) {
       Message({
         message: res.message,
         type: 'error',
         duration: 5 * 1000
       });
     } else {
-      return response.data;
+      return res;
     }
   },
   error => {
-    console.log('err', error.response) // for debug
-    const { response } = error
-    if(!(response.status === 403 || response.status === 401 )){
-      Message({
-        message: response.data,
-        type: 'error',
-        duration: 3 * 1000
-      })
-    }
-    if (response.status === 401 || response.status === 403) {
-      let redirect = "/";
-      if(router.currentRoute.fullPath){
-        redirect = decodeURI(router.currentRoute.fullPath)
-        let n = router.currentRoute.fullPath.indexOf("redirect=")
-        if(n != -1){
-          redirect = redirect.substring(n+9,redirect.length)
-          redirect = "/" + redirect
-        }
-      }
-      router.replace({
-        path: '/409',
-        query: { redirect:redirect }
-      }) 
-    } else {
-      return Promise.reject(error)
-    }
+    console.log(error.response); // for debug
+    Message({
+      message: error.response.data.message,
+      type: 'error',
+      duration: 5 * 1000
+    });
+    return Promise.reject(error);
   }
 )
 

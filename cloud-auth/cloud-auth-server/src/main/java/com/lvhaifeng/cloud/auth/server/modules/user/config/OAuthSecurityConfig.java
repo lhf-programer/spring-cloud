@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
@@ -168,6 +169,7 @@ public class OAuthSecurityConfig extends AuthorizationServerConfigurerAdapter {
                 additionalInformation.put(JwtKeyConstants.JWT_KEY_EXPIRE, localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
                 additionalInformation.put(JwtKeyConstants.JWT_KEY_ID, user.getId());
                 additionalInformation.put(JwtKeyConstants.JWT_KEY_NAME, user.getUsername());
+                additionalInformation.put(JwtKeyConstants.JWT_KEY_CODE, HttpStatus.OK.value());
                 ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInformation);
                 OAuth2AccessToken enhancedToken = super.enhance(accessToken, authentication);
 

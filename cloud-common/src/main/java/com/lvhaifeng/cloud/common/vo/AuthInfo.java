@@ -15,15 +15,17 @@ public class AuthInfo {
     private String id;
     private String name;
     private LocalDateTime expireTime;
+    private String code;
     private Map<String, String> otherInfo;
 
     public AuthInfo() {
     }
 
-    public AuthInfo(String id, String name, LocalDateTime expireTime, Map<String, String> otherInfo) {
+    public AuthInfo(String id, String name, LocalDateTime expireTime, String code, Map<String, String> otherInfo) {
         this.id = id;
         this.name = name;
         this.expireTime = expireTime;
+        this.code = code;
         this.otherInfo = otherInfo;
     }
 

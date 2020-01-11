@@ -34,6 +34,7 @@ public class AuthHelper {
                 .claim(JwtKeyConstants.JWT_KEY_ID, authInfo.getId())
                 .claim(JwtKeyConstants.JWT_KEY_NAME, authInfo.getName())
                 .claim(JwtKeyConstants.JWT_KEY_EXPIRE, LocalDateTime.now().plusSeconds(expire).toInstant(ZoneOffset.of("+8")).toEpochMilli())
+                .claim(JwtKeyConstants.JWT_KEY_CODE, authInfo.getCode())
                 .signWith(SignatureAlgorithm.RS256, RsaKeyUtils.getPrivateKey(priKey))
                 .compact();
         return compactJws;
@@ -54,7 +55,8 @@ public class AuthHelper {
                 .setSubject(authInfo.getId())
                 .claim(JwtKeyConstants.JWT_KEY_ID, authInfo.getId())
                 .claim(JwtKeyConstants.JWT_KEY_NAME, authInfo.getName())
-                .claim(JwtKeyConstants.JWT_KEY_EXPIRE, expire.toInstant(ZoneOffset.of("+8")).toEpochMilli());
+                .claim(JwtKeyConstants.JWT_KEY_EXPIRE, expire.toInstant(ZoneOffset.of("+8")).toEpochMilli())
+                .claim(JwtKeyConstants.JWT_KEY_CODE, authInfo.getCode());
         if (otherInfo != null) {
             for (Map.Entry<String, String> entry : otherInfo.entrySet()) {
                 builder.claim(entry.getKey(), entry.getValue());
@@ -91,12 +93,12 @@ public class AuthHelper {
         Claims body = claimsJws.getBody();
         Map<String, String> otherInfo = new HashMap<>();
         for (Map.Entry entry : body.entrySet()) {
-            if (JwtKeyConstants.JWT_KEY_ID.equals(entry.getKey()) || JwtKeyConstants.JWT_KEY_NAME.equals(entry.getKey()) || JwtKeyConstants.JWT_KEY_EXPIRE.equals(entry.getKey())) {
+            if (JwtKeyConstants.JWT_KEY_ID.equals(entry.getKey()) || JwtKeyConstants.JWT_KEY_NAME.equals(entry.getKey()) || JwtKeyConstants.JWT_KEY_EXPIRE.equals(entry.getKey()) || JwtKeyConstants.JWT_KEY_CODE.equals(entry.getKey())) {
                 continue;
             }
             otherInfo.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
         }
-        return new AuthInfo(StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_ID)), StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_NAME)), Instant.ofEpochMilli(Long.parseLong(body.get(JwtKeyConstants.JWT_KEY_EXPIRE).toString())).atZone(ZoneOffset.ofHours(8)).toLocalDateTime(), otherInfo);
+        return new AuthInfo(StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_ID)), StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_NAME)), Instant.ofEpochMilli(Long.parseLong(body.get(JwtKeyConstants.JWT_KEY_EXPIRE).toString())).atZone(ZoneOffset.ofHours(8)).toLocalDateTime(), StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_CODE)), otherInfo);
     }
 
 }

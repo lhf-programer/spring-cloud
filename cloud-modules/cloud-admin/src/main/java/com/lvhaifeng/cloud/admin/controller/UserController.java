@@ -77,7 +77,7 @@ public class UserController {
 	@IgnoreClientToken
 	@IgnoreUserToken
 	@GetMapping("/getUserInfoByToken")
-	public Result<UserInfo> getUserInfoByToken(@RequestParam("token") String token) {
+	public Result<UserInfo> getUserInfoByToken(@RequestParam("token") String token) throws Exception {
 		Result<UserInfo> result = new Result();
 		UserInfo userInfo = userService.findUserInfoByToken(token);
 		result.setResult(userInfo);

@@ -1,4 +1,4 @@
-import { get, post, postWithFromDate, put, del } from '@/utils/request'
+import { get, post, put, delWithParams } from '@/utils/request'
 
 const prefix = "/api/admin/"
 
@@ -14,14 +14,14 @@ export function changeRoleById(data) {
   return put(prefix + 'role/changeRoleById', data)
 }
 
-export function expurgateRole(data) {
-  return del(prefix + 'role/expurgateRole', data)
+export function expurgateRoleById(data) {
+  return delWithParams(prefix + 'role/expurgateRoleById', data)
 }
 
 export function expurgateRoleBatch(data) {
-  return del(prefix + 'role/expurgateRoleBatch', data)
+  return delWithParams(prefix + 'role/expurgateRoleBatch', data)
 }
 
 export function getRoleById(data) {
-  return get(prefix + 'role/getRoleById?id=' + data, null)
+  return get(prefix + 'role/getRoleById', data)
 }
