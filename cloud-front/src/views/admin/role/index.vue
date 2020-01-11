@@ -6,7 +6,7 @@
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
         <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
         <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" @click="handleDeleteBatch" type="primary" icon="delete">删除</el-button>
+        <el-button class="filter-item" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
     </div>
 
     <!-- table区域-begin -->
