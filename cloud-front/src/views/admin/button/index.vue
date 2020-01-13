@@ -2,7 +2,9 @@
   <div class="app-container calendar-list-container">
     <!-- 查询区域 -->
     <div class="filter-container">
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入角色名称" v-model="listQuery.name"></el-input>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入按钮路径" v-model="listQuery.url"></el-input>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入按钮名称" v-model="listQuery.name"></el-input>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入所属菜单id" v-model="listQuery.menuId"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
         <span>创建时间</span>
         <el-date-picker
@@ -12,8 +14,8 @@
           placeholder="选择日期时间">
         </el-date-picker>
         <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-        <el-button class="filter-item" v-if="role_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
-        <el-button class="filter-item" v-if="role_btn_remove" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
+        <el-button class="filter-item" v-if="button_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
+        <el-button class="filter-item" v-if="button_btn_remove" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
     </div>
 
     <!-- table区域-begin -->
@@ -37,8 +39,14 @@
           align="center"
           width="50"
         />
-      <el-table-column align="center" sortable="custom" prop="name" label="角色名称"> <template slot-scope="scope">
+      <el-table-column align="center" sortable="custom" prop="url" label="按钮路径"> <template slot-scope="scope">
+            <span>{{scope.row.url}}</span>
+          </template> </el-table-column>
+      <el-table-column align="center" sortable="custom" prop="name" label="按钮名称"> <template slot-scope="scope">
             <span>{{scope.row.name}}</span>
+          </template> </el-table-column>
+      <el-table-column align="center" sortable="custom" prop="menuId" label="所属菜单id"> <template slot-scope="scope">
+            <span>{{scope.row.menuId}}</span>
           </template> </el-table-column>
       <el-table-column align="center" sortable="custom" prop="description" label="描述"> <template slot-scope="scope">
             <span>{{scope.row.description}}</span>
@@ -47,9 +55,9 @@
             <span>{{scope.row.crtTime}}</span>
           </template> </el-table-column>
       <el-table-column align="center" label="操作" width="150"> <template slot-scope="scope">
-          <el-button size="small" v-if="role_btn_edit" type="success" @click="handleUpdate(scope.row)">编辑
+          <el-button size="small" v-if="button_btn_edit" type="success" @click="handleUpdate(scope.row)">编辑
           </el-button>
-          <el-button size="small" v-if="role_btn_remove" type="danger" @click="handleDelete(scope.row)">删除
+          <el-button size="small" v-if="button_btn_remove" type="danger" @click="handleDelete(scope.row)">删除
           </el-button>
         </template> </el-table-column>
     </el-table>
@@ -60,8 +68,14 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-        <el-form-item label="角色名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入角色名称"></el-input>
+        <el-form-item label="按钮路径" prop="url">
+          <el-input v-model="form.url" placeholder="请输入按钮路径"></el-input>
+        </el-form-item>
+        <el-form-item label="按钮名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入按钮名称"></el-input>
+        </el-form-item>
+        <el-form-item label="所属菜单id" prop="menuId">
+          <el-input v-model="form.menuId" placeholder="请输入所属菜单id"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="form.description" placeholder="请输入描述"></el-input>
@@ -86,29 +100,57 @@
 
 <script>
   import {
-    getRolePageList,
-    generateRole,
-    changeRoleById,
-    expurgateRoleById,
-    expurgateRoleBatch,
-    getRoleById
-  } from 'api/admin/role';
+    getButtonPageList,
+    generateButton,
+    changeButtonById,
+    expurgateButtonById,
+    expurgateButtonBatch,
+    getButtonById
+  } from 'api/admin/button';
   import { mapGetters } from 'vuex';
 
   export default {
-    name: 'role',
+    name: 'button',
     data() {
       return {
         form: {
+          url: undefined,
           name: undefined,
+          menuId: undefined,
           description: undefined,
           crtTime: undefined,
         },
         rules: {
+          url: [
+            {
+              required: true,
+              message: '请输入按钮路径',
+              trigger: 'blur'
+            },
+            {
+              min: 3,
+              max: 20,
+              message: '长度在 3 到 20 个字符',
+              trigger: 'blur'
+            }
+          ],
           name: [
             {
               required: true,
-              message: '请输入角色名称',
+              message: '请输入按钮名称',
+              trigger: 'blur'
+            },
+            {
+              min: 3,
+              max: 20,
+              message: '长度在 3 到 20 个字符',
+              trigger: 'blur'
+            }
+          ],
+          menuId: [
+            {
+              required: true,
+              message: '请输入所属菜单id',
               trigger: 'blur'
             },
             {
@@ -136,9 +178,9 @@
           sortProp: undefined,
           sortType: undefined
         },
-        role_btn_add: false,
-        role_btn_edit: false,
-        role_btn_remove: false,
+        button_btn_add: false,
+        button_btn_edit: false,
+        button_btn_remove: false,
         dialogFormVisible: false,
         dialogStatus: '',
         textMap: {
@@ -150,9 +192,9 @@
     },
     created() {
       this.getList();
-      this.role_btn_edit = this.buttons['/admin/role/edit'] || false;
-      this.role_btn_del = this.buttons['/admin/role/remove'] || false;
-      this.role_btn_add = this.buttons['/admin/role/add'] || false;
+      this.button_btn_edit = this.buttons['/admin/button/edit'] || false;
+      this.button_btn_del = this.buttons['/admin/button/remove'] || false;
+      this.button_btn_add = this.buttons['/admin/button/add'] || false;
     },
     computed: {
       ...mapGetters([
@@ -162,7 +204,7 @@
     methods: {
       getList() {
         this.listLoading = true;
-        getRolePageList(this.listQuery).then(response => {
+        getButtonPageList(this.listQuery).then(response => {
           this.list = response.result.records;
           this.total = response.result.total;
           this.listLoading = false;
@@ -184,7 +226,7 @@
         this.dialogFormVisible = true;
       },
       handleUpdate(row) {
-        getRoleById({id: row.id})
+        getButtonById({id: row.id})
           .then(response => {
             this.form = response.result;
             this.dialogFormVisible = true;
@@ -198,7 +240,7 @@
           type: 'warning'
         })
           .then(() => {
-            expurgateRoleById({id: row.id})
+            expurgateButtonById({id: row.id})
               .then(() => {
                 this.$notify({
                   title: '成功',
@@ -263,7 +305,7 @@
         const set = this.$refs;
         set[formName].validate(valid => {
           if (valid) {
-            generateRole(this.form)
+            generateButton(this.form)
               .then(() => {
                 this.dialogFormVisible = false;
                   this.getList();
@@ -284,7 +326,7 @@
         set[formName].validate(valid => {
           if (valid) {
             this.dialogFormVisible = false;
-            changeRoleById(this.form).then(() => {
+            changeButtonById(this.form).then(() => {
               this.dialogFormVisible = false;
               this.getList();
               this.$notify({
@@ -301,7 +343,9 @@
       },
       resetTemp() {
         this.form = {
+          url: undefined,
           name: undefined,
+          menuId: undefined,
           description: undefined,
           crtTime: undefined,
         };

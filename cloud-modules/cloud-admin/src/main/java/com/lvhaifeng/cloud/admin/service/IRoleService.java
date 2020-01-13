@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2020-01-11 16:39
+ * @Date: 2020-01-13 13:49
  */
 public interface IRoleService extends IService<Role> {
     IPage<Role> findRolePageList(Role role, Integer pageNo, Integer pageSize, HttpServletRequest req);

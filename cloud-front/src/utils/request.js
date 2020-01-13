@@ -77,6 +77,12 @@ service.interceptors.response.use(
       type: 'error',
       duration: 5 * 1000
     });
+    if (response.status === 401 && response.data.code === 40101) {
+      router.replace({
+        path: 'login',
+        query: { redirect: router.currentRoute.fullPath }
+      })
+    }
     return Promise.reject(error);
   }
 )

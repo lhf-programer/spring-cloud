@@ -5,19 +5,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * @Description: 按钮
  * @Author: haifeng.lv
- * @Date: 2020-01-06 14:20
+ * @Date: 2020-01-13 14:20
  */
 public interface IButtonService extends IService<Button> {
-    IPage<Button> pageButtonList(Button button, Integer pageNo, Integer pageSize);
-    boolean saveButton(ResourceInfo resourceInfo);
-    boolean updateByButtonId(ResourceInfo resourceInfo);
-    boolean removeByButtonId(Serializable id);
-    boolean removeByButtonIds(Collection<? extends Serializable> ids);
-    Button getByButtonId(Serializable id);
+    IPage<Button> findButtonPageList(Button button, Integer pageNo, Integer pageSize, HttpServletRequest req);
+    boolean createButton(ResourceInfo resourceInfo);
+    boolean alterButtonById(ResourceInfo resourceInfo);
+    boolean dropButtonById(Serializable id);
+    boolean dropButtonBatch(String ids);
+    Button findButtonById(Serializable id);
 }

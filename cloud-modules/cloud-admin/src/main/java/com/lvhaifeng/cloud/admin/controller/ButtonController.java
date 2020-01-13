@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
@@ -21,7 +20,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 按钮
  * @Author: haifeng.lv
- * @Date: 2020-01-06 14:20
+ * @Date: 2020-01-13 14:20
  */
 @Slf4j
 @Api(tags="按钮")
@@ -32,7 +31,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 public class ButtonController {
 	@Autowired
 	private IButtonService buttonService;
-
+	
 	/**
 	 * 分页列表查询
 	 * @param button
@@ -42,29 +41,29 @@ public class ButtonController {
 	 * @return
 	 */
 	@ApiOperation(value="按钮-分页列表查询", notes="按钮-分页列表查询")
-	@GetMapping(value = "/list")
-	public Result<IPage<Button>> queryPageList(Button button,
+	@GetMapping(value = "/getButtonPageList")
+	public Result<IPage<Button>> getButtonPageList(Button button,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
         Result<IPage<Button>> result = new Result<>();
-		IPage<Button> pageList = buttonService.pageButtonList(button, pageNo, pageSize);
+		IPage<Button> pageList = buttonService.findButtonPageList(button, pageNo, pageSize, req);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-
+	
 	/**
 	 * 添加
 	 * @param resourceInfo
 	 * @return
 	 */
 	@ApiOperation(value="按钮-添加", notes="按钮-添加")
-	@PostMapping(value = "/add")
-	public Result<Button> add(@RequestBody ResourceInfo resourceInfo) {
+	@PostMapping(value = "/generateButton")
+	public Result<Button> generateButton(@RequestBody ResourceInfo resourceInfo) {
 		Result<Button> result = new Result<>();
 		try {
-			buttonService.saveButton(resourceInfo);
+			buttonService.createButton(resourceInfo);
 			result.success("添加成功！");
 		} catch (Exception e) {
             e.printStackTrace();
@@ -73,18 +72,18 @@ public class ButtonController {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 编辑
 	 * @param resourceInfo
 	 * @return
 	 */
 	@ApiOperation(value="按钮-编辑", notes="按钮-编辑")
-	@PutMapping(value = "/edit")
-	public Result<Button> edit(@RequestBody ResourceInfo resourceInfo) {
+	@PutMapping(value = "/changeButtonById")
+	public Result<Button> changeButtonById(@RequestBody ResourceInfo resourceInfo) {
 		Result<Button> result = new Result<>();
 		try {
-            buttonService.updateByButtonId(resourceInfo);
+            buttonService.alterButtonById(resourceInfo);
             result.success("编辑成功！");
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,17 +93,17 @@ public class ButtonController {
 
 		return result;
 	}
-
+	
 	/**
 	 * 通过id删除
 	 * @param id
 	 * @return
 	 */
 	@ApiOperation(value="按钮-通过id删除", notes="按钮-通过id删除")
-	@DeleteMapping(value = "/delete")
-	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
+	@DeleteMapping(value = "/expurgateButtonById")
+	public Result<?> expurgateButtonById(@RequestParam(name="id",required=true) String id) {
 		try {
-			buttonService.removeByButtonId(id);
+			buttonService.dropButtonById(id);
 		} catch (Exception e) {
 		    e.printStackTrace();
 			log.error("删除失败", e.getMessage());
@@ -112,17 +111,17 @@ public class ButtonController {
 		}
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 批量删除
 	 * @param ids
 	 * @return
 	 */
 	@ApiOperation(value="按钮-批量删除", notes="按钮-批量删除")
-	@DeleteMapping(value = "/deleteBatch")
-	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) List<String> ids) {
+	@DeleteMapping(value = "/expurgateButtonBatch")
+	public Result<?> expurgateButtonBatch(@RequestParam(name="ids",required=true) String ids) {
         try {
-            buttonService.removeByButtonIds(ids);
+            buttonService.dropButtonBatch(ids);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("删除失败", e.getMessage());
@@ -130,17 +129,17 @@ public class ButtonController {
         }
 		return Result.ok("删除成功!");
 	}
-
+	
 	/**
 	 * 通过id查询
 	 * @param id
 	 * @return
 	 */
 	@ApiOperation(value="按钮-通过id查询", notes="按钮-通过id查询")
-	@GetMapping(value = "/queryById")
-	public Result<Button> queryById(@RequestParam(name="id",required=true) String id) {
+	@GetMapping(value = "/getButtonById")
+	public Result<Button> getButtonById(@RequestParam(name="id",required=true) String id) {
 		Result<Button> result = new Result<>();
-		Button button = buttonService.getByButtonId(id);
+		Button button = buttonService.findButtonById(id);
         result.setResult(button);
         result.setSuccess(true);
 		return result;
