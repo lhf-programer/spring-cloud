@@ -86,6 +86,18 @@ export const asyncRouterMap = [{
     component: _import('admin/role/index'),
     name: '角色管理',
     authority: '/admin/role'
+  },{
+    path: '/admin/setting',
+    icon: 'setting',
+    component: _import('admin/menu/index'),
+    name: '菜单管理',
+    authority: '/admin/menu'
+  },{
+    path: '/admin/button',
+    icon: 'setting',
+    component: _import('admin/button/index'),
+    name: '按钮管理',
+    authority: '/admin/button'
   }]
 },
 {

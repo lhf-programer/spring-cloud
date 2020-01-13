@@ -1,11 +1,13 @@
-package ${basePackage}.${entityPackage}.service.impl;
+package ${javaPackage}.${entityPackage}.service.impl;
 
-import ${basePackage}.${entityPackage}.entity.${entityName};
-import ${basePackage}.${entityPackage}.mapper.${entityName}Mapper;
-import ${basePackage}.${entityPackage}.service.I${entityName}Service;
+import ${javaPackage}.${entityPackage}.entity.${entityName};
+import ${javaPackage}.${entityPackage}.mapper.${entityName}Mapper;
+import ${javaPackage}.${entityPackage}.service.I${entityName}Service;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
+import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.BeanUtils;
@@ -15,8 +17,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Arrays;
 
 /**
  * @Description: ${tableVo.ftlDescription}
@@ -27,8 +30,8 @@ import java.util.Collection;
 public class ${entityName}ServiceImpl extends ServiceImpl<${entityName}Mapper, ${entityName}> implements I${entityName}Service {
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<${entityName}> find${entityName}PageList(${entityName} ${entityName?uncap_first}, Integer pageNo, Integer pageSize) {
-        QueryWrapper<${entityName}> queryWrapper = new QueryWrapper<>();
+    public IPage<${entityName}> find${entityName}PageList(${entityName} ${entityName?uncap_first}, Integer pageNo, Integer pageSize, HttpServletRequest req) {
+        QueryWrapper<${entityName}> queryWrapper = QueryGenerator.initQueryWrapper(${entityName?uncap_first}, req.getParameterMap());
         Page<${entityName}> page = new Page<>(pageNo, pageSize);
         IPage<${entityName}> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;
@@ -56,17 +59,17 @@ public class ${entityName}ServiceImpl extends ServiceImpl<${entityName}Mapper, $
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean drop${entityName}(Serializable id) {
+    public boolean drop${entityName}ById(Serializable id) {
         return super.removeById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean drop${entityName}Batch(Collection<? extends Serializable> ids) {
-        if(ids.isEmpty()) {
+    public boolean drop${entityName}Batch(String ids) {
+        if(StringUtils.isBlank(ids)) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
-            return super.removeByIds(ids);
+            return super.removeByIds(Arrays.asList(ids.split(",")));
         }
     }
 

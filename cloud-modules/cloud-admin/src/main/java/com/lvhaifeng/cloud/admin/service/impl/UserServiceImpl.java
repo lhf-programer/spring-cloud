@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.admin.service.impl;
 
-import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.lvhaifeng.cloud.admin.entity.Role;
 import com.lvhaifeng.cloud.admin.entity.User;
 import com.lvhaifeng.cloud.admin.entity.UserRole;
@@ -12,11 +11,9 @@ import com.lvhaifeng.cloud.admin.service.IUserService;
 import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.admin.vo.response.UserInfo;
 import com.lvhaifeng.cloud.auth.user.service.AuthUserService;
-import com.lvhaifeng.cloud.common.auth.AuthHelper;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
-import com.lvhaifeng.cloud.common.error.ErrorCode;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
-import com.lvhaifeng.cloud.common.exception.auth.NonLoginException;
+import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
 import com.lvhaifeng.cloud.common.vo.AuthInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -30,15 +27,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2020-01-06 14:25
+ * @Date: 2020-01-13 14:37
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
@@ -53,8 +51,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<User> pageUserList(User user, Integer pageNo, Integer pageSize) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+    public IPage<User> findUserPageList(User user, Integer pageNo, Integer pageSize, HttpServletRequest req) {
+        QueryWrapper<User> queryWrapper = QueryGenerator.initQueryWrapper(user, req.getParameterMap());
         Page<User> page = new Page<>(pageNo, pageSize);
         IPage<User> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;
@@ -62,14 +60,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveUser(User user) {
+    public boolean createUser(User user) {
         EntityUtils.setDefaultValue(user);
         return super.save(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateByUserId(User user) {
+    public boolean alterUserById(User user) {
         User userEntity = baseMapper.selectById(user.getId());
         if(userEntity == null) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
@@ -82,22 +80,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeByUserId(Serializable id) {
+    public boolean dropUserById(Serializable id) {
         return super.removeById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeByUserIds(Collection<? extends Serializable> ids) {
-        if(ids.isEmpty()) {
+    public boolean dropUserBatch(String ids) {
+        if(StringUtils.isBlank(ids)) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
-            return super.removeByIds(ids);
+            return super.removeByIds(Arrays.asList(ids.split(",")));
         }
     }
 
     @Override
-    public User getByUserId(Serializable id) {
+    public User findUserById(Serializable id) {
         User user = super.getById(id);
         if (null == user) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);

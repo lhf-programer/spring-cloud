@@ -1,0 +1,27 @@
+import { get, post, put, delWithParams } from '@/utils/request'
+
+const prefix = "/api/${entityPackage}/"
+
+export function get${entityName}PageList(data) {
+  return get(prefix + '${entityName?uncap_first}/get${entityName}PageList', data)
+}
+
+export function generate${entityName}(data) {
+  return post(prefix + '${entityName?uncap_first}/generate${entityName}', data)
+}
+
+export function change${entityName}ById(data) {
+  return put(prefix + '${entityName?uncap_first}/change${entityName}ById', data)
+}
+
+export function expurgate${entityName}ById(data) {
+  return delWithParams(prefix + '${entityName?uncap_first}/expurgate${entityName}ById', data)
+}
+
+export function expurgate${entityName}Batch(data) {
+  return delWithParams(prefix + '${entityName?uncap_first}/expurgate${entityName}Batch', data)
+}
+
+export function get${entityName}ById(data) {
+  return get(prefix + '${entityName?uncap_first}/get${entityName}ById', data)
+}

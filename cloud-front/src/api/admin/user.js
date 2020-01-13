@@ -1,4 +1,4 @@
-import { get, post, postWithFromDate, put, del } from '@/utils/request'
+import { get, post, put, delWithParams } from '@/utils/request'
 
 const prefix = "/api/admin/"
 
@@ -6,26 +6,26 @@ export function getUserInfoByToken(data) {
   return get(prefix + 'user/getUserInfoByToken', data)
 }
 
-export function getAllMenus(data) {
-  return get(prefix + 'menu/getAllMenus', data)
+export function getUserPageList(data) {
+  return get(prefix + 'user/getUserPageList', data)
 }
 
-export function getPageUsers(data) {
-  return get(prefix + 'user/list', data)
+export function generateUser(data) {
+  return post(prefix + 'user/generateUser', data)
 }
 
-export function addUser(data) {
-  return post(prefix + 'user/add', data)
+export function changeUserById(data) {
+  return put(prefix + 'user/changeUserById', data)
 }
 
-export function editUser(data) {
-  return put(prefix + 'user/edit', data)
+export function expurgateUserById(data) {
+  return delWithParams(prefix + 'user/expurgateUserById', data)
 }
 
-export function delUser(data) {
-  return del(prefix + 'user/delete', data)
+export function expurgateUserBatch(data) {
+  return delWithParams(prefix + 'user/expurgateUserBatch', data)
 }
 
-export function getUser(data) {
-  return get(prefix + 'user/queryById', data)
+export function getUserById(data) {
+  return get(prefix + 'user/getUserById', data)
 }

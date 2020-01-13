@@ -2,11 +2,13 @@
   <div class="app-container calendar-list-container">
     <!-- 查询区域 -->
     <div class="filter-container">
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入角色名称" v-model="listQuery.name"></el-input>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入菜单路径" v-model="listQuery.url"></el-input>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入父菜单id" v-model="listQuery.parent"></el-input>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入菜单名称" v-model="listQuery.name"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
         <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-        <el-button class="filter-item" v-if="role_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
-        <el-button class="filter-item" v-if="role_btn_remove" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
+        <el-button class="filter-item" v-if="menu_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
+        <el-button class="filter-item" v-if="menu_btn_remove" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
     </div>
 
     <!-- table区域-begin -->
@@ -30,16 +32,22 @@
           align="center"
           width="50"
         />
-      <el-table-column align="center" sortable="custom" prop="name" label="角色名称"> <template slot-scope="scope">
+      <el-table-column align="center" sortable="custom" prop="url" label="菜单路径"> <template slot-scope="scope">
+            <span>{{scope.row.url}}</span>
+          </template> </el-table-column>
+      <el-table-column align="center" sortable="custom" prop="parent" label="父菜单id"> <template slot-scope="scope">
+            <span>{{scope.row.parent}}</span>
+          </template> </el-table-column>
+      <el-table-column align="center" sortable="custom" prop="name" label="菜单名称"> <template slot-scope="scope">
             <span>{{scope.row.name}}</span>
           </template> </el-table-column>
       <el-table-column align="center" sortable="custom" prop="description" label="描述"> <template slot-scope="scope">
             <span>{{scope.row.description}}</span>
           </template> </el-table-column>
       <el-table-column align="center" label="操作" width="150"> <template slot-scope="scope">
-          <el-button size="small" v-if="role_btn_edit" type="success" @click="handleUpdate(scope.row)">编辑
+          <el-button size="small" v-if="menu_btn_edit" type="success" @click="handleUpdate(scope.row)">编辑
           </el-button>
-          <el-button size="small" v-if="role_btn_remove" type="danger" @click="handleDelete(scope.row)">删除
+          <el-button size="small" v-if="menu_btn_remove" type="danger" @click="handleDelete(scope.row)">删除
           </el-button>
         </template> </el-table-column>
     </el-table>
@@ -50,8 +58,14 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-        <el-form-item label="角色名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入角色名称"></el-input>
+        <el-form-item label="菜单路径" prop="url">
+          <el-input v-model="form.url" placeholder="请输入菜单路径"></el-input>
+        </el-form-item>
+        <el-form-item label="父菜单id" prop="parent">
+          <el-input v-model="form.parent" placeholder="请输入父菜单id"></el-input>
+        </el-form-item>
+        <el-form-item label="菜单名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入菜单名称"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="form.description" placeholder="请输入描述"></el-input>
@@ -68,28 +82,56 @@
 
 <script>
   import {
-    getRolePageList,
-    generateRole,
-    changeRoleById,
-    expurgateRoleById,
-    expurgateRoleBatch,
-    getRoleById
-  } from 'api/admin/role';
+    getMenuPageList,
+    generateMenu,
+    changeMenuById,
+    expurgateMenuById,
+    expurgateMenuBatch,
+    getMenuById
+  } from 'api/admin/menu';
   import { mapGetters } from 'vuex';
 
   export default {
-    name: 'adminRole',
+    name: 'adminMenu',
     data() {
       return {
         form: {
+          url: undefined,
+          parent: undefined,
           name: undefined,
           description: undefined,
         },
         rules: {
+          url: [
+            {
+              required: true,
+              message: '请输入菜单路径',
+              trigger: 'blur'
+            },
+            {
+              min: 3,
+              max: 20,
+              message: '长度在 3 到 20 个字符',
+              trigger: 'blur'
+            }
+          ],
+          parent: [
+            {
+              required: true,
+              message: '请输入父菜单id',
+              trigger: 'blur'
+            },
+            {
+              min: 3,
+              max: 20,
+              message: '长度在 3 到 20 个字符',
+              trigger: 'blur'
+            }
+          ],
           name: [
             {
               required: true,
-              message: '请输入角色名称',
+              message: '请输入菜单名称',
               trigger: 'blur'
             },
             {
@@ -110,9 +152,9 @@
           sortProp: undefined,
           sortType: undefined
         },
-        role_btn_add: false,
-        role_btn_edit: false,
-        role_btn_remove: false,
+        menu_btn_add: false,
+        menu_btn_edit: false,
+        menu_btn_remove: false,
         dialogFormVisible: false,
         dialogStatus: '',
         textMap: {
@@ -124,9 +166,9 @@
     },
     created() {
       this.getList();
-      this.role_btn_edit = this.buttons['/admin/role/edit'] || false;
-      this.role_btn_remove = this.buttons['/admin/role/remove'] || false;
-      this.role_btn_add = this.buttons['/admin/role/add'] || false;
+      this.menu_btn_edit = this.buttons['/admin/menu/edit'] || false;
+      this.menu_btn_remove = this.buttons['/admin/menu/remove'] || false;
+      this.menu_btn_add = this.buttons['/admin/menu/add'] || false;
     },
     computed: {
       ...mapGetters([
@@ -136,7 +178,7 @@
     methods: {
       getList() {
         this.listLoading = true;
-        getRolePageList(this.listQuery).then(response => {
+        getMenuPageList(this.listQuery).then(response => {
           this.list = response.result.records;
           this.total = response.result.total;
           this.listLoading = false;
@@ -158,7 +200,7 @@
         this.dialogFormVisible = true;
       },
       handleUpdate(row) {
-        getRoleById({id: row.id})
+        getMenuById({id: row.id})
           .then(response => {
             this.form = response.result;
             this.dialogFormVisible = true;
@@ -172,7 +214,7 @@
           type: 'warning'
         })
           .then(() => {
-            expurgateRoleById({id: row.id})
+            expurgateMenuById({id: row.id})
               .then(() => {
                 this.$notify({
                   title: '成功',
@@ -237,7 +279,7 @@
         const set = this.$refs;
         set[formName].validate(valid => {
           if (valid) {
-            generateRole(this.form)
+            generateMenu(this.form)
               .then(() => {
                 this.dialogFormVisible = false;
                   this.getList();
@@ -258,7 +300,7 @@
         set[formName].validate(valid => {
           if (valid) {
             this.dialogFormVisible = false;
-            changeRoleById(this.form).then(() => {
+            changeMenuById(this.form).then(() => {
               this.dialogFormVisible = false;
               this.getList();
               this.$notify({
@@ -275,6 +317,8 @@
       },
       resetTemp() {
         this.form = {
+          url: undefined,
+          parent: undefined,
           name: undefined,
           description: undefined,
         };

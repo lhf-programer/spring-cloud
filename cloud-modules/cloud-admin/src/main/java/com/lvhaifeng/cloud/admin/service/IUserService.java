@@ -5,20 +5,20 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lvhaifeng.cloud.admin.vo.response.UserInfo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2020-01-06 14:25
+ * @Date: 2020-01-13 14:37
  */
 public interface IUserService extends IService<User> {
-    IPage<User> pageUserList(User user, Integer pageNo, Integer pageSize);
-    boolean saveUser(User user);
-    boolean updateByUserId(User user);
-    boolean removeByUserId(Serializable id);
-    boolean removeByUserIds(Collection<? extends Serializable> ids);
-    User getByUserId(Serializable id);
+    IPage<User> findUserPageList(User user, Integer pageNo, Integer pageSize, HttpServletRequest req);
+    boolean createUser(User user);
+    boolean alterUserById(User user);
+    boolean dropUserById(Serializable id);
+    boolean dropUserBatch(String ids);
+    User findUserById(Serializable id);
     UserInfo findUserInfoByToken(String token) throws Exception;
 }

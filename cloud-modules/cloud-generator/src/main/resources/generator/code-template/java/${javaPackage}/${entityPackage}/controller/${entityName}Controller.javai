@@ -1,10 +1,9 @@
-package ${basePackage}.${entityPackage}.controller;
+package ${javaPackage}.${entityPackage}.controller;
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
-import ${basePackage}.${entityPackage}.entity.${entityName};
-import ${basePackage}.${entityPackage}.service.I${entityName}Service;
+import ${javaPackage}.${entityPackage}.entity.${entityName};
+import ${javaPackage}.${entityPackage}.service.I${entityName}Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,9 +54,10 @@ public class ${entityName}Controller {
 	@GetMapping(value = "/get${entityName}PageList")
 	public Result<IPage<${entityName}>> get${entityName}PageList(${entityName} ${entityName?uncap_first},
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize) {
+									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+									  HttpServletRequest req) {
         Result<IPage<${entityName}>> result = new Result<>();
-		IPage<${entityName}> pageList = ${entityName?uncap_first}Service.find${entityName}PageList(${entityName?uncap_first}, pageNo, pageSize);
+		IPage<${entityName}> pageList = ${entityName?uncap_first}Service.find${entityName}PageList(${entityName?uncap_first}, pageNo, pageSize, req);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
@@ -110,10 +110,10 @@ public class ${entityName}Controller {
 	 * @return
 	 */
 	@ApiOperation(value="${tableVo.ftlDescription}-通过id删除", notes="${tableVo.ftlDescription}-通过id删除")
-	@DeleteMapping(value = "/expurgate${entityName}")
-	public Result<?> expurgate${entityName}(@RequestParam(name="id",required=true) String id) {
+	@DeleteMapping(value = "/expurgate${entityName}ById")
+	public Result<?> expurgate${entityName}ById(@RequestParam(name="id",required=true) String id) {
 		try {
-			${entityName?uncap_first}Service.drop${entityName}(id);
+			${entityName?uncap_first}Service.drop${entityName}ById(id);
 		} catch (Exception e) {
 		    e.printStackTrace();
 			log.error("删除失败", e.getMessage());
@@ -129,7 +129,7 @@ public class ${entityName}Controller {
 	 */
 	@ApiOperation(value="${tableVo.ftlDescription}-批量删除", notes="${tableVo.ftlDescription}-批量删除")
 	@DeleteMapping(value = "/expurgate${entityName}Batch")
-	public Result<?> expurgate${entityName}Batch(@RequestParam(name="ids",required=true) List<String> ids) {
+	public Result<?> expurgate${entityName}Batch(@RequestParam(name="ids",required=true) String ids) {
         try {
             ${entityName?uncap_first}Service.drop${entityName}Batch(ids);
         } catch (Exception e) {

@@ -2,11 +2,42 @@
   <div class="app-container calendar-list-container">
     <!-- 查询区域 -->
     <div class="filter-container">
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入角色名称" v-model="listQuery.name"></el-input>
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
+<#list columns as po>
+<#if po.fieldType =='date'>
+        <span>${po.filedComment}</span>
+        <el-date-picker
+          v-model="listQuery.${po.fieldName}"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择日期">
+        </el-date-picker>
+<#elseif po.fieldType =='time'>
+        <span>${po.filedComment}</span>
+        <el-time-select
+          v-model="listQuery.${po.fieldName}"
+          :picker-options="{
+            start: '00:00',
+            step: '00:15',
+            end: '24:00'
+          }"
+          value-format="HH:mm:ss"
+          placeholder="选择时间">
+        </el-time-select>
+<#elseif po.fieldType =='datetime'>
+        <span>${po.filedComment}</span>
+        <el-date-picker
+          v-model="listQuery.${po.fieldName}"
+          type="datetime"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          placeholder="选择日期时间">
+        </el-date-picker>
+<#else>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入${po.filedComment}" v-model="listQuery.${po.fieldName}"></el-input>
+</#if>
+</#list>
         <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-        <el-button class="filter-item" v-if="role_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
-        <el-button class="filter-item" v-if="role_btn_remove" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
+        <el-button class="filter-item" v-if="${entityName?uncap_first}_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
+        <el-button class="filter-item" v-if="${entityName?uncap_first}_btn_remove" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
     </div>
 
     <!-- table区域-begin -->
@@ -30,16 +61,15 @@
           align="center"
           width="50"
         />
-      <el-table-column align="center" sortable="custom" prop="name" label="角色名称"> <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+<#list columns as po>
+      <el-table-column align="center" sortable="custom" prop="${po.fieldName}" label="${po.filedComment}"> <template slot-scope="scope">
+            <span>{{scope.row.${po.fieldName}}}</span>
           </template> </el-table-column>
-      <el-table-column align="center" sortable="custom" prop="description" label="描述"> <template slot-scope="scope">
-            <span>{{scope.row.description}}</span>
-          </template> </el-table-column>
+</#list>
       <el-table-column align="center" label="操作" width="150"> <template slot-scope="scope">
-          <el-button size="small" v-if="role_btn_edit" type="success" @click="handleUpdate(scope.row)">编辑
+          <el-button size="small" v-if="${entityName?uncap_first}_btn_edit" type="success" @click="handleUpdate(scope.row)">编辑
           </el-button>
-          <el-button size="small" v-if="role_btn_remove" type="danger" @click="handleDelete(scope.row)">删除
+          <el-button size="small" v-if="${entityName?uncap_first}_btn_remove" type="danger" @click="handleDelete(scope.row)">删除
           </el-button>
         </template> </el-table-column>
     </el-table>
@@ -50,12 +80,44 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-        <el-form-item label="角色名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入角色名称"></el-input>
+<#list columns as po>
+<#if po.fieldType =='date'>
+        <el-form-item label="${po.filedComment}" prop="${po.fieldName}">
+          <el-date-picker
+            v-model="form.${po.fieldName}"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期">
+          </el-date-picker>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" placeholder="请输入描述"></el-input>
+<#elseif po.fieldType =='time'>
+        <el-form-item label="${po.filedComment}" prop="${po.fieldName}">
+          <el-time-select
+            v-model="form.${po.fieldName}"
+            :picker-options="{
+            start: '00:00',
+            step: '00:15',
+            end: '24:00'
+            }"
+            value-format="HH:mm:ss"
+            placeholder="选择时间">
+          </el-time-select>
         </el-form-item>
+<#elseif po.fieldType =='datetime'>
+        <el-form-item label="${po.filedComment}" prop="${po.fieldName}">
+          <el-date-picker
+            v-model="form.${po.fieldName}"
+            type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+<#else>
+        <el-form-item label="${po.filedComment}" prop="${po.fieldName}">
+          <el-input v-model="form.${po.fieldName}" placeholder="请输入${po.filedComment}"></el-input>
+        </el-form-item>
+</#if>
+</#list>
       </el-form>
       <div scope="footer" class="dialog-footer">
         <el-button @click="cancel('form')">取 消</el-button>
@@ -68,28 +130,40 @@
 
 <script>
   import {
-    getRolePageList,
-    generateRole,
-    changeRoleById,
-    expurgateRoleById,
-    expurgateRoleBatch,
-    getRoleById
-  } from 'api/admin/role';
+    get${entityName}PageList,
+    generate${entityName},
+    change${entityName}ById,
+    expurgate${entityName}ById,
+    expurgate${entityName}Batch,
+    get${entityName}ById
+  } from 'api/${entityPackage}/${vuePackage}';
   import { mapGetters } from 'vuex';
 
   export default {
-    name: 'adminRole',
+    name: '${entityPackage}${entityName}',
     data() {
       return {
         form: {
-          name: undefined,
-          description: undefined,
+<#list columns as po>
+          ${po.fieldName}: undefined,
+</#list>
         },
         rules: {
-          name: [
+<#list columns as po>
+    <#if po.fieldName !='id' && po.nullable !='Y'>
+        <#if po.fieldType =='date' || po.fieldType =='time' || po.fieldType =='datetime'>
+          ${po.fieldName}: [
             {
               required: true,
-              message: '请输入角色名称',
+              message: '请选择${po.filedComment}',
+              trigger: 'blur'
+            }
+          ],
+        <#else>
+          ${po.fieldName}: [
+            {
+              required: true,
+              message: '请输入${po.filedComment}',
               trigger: 'blur'
             },
             {
@@ -99,6 +173,9 @@
               trigger: 'blur'
             }
           ],
+        </#if>
+    </#if>
+</#list>
         },
         list: undefined,
         total: undefined,
@@ -110,9 +187,9 @@
           sortProp: undefined,
           sortType: undefined
         },
-        role_btn_add: false,
-        role_btn_edit: false,
-        role_btn_remove: false,
+        ${entityName?uncap_first}_btn_add: false,
+        ${entityName?uncap_first}_btn_edit: false,
+        ${entityName?uncap_first}_btn_remove: false,
         dialogFormVisible: false,
         dialogStatus: '',
         textMap: {
@@ -124,9 +201,9 @@
     },
     created() {
       this.getList();
-      this.role_btn_edit = this.buttons['/admin/role/edit'] || false;
-      this.role_btn_remove = this.buttons['/admin/role/remove'] || false;
-      this.role_btn_add = this.buttons['/admin/role/add'] || false;
+      this.${entityName?uncap_first}_btn_edit = this.buttons['/${entityPackage}/${entityName?uncap_first}/edit'] || false;
+      this.${entityName?uncap_first}_btn_remove = this.buttons['/${entityPackage}/${entityName?uncap_first}/remove'] || false;
+      this.${entityName?uncap_first}_btn_add = this.buttons['/${entityPackage}/${entityName?uncap_first}/add'] || false;
     },
     computed: {
       ...mapGetters([
@@ -136,7 +213,7 @@
     methods: {
       getList() {
         this.listLoading = true;
-        getRolePageList(this.listQuery).then(response => {
+        get${entityName}PageList(this.listQuery).then(response => {
           this.list = response.result.records;
           this.total = response.result.total;
           this.listLoading = false;
@@ -158,7 +235,7 @@
         this.dialogFormVisible = true;
       },
       handleUpdate(row) {
-        getRoleById({id: row.id})
+        get${entityName}ById({id: row.id})
           .then(response => {
             this.form = response.result;
             this.dialogFormVisible = true;
@@ -172,7 +249,7 @@
           type: 'warning'
         })
           .then(() => {
-            expurgateRoleById({id: row.id})
+            expurgate${entityName}ById({id: row.id})
               .then(() => {
                 this.$notify({
                   title: '成功',
@@ -237,7 +314,7 @@
         const set = this.$refs;
         set[formName].validate(valid => {
           if (valid) {
-            generateRole(this.form)
+            generate${entityName}(this.form)
               .then(() => {
                 this.dialogFormVisible = false;
                   this.getList();
@@ -258,7 +335,7 @@
         set[formName].validate(valid => {
           if (valid) {
             this.dialogFormVisible = false;
-            changeRoleById(this.form).then(() => {
+            change${entityName}ById(this.form).then(() => {
               this.dialogFormVisible = false;
               this.getList();
               this.$notify({
@@ -275,8 +352,9 @@
       },
       resetTemp() {
         this.form = {
-          name: undefined,
-          description: undefined,
+<#list columns as po>
+          ${po.fieldName}: undefined,
+</#list>
         };
       }
     }

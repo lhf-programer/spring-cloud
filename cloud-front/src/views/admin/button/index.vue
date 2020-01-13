@@ -6,13 +6,6 @@
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入按钮名称" v-model="listQuery.name"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入所属菜单id" v-model="listQuery.menuId"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
-        <span>创建时间</span>
-        <el-date-picker
-          v-model="listQuery.crtTime"
-          type="datetime"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          placeholder="选择日期时间">
-        </el-date-picker>
         <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
         <el-button class="filter-item" v-if="button_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
         <el-button class="filter-item" v-if="button_btn_remove" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
@@ -51,9 +44,6 @@
       <el-table-column align="center" sortable="custom" prop="description" label="描述"> <template slot-scope="scope">
             <span>{{scope.row.description}}</span>
           </template> </el-table-column>
-      <el-table-column align="center" sortable="custom" prop="crtTime" label="创建时间"> <template slot-scope="scope">
-            <span>{{scope.row.crtTime}}</span>
-          </template> </el-table-column>
       <el-table-column align="center" label="操作" width="150"> <template slot-scope="scope">
           <el-button size="small" v-if="button_btn_edit" type="success" @click="handleUpdate(scope.row)">编辑
           </el-button>
@@ -80,14 +70,6 @@
         <el-form-item label="描述" prop="description">
           <el-input v-model="form.description" placeholder="请输入描述"></el-input>
         </el-form-item>
-        <el-form-item label="创建时间" prop="crtTime">
-          <el-date-picker
-            v-model="form.crtTime"
-            type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="选择日期时间">
-          </el-date-picker>
-        </el-form-item>
       </el-form>
       <div scope="footer" class="dialog-footer">
         <el-button @click="cancel('form')">取 消</el-button>
@@ -110,7 +92,7 @@
   import { mapGetters } from 'vuex';
 
   export default {
-    name: 'button',
+    name: 'adminButton',
     data() {
       return {
         form: {
@@ -118,7 +100,6 @@
           name: undefined,
           menuId: undefined,
           description: undefined,
-          crtTime: undefined,
         },
         rules: {
           url: [
@@ -160,13 +141,6 @@
               trigger: 'blur'
             }
           ],
-          crtTime: [
-            {
-              required: true,
-              message: '请选择创建时间',
-              trigger: 'blur'
-            }
-          ],
         },
         list: undefined,
         total: undefined,
@@ -193,7 +167,7 @@
     created() {
       this.getList();
       this.button_btn_edit = this.buttons['/admin/button/edit'] || false;
-      this.button_btn_del = this.buttons['/admin/button/remove'] || false;
+      this.button_btn_remove = this.buttons['/admin/button/remove'] || false;
       this.button_btn_add = this.buttons['/admin/button/add'] || false;
     },
     computed: {
@@ -347,7 +321,6 @@
           name: undefined,
           menuId: undefined,
           description: undefined,
-          crtTime: undefined,
         };
       }
     }
