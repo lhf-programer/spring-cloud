@@ -1,6 +1,5 @@
 package ${javaPackage}.${entityPackage}.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
 import ${javaPackage}.${entityPackage}.entity.${entityName};
 import ${javaPackage}.${entityPackage}.service.I${entityName}Service;
@@ -47,17 +46,19 @@ public class ${entityName}Controller {
 	 * @param ${entityName?uncap_first}
 	 * @param pageNo
 	 * @param pageSize
-	 * @param req
+	 * @param sortProp
+	 * @param sortType
 	 * @return
 	 */
 	@ApiOperation(value="${tableVo.ftlDescription}-分页列表查询", notes="${tableVo.ftlDescription}-分页列表查询")
 	@GetMapping(value = "/get${entityName}PageList")
 	public Result<IPage<${entityName}>> get${entityName}PageList(${entityName} ${entityName?uncap_first},
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-									  HttpServletRequest req) {
+                                      @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+                                      @RequestParam(name="sortProp", required = false) String sortProp,
+                                      @RequestParam(name="sortType", required = false) String sortType) {
         Result<IPage<${entityName}>> result = new Result<>();
-		IPage<${entityName}> pageList = ${entityName?uncap_first}Service.find${entityName}PageList(${entityName?uncap_first}, pageNo, pageSize, req);
+		IPage<${entityName}> pageList = ${entityName?uncap_first}Service.find${entityName}PageList(${entityName?uncap_first}, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;

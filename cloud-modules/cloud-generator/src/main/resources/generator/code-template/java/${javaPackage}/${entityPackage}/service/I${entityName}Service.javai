@@ -4,7 +4,6 @@ import ${javaPackage}.${entityPackage}.entity.${entityName};
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 /**
@@ -13,7 +12,7 @@ import java.io.Serializable;
  * @Date: ${.now?string["yyyy-MM-dd HH:mm"]}
  */
 public interface I${entityName}Service extends IService<${entityName}> {
-    IPage<${entityName}> find${entityName}PageList(${entityName} ${entityName?uncap_first}, Integer pageNo, Integer pageSize, HttpServletRequest req);
+    IPage<${entityName}> find${entityName}PageList(${entityName} ${entityName?uncap_first}, Integer pageNo, Integer pageSize, String sortProp, String sortType);
     boolean create${entityName}(${entityName} ${entityName?uncap_first});
     boolean alter${entityName}ById(${entityName} ${entityName?uncap_first});
     boolean drop${entityName}ById(Serializable id);
