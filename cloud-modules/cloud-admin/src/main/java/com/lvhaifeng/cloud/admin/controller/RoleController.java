@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Role;
 import com.lvhaifeng.cloud.admin.service.IRoleService;
@@ -18,7 +17,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2020-01-13 13:49
+ * @Date: 2020-01-13 17:24
  */
 @Slf4j
 @Api(tags="角色")
@@ -42,10 +41,11 @@ public class RoleController {
 	@GetMapping(value = "/getRolePageList")
 	public Result<IPage<Role>> getRolePageList(Role role,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-									  HttpServletRequest req) {
+                                      @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+                                      @RequestParam(name="sortProp", required = false) String sortProp,
+                                      @RequestParam(name="sortType", required = false) String sortType) {
         Result<IPage<Role>> result = new Result<>();
-		IPage<Role> pageList = roleService.findRolePageList(role, pageNo, pageSize, req);
+		IPage<Role> pageList = roleService.findRolePageList(role, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;

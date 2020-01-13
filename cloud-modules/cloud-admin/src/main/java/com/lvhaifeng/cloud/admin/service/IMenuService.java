@@ -16,7 +16,7 @@ import java.util.List;
  * @Date: 2020-01-13 14:44
  */
 public interface IMenuService extends IService<Menu> {
-    IPage<Menu> findMenuPageList(Menu menu, Integer pageNo, Integer pageSize, HttpServletRequest req);
+    IPage<Menu> findMenuPageList(Menu menu, Integer pageNo, Integer pageSize, String sortProp, String sortType);
     boolean createMenu(ResourceInfo resourceInfo);
     boolean alterMenuById(ResourceInfo resourceInfo);
     boolean dropMenuById(Serializable id);

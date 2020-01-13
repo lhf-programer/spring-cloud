@@ -2,8 +2,8 @@
   <div class="app-container calendar-list-container">
     <!-- 查询区域 -->
     <div class="filter-container">
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入按钮路径" v-model="listQuery.url"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入按钮名称" v-model="listQuery.name"></el-input>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入按钮路径" v-model="listQuery.url"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入所属菜单id" v-model="listQuery.menuId"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
         <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
@@ -32,11 +32,11 @@
           align="center"
           width="50"
         />
-      <el-table-column align="center" sortable="custom" prop="url" label="按钮路径"> <template slot-scope="scope">
-            <span>{{scope.row.url}}</span>
-          </template> </el-table-column>
       <el-table-column align="center" sortable="custom" prop="name" label="按钮名称"> <template slot-scope="scope">
             <span>{{scope.row.name}}</span>
+          </template> </el-table-column>
+      <el-table-column align="center" sortable="custom" prop="url" label="按钮路径"> <template slot-scope="scope">
+            <span>{{scope.row.url}}</span>
           </template> </el-table-column>
       <el-table-column align="center" sortable="custom" prop="menuId" label="所属菜单id"> <template slot-scope="scope">
             <span>{{scope.row.menuId}}</span>
@@ -58,11 +58,11 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-        <el-form-item label="按钮路径" prop="url">
-          <el-input v-model="form.url" placeholder="请输入按钮路径"></el-input>
-        </el-form-item>
         <el-form-item label="按钮名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入按钮名称"></el-input>
+        </el-form-item>
+        <el-form-item label="按钮路径" prop="url">
+          <el-input v-model="form.url" placeholder="请输入按钮路径"></el-input>
         </el-form-item>
         <el-form-item label="所属菜单id" prop="menuId">
           <el-input v-model="form.menuId" placeholder="请输入所属菜单id"></el-input>
@@ -96,16 +96,16 @@
     data() {
       return {
         form: {
-          url: undefined,
           name: undefined,
+          url: undefined,
           menuId: undefined,
           description: undefined,
         },
         rules: {
-          url: [
+          name: [
             {
               required: true,
-              message: '请输入按钮路径',
+              message: '请输入按钮名称',
               trigger: 'blur'
             },
             {
@@ -115,10 +115,10 @@
               trigger: 'blur'
             }
           ],
-          name: [
+          url: [
             {
               required: true,
-              message: '请输入按钮名称',
+              message: '请输入按钮路径',
               trigger: 'blur'
             },
             {
@@ -317,8 +317,8 @@
       },
       resetTemp() {
         this.form = {
-          url: undefined,
           name: undefined,
+          url: undefined,
           menuId: undefined,
           description: undefined,
         };

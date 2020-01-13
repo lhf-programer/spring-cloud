@@ -5,7 +5,9 @@ import com.lvhaifeng.cloud.admin.mapper.RoleResourceMapper;
 import com.lvhaifeng.cloud.admin.service.IRoleResourceService;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
+import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.BeanUtils;
@@ -16,19 +18,19 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Arrays;
 
 /**
  * @Description: 角色资源
  * @Author: haifeng.lv
- * @Date: 2020-01-06 14:26
+ * @Date: 2020-01-13 17:24
  */
 @Service
 public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, RoleResource> implements IRoleResourceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<RoleResource> pageRoleResourceList(RoleResource roleResource, Integer pageNo, Integer pageSize) {
-        QueryWrapper<RoleResource> queryWrapper = new QueryWrapper<>();
+    public IPage<RoleResource> findRoleResourcePageList(RoleResource roleResource, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
+        QueryWrapper<RoleResource> queryWrapper = QueryGenerator.initQueryWrapper(roleResource, sortProp, sortType);
         Page<RoleResource> page = new Page<>(pageNo, pageSize);
         IPage<RoleResource> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;
@@ -36,14 +38,14 @@ public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, Rol
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveRoleResource(RoleResource roleResource) {
+    public boolean createRoleResource(RoleResource roleResource) {
         EntityUtils.setDefaultValue(roleResource);
         return super.save(roleResource);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateByRoleResourceId(RoleResource roleResource) {
+    public boolean alterRoleResourceById(RoleResource roleResource) {
         RoleResource roleResourceEntity = baseMapper.selectById(roleResource.getId());
         if(roleResourceEntity == null) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
@@ -56,22 +58,22 @@ public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, Rol
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeByRoleResourceId(Serializable id) {
+    public boolean dropRoleResourceById(Serializable id) {
         return super.removeById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeByRoleResourceIds(Collection<? extends Serializable> ids) {
-        if(ids.isEmpty()) {
+    public boolean dropRoleResourceBatch(String ids) {
+        if(StringUtils.isBlank(ids)) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
-            return super.removeByIds(ids);
+            return super.removeByIds(Arrays.asList(ids.split(",")));
         }
     }
 
     @Override
-    public RoleResource getByRoleResourceId(Serializable id) {
+    public RoleResource findRoleResourceById(Serializable id) {
         RoleResource roleResource = super.getById(id);
         if (null == roleResource) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);

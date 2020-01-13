@@ -17,21 +17,20 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2020-01-13 13:49
+ * @Date: 2020-01-13 17:24
  */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<Role> findRolePageList(Role role, Integer pageNo, Integer pageSize, HttpServletRequest req) {
-        QueryWrapper<Role> queryWrapper = QueryGenerator.initQueryWrapper(role, req.getParameterMap());
+    public IPage<Role> findRolePageList(Role role, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
+        QueryWrapper<Role> queryWrapper = QueryGenerator.initQueryWrapper(role, sortProp, sortType);
         Page<Role> page = new Page<>(pageNo, pageSize);
         IPage<Role> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;

@@ -5,18 +5,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * @Description: 用户角色
  * @Author: haifeng.lv
- * @Date: 2020-01-06 14:27
+ * @Date: 2020-01-13 17:24
  */
 public interface IUserRoleService extends IService<UserRole> {
-    IPage<UserRole> pageUserRoleList(UserRole userRole, Integer pageNo, Integer pageSize);
-    boolean saveUserRole(UserRole userRole);
-    boolean updateByUserRoleId(UserRole userRole);
-    boolean removeByUserRoleId(Serializable id);
-    boolean removeByUserRoleIds(Collection<? extends Serializable> ids);
-    UserRole getByUserRoleId(Serializable id);
+    IPage<UserRole> findUserRolePageList(UserRole userRole, Integer pageNo, Integer pageSize, String sortProp, String sortType);
+    boolean createUserRole(UserRole userRole);
+    boolean alterUserRoleById(UserRole userRole);
+    boolean dropUserRoleById(Serializable id);
+    boolean dropUserRoleBatch(String ids);
+    UserRole findUserRoleById(Serializable id);
 }

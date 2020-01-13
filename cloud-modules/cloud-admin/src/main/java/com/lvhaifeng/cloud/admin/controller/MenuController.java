@@ -38,7 +38,8 @@ public class MenuController {
 	 * @param menu
 	 * @param pageNo
 	 * @param pageSize
-	 * @param req
+	 * @param sortProp
+	 * @param sortType
 	 * @return
 	 */
 	@ApiOperation(value="菜单-分页列表查询", notes="菜单-分页列表查询")
@@ -46,9 +47,10 @@ public class MenuController {
 	public Result<IPage<Menu>> getMenuPageList(Menu menu,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-									  HttpServletRequest req) {
+									  @RequestParam(name="sortProp", required = false) String sortProp,
+									  @RequestParam(name="sortType", required = false) String sortType) {
         Result<IPage<Menu>> result = new Result<>();
-		IPage<Menu> pageList = menuService.findMenuPageList(menu, pageNo, pageSize, req);
+		IPage<Menu> pageList = menuService.findMenuPageList(menu, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;

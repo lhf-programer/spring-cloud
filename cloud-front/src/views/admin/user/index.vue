@@ -3,8 +3,8 @@
     <!-- 查询区域 -->
     <div class="filter-container">
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入登录名" v-model="listQuery.username"></el-input>
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入真实名称" v-model="listQuery.realname"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入密码" v-model="listQuery.password"></el-input>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入真实名称" v-model="listQuery.realname"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
         <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
         <el-button class="filter-item" v-if="user_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
@@ -35,11 +35,11 @@
       <el-table-column align="center" sortable="custom" prop="username" label="登录名"> <template slot-scope="scope">
             <span>{{scope.row.username}}</span>
           </template> </el-table-column>
-      <el-table-column align="center" sortable="custom" prop="realname" label="真实名称"> <template slot-scope="scope">
-            <span>{{scope.row.realname}}</span>
-          </template> </el-table-column>
       <el-table-column align="center" sortable="custom" prop="password" label="密码"> <template slot-scope="scope">
             <span>{{scope.row.password}}</span>
+          </template> </el-table-column>
+      <el-table-column align="center" sortable="custom" prop="realname" label="真实名称"> <template slot-scope="scope">
+            <span>{{scope.row.realname}}</span>
           </template> </el-table-column>
       <el-table-column align="center" sortable="custom" prop="description" label="描述"> <template slot-scope="scope">
             <span>{{scope.row.description}}</span>
@@ -61,11 +61,11 @@
         <el-form-item label="登录名" prop="username">
           <el-input v-model="form.username" placeholder="请输入登录名"></el-input>
         </el-form-item>
-        <el-form-item label="真实名称" prop="realname">
-          <el-input v-model="form.realname" placeholder="请输入真实名称"></el-input>
-        </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="form.password" placeholder="请输入密码"></el-input>
+        </el-form-item>
+        <el-form-item label="真实名称" prop="realname">
+          <el-input v-model="form.realname" placeholder="请输入真实名称"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="form.description" placeholder="请输入描述"></el-input>
@@ -97,8 +97,8 @@
       return {
         form: {
           username: undefined,
-          realname: undefined,
           password: undefined,
+          realname: undefined,
           description: undefined,
         },
         rules: {
@@ -115,10 +115,10 @@
               trigger: 'blur'
             }
           ],
-          realname: [
+          password: [
             {
               required: true,
-              message: '请输入真实名称',
+              message: '请输入密码',
               trigger: 'blur'
             },
             {
@@ -128,10 +128,10 @@
               trigger: 'blur'
             }
           ],
-          password: [
+          realname: [
             {
               required: true,
-              message: '请输入密码',
+              message: '请输入真实名称',
               trigger: 'blur'
             },
             {
@@ -318,8 +318,8 @@
       resetTemp() {
         this.form = {
           username: undefined,
-          realname: undefined,
           password: undefined,
+          realname: undefined,
           description: undefined,
         };
       }

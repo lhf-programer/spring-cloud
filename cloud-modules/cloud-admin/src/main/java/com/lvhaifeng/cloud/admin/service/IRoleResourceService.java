@@ -5,18 +5,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * @Description: 角色资源
  * @Author: haifeng.lv
- * @Date: 2020-01-06 14:26
+ * @Date: 2020-01-13 17:24
  */
 public interface IRoleResourceService extends IService<RoleResource> {
-    IPage<RoleResource> pageRoleResourceList(RoleResource roleResource, Integer pageNo, Integer pageSize);
-    boolean saveRoleResource(RoleResource roleResource);
-    boolean updateByRoleResourceId(RoleResource roleResource);
-    boolean removeByRoleResourceId(Serializable id);
-    boolean removeByRoleResourceIds(Collection<? extends Serializable> ids);
-    RoleResource getByRoleResourceId(Serializable id);
+    IPage<RoleResource> findRoleResourcePageList(RoleResource roleResource, Integer pageNo, Integer pageSize, String sortProp, String sortType);
+    boolean createRoleResource(RoleResource roleResource);
+    boolean alterRoleResourceById(RoleResource roleResource);
+    boolean dropRoleResourceById(Serializable id);
+    boolean dropRoleResourceBatch(String ids);
+    RoleResource findRoleResourceById(Serializable id);
 }

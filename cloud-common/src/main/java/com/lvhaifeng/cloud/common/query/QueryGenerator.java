@@ -17,35 +17,26 @@ import java.util.Map;
  */
 @Slf4j
 public class QueryGenerator {
-    /**
-     * 排序列
-     */
-    private static final String ORDER_COLUMN = "sortProp";
-
-    /**
-     * 排序方式
-     */
-    private static final String ORDER_TYPE = "sortType";
-
     private static final String ORDER_TYPE_ASC = "ascending";
 
     /**
      * @Description 获取查询条件构造器QueryWrapper实例 通用查询条件已被封装完成
      * @Author haifeng.lv
      * @param: searchObj
-     * @param: parameterMap
-     * @Date 2020/1/10 16:02
+     * @param: sortProp
+     * @param: sortType
+     * @Date 2020/1/13 17:04
      * @return: com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<T>
      */
-    public static <T> QueryWrapper<T> initQueryWrapper(T searchObj, Map<String, String[]> parameterMap) {
+    public static <T> QueryWrapper<T> initQueryWrapper(T searchObj, String sortProp, String sortType) {
         long start = System.currentTimeMillis();
         QueryWrapper<T> queryWrapper = new QueryWrapper<T>();
-        installPlus(queryWrapper, searchObj, parameterMap);
+        installPlus(queryWrapper, searchObj, sortProp, sortType);
         log.debug("---查询条件构造器初始化完成,耗时:" + (System.currentTimeMillis() - start) + "毫秒----");
         return queryWrapper;
     }
 
-    public static void installPlus(QueryWrapper<?> queryWrapper, Object searchObj, Map<String, String[]> parameterMap) {
+    public static void installPlus(QueryWrapper<?> queryWrapper, Object searchObj, String sortProp, String sortType) {
         PropertyDescriptor originDescriptors[] = PropertyUtils.getPropertyDescriptors(searchObj);
 
         String name;
@@ -66,26 +57,25 @@ public class QueryGenerator {
             }
         }
         // 排序逻辑 处理
-        doMultiFieldsOrder(queryWrapper, parameterMap);
+        doMultiFieldsOrder(queryWrapper, sortProp, sortType);
     }
 
-    public static void doMultiFieldsOrder(QueryWrapper<?> queryWrapper, Map<String, String[]> parameterMap) {
-        String column = null, order = null;
-        if (parameterMap != null && parameterMap.containsKey(ORDER_COLUMN)) {
-            column = parameterMap.get(ORDER_COLUMN)[0];
-        }
-        if (parameterMap != null && parameterMap.containsKey(ORDER_TYPE)) {
-            order = parameterMap.get(ORDER_TYPE)[0];
-        }
-        log.debug("排序规则>>列:" + column + ",排序方式:" + order);
-        if (ConvertUtils.isNotEmpty(column) && ConvertUtils.isNotEmpty(order)) {
-            //SQL注入check
-            SqlInjectionUtil.filterContent(column);
+    public static void doMultiFieldsOrder(QueryWrapper<?> queryWrapper, String sortProp, String sortType) {
+        log.debug("排序规则>>列:" + sortProp + ",排序方式:" + sortType);
+        if (ConvertUtils.isNotEmpty(sortProp) && ConvertUtils.isNotEmpty(sortType)) {
+            String[] props = sortProp.split(",");
+            String[] types = sortType.split(",");
+            if (props.length == types.length) {
+                for (int i = 0; i < props.length; i++) {
+                    //SQL注入check
+                    SqlInjectionUtil.filterContent(props[i]);
 
-            if (order.indexOf(ORDER_TYPE_ASC) >= 0) {
-                queryWrapper.orderByAsc(ConvertUtils.camelToUnderline(column));
-            } else {
-                queryWrapper.orderByDesc(ConvertUtils.camelToUnderline(column));
+                    if (types[i].indexOf(ORDER_TYPE_ASC) >= 0) {
+                        queryWrapper.orderByAsc(ConvertUtils.camelToUnderline(props[i]));
+                    } else {
+                        queryWrapper.orderByDesc(ConvertUtils.camelToUnderline(props[i]));
+                    }
+                }
             }
         }
     }

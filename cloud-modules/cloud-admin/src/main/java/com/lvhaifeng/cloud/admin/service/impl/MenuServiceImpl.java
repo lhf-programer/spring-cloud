@@ -43,8 +43,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<Menu> findMenuPageList(Menu menu, Integer pageNo, Integer pageSize, HttpServletRequest req) {
-        QueryWrapper<Menu> queryWrapper = QueryGenerator.initQueryWrapper(menu, req.getParameterMap());
+    public IPage<Menu> findMenuPageList(Menu menu, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
+        QueryWrapper<Menu> queryWrapper = QueryGenerator.initQueryWrapper(menu, sortProp, sortType);
         Page<Menu> page = new Page<>(pageNo, pageSize);
         IPage<Menu> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;

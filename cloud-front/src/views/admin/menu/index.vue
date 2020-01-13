@@ -2,9 +2,8 @@
   <div class="app-container calendar-list-container">
     <!-- 查询区域 -->
     <div class="filter-container">
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入菜单路径" v-model="listQuery.url"></el-input>
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入父菜单id" v-model="listQuery.parent"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入菜单名称" v-model="listQuery.name"></el-input>
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入菜单路径" v-model="listQuery.url"></el-input>
         <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
         <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
         <el-button class="filter-item" v-if="menu_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
@@ -32,14 +31,11 @@
           align="center"
           width="50"
         />
-      <el-table-column align="center" sortable="custom" prop="url" label="菜单路径"> <template slot-scope="scope">
-            <span>{{scope.row.url}}</span>
-          </template> </el-table-column>
-      <el-table-column align="center" sortable="custom" prop="parent" label="父菜单id"> <template slot-scope="scope">
-            <span>{{scope.row.parent}}</span>
-          </template> </el-table-column>
       <el-table-column align="center" sortable="custom" prop="name" label="菜单名称"> <template slot-scope="scope">
             <span>{{scope.row.name}}</span>
+          </template> </el-table-column>
+      <el-table-column align="center" sortable="custom" prop="url" label="菜单路径"> <template slot-scope="scope">
+            <span>{{scope.row.url}}</span>
           </template> </el-table-column>
       <el-table-column align="center" sortable="custom" prop="description" label="描述"> <template slot-scope="scope">
             <span>{{scope.row.description}}</span>
@@ -58,14 +54,11 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-        <el-form-item label="菜单路径" prop="url">
-          <el-input v-model="form.url" placeholder="请输入菜单路径"></el-input>
-        </el-form-item>
-        <el-form-item label="父菜单id" prop="parent">
-          <el-input v-model="form.parent" placeholder="请输入父菜单id"></el-input>
-        </el-form-item>
         <el-form-item label="菜单名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入菜单名称"></el-input>
+        </el-form-item>
+        <el-form-item label="菜单路径" prop="url">
+          <el-input v-model="form.url" placeholder="请输入菜单路径"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="form.description" placeholder="请输入描述"></el-input>
@@ -96,12 +89,25 @@
     data() {
       return {
         form: {
+          name: undefined,
           url: undefined,
           parent: undefined,
-          name: undefined,
           description: undefined,
         },
         rules: {
+          name: [
+            {
+              required: true,
+              message: '请输入菜单名称',
+              trigger: 'blur'
+            },
+            {
+              min: 3,
+              max: 20,
+              message: '长度在 3 到 20 个字符',
+              trigger: 'blur'
+            }
+          ],
           url: [
             {
               required: true,
@@ -119,19 +125,6 @@
             {
               required: true,
               message: '请输入父菜单id',
-              trigger: 'blur'
-            },
-            {
-              min: 3,
-              max: 20,
-              message: '长度在 3 到 20 个字符',
-              trigger: 'blur'
-            }
-          ],
-          name: [
-            {
-              required: true,
-              message: '请输入菜单名称',
               trigger: 'blur'
             },
             {
@@ -317,9 +310,9 @@
       },
       resetTemp() {
         this.form = {
+          name: undefined,
           url: undefined,
           parent: undefined,
-          name: undefined,
           description: undefined,
         };
       }
