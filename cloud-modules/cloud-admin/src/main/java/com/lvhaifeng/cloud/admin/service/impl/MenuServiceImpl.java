@@ -54,7 +54,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         Menu menu = new Menu();
         BeanUtils.copyProperties(resourceInfo, menu);
         EntityUtils.setDefaultValue(menu);
-        if (shaded.org.apache.commons.lang3.StringUtils.isBlank(resourceInfo.getParent())) {
+        if (StringUtils.isBlank(resourceInfo.getParent())) {
             // 如果没有指定父菜单则默认为父菜单(0)
             menu.setParent("0");
         }
