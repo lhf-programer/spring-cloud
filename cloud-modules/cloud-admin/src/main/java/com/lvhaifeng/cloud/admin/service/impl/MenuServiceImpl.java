@@ -11,6 +11,7 @@ import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +21,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import shaded.org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
  * @Description: 菜单
  * @Author: haifeng.lv
- * @Date: 2020-01-13 14:44
+ * @Date: 2020-01-13 17:30
  */
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {

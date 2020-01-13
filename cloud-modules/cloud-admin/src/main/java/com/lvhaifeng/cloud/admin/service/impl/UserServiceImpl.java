@@ -27,7 +27,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +35,7 @@ import java.util.List;
 /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2020-01-13 14:37
+ * @Date: 2020-01-13 17:27
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
@@ -51,8 +50,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<User> findUserPageList(User user, Integer pageNo, Integer pageSize, HttpServletRequest req) {
-        QueryWrapper<User> queryWrapper = QueryGenerator.initQueryWrapper(user, req.getParameterMap());
+    public IPage<User> findUserPageList(User user, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
+        QueryWrapper<User> queryWrapper = QueryGenerator.initQueryWrapper(user, sortProp, sortType);
         Page<User> page = new Page<>(pageNo, pageSize);
         IPage<User> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;

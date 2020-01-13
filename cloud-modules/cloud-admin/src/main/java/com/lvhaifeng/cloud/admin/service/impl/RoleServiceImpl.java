@@ -23,7 +23,7 @@ import java.util.Arrays;
 /**
  * @Description: 角色
  * @Author: haifeng.lv
- * @Date: 2020-01-13 17:24
+ * @Date: 2020-01-13 17:26
  */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {

@@ -1,7 +1,5 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Button;
@@ -20,7 +18,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 按钮
  * @Author: haifeng.lv
- * @Date: 2020-01-13 14:20
+ * @Date: 2020-01-13 17:28
  */
 @Slf4j
 @Api(tags="按钮")
@@ -37,17 +35,19 @@ public class ButtonController {
 	 * @param button
 	 * @param pageNo
 	 * @param pageSize
-	 * @param req
+	 * @param sortProp
+	 * @param sortType
 	 * @return
 	 */
 	@ApiOperation(value="按钮-分页列表查询", notes="按钮-分页列表查询")
 	@GetMapping(value = "/getButtonPageList")
 	public Result<IPage<Button>> getButtonPageList(Button button,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-									  HttpServletRequest req) {
+                                      @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+                                      @RequestParam(name="sortProp", required = false) String sortProp,
+                                      @RequestParam(name="sortType", required = false) String sortType) {
         Result<IPage<Button>> result = new Result<>();
-		IPage<Button> pageList = buttonService.findButtonPageList(button, pageNo, pageSize, req);
+		IPage<Button> pageList = buttonService.findButtonPageList(button, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;

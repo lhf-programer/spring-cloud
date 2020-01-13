@@ -17,7 +17,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 用户角色
  * @Author: haifeng.lv
- * @Date: 2020-01-13 17:24
+ * @Date: 2020-01-13 17:26
  */
 @Slf4j
 @Api(tags="用户角色")
@@ -34,7 +34,8 @@ public class UserRoleController {
 	 * @param userRole
 	 * @param pageNo
 	 * @param pageSize
-	 * @param req
+	 * @param sortProp
+	 * @param sortType
 	 * @return
 	 */
 	@ApiOperation(value="用户角色-分页列表查询", notes="用户角色-分页列表查询")

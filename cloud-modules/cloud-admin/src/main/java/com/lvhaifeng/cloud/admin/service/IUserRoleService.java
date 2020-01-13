@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * @Description: 用户角色
  * @Author: haifeng.lv
- * @Date: 2020-01-13 17:24
+ * @Date: 2020-01-13 17:26
  */
 public interface IUserRoleService extends IService<UserRole> {
     IPage<UserRole> findUserRolePageList(UserRole userRole, Integer pageNo, Integer pageSize, String sortProp, String sortType);

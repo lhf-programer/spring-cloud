@@ -25,7 +25,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 用户
  * @Author: haifeng.lv
- * @Date: 2020-01-13 14:37
+ * @Date: 2020-01-13 17:27
  */
 @Slf4j
 @Api(tags="用户")
@@ -90,17 +90,19 @@ public class UserController {
 	 * @param user
 	 * @param pageNo
 	 * @param pageSize
-	 * @param req
+	 * @param sortProp
+	 * @param sortType
 	 * @return
 	 */
 	@ApiOperation(value="用户-分页列表查询", notes="用户-分页列表查询")
 	@GetMapping(value = "/getUserPageList")
 	public Result<IPage<User>> getUserPageList(User user,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-									  HttpServletRequest req) {
+                                      @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+                                      @RequestParam(name="sortProp", required = false) String sortProp,
+                                      @RequestParam(name="sortType", required = false) String sortType) {
         Result<IPage<User>> result = new Result<>();
-		IPage<User> pageList = userService.findUserPageList(user, pageNo, pageSize, req);
+		IPage<User> pageList = userService.findUserPageList(user, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;

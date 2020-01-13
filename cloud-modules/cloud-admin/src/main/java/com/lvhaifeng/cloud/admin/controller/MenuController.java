@@ -1,7 +1,6 @@
 package com.lvhaifeng.cloud.admin.controller;
 
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 
 import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
@@ -21,7 +20,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
  /**
  * @Description: 菜单
  * @Author: haifeng.lv
- * @Date: 2020-01-13 14:44
+ * @Date: 2020-01-13 17:30
  */
 @Slf4j
 @Api(tags="菜单")
@@ -46,9 +45,9 @@ public class MenuController {
 	@GetMapping(value = "/getMenuPageList")
 	public Result<IPage<Menu>> getMenuPageList(Menu menu,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-									  @RequestParam(name="sortProp", required = false) String sortProp,
-									  @RequestParam(name="sortType", required = false) String sortType) {
+                                      @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+                                      @RequestParam(name="sortProp", required = false) String sortProp,
+                                      @RequestParam(name="sortType", required = false) String sortType) {
         Result<IPage<Menu>> result = new Result<>();
 		IPage<Menu> pageList = menuService.findMenuPageList(menu, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);

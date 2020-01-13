@@ -21,14 +21,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * @Description: 按钮
  * @Author: haifeng.lv
- * @Date: 2020-01-13 14:20
+ * @Date: 2020-01-13 17:28
  */
 @Service
 public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> implements IButtonService {
@@ -37,8 +36,8 @@ public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<Button> findButtonPageList(Button button, Integer pageNo, Integer pageSize, HttpServletRequest req) {
-        QueryWrapper<Button> queryWrapper = QueryGenerator.initQueryWrapper(button, req.getParameterMap());
+    public IPage<Button> findButtonPageList(Button button, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
+        QueryWrapper<Button> queryWrapper = QueryGenerator.initQueryWrapper(button, sortProp, sortType);
         Page<Button> page = new Page<>(pageNo, pageSize);
         IPage<Button> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;
