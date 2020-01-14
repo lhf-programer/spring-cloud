@@ -16,7 +16,9 @@
       :data="list"
       v-loading.body="listLoading"
       @sort-change="sortChange"
+      row-key="id"
       @selection-change="handleSelectionChange"
+      :tree-props="{children: 'children'}"
       border fit highlight-current-row
       style="width: 100%">
       <el-table-column
@@ -52,10 +54,13 @@
     <div v-show="!listLoading" class="pagination-container">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.pageNo" :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
     </div>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :before-close="cancel" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item label="菜单名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入菜单名称"></el-input>
+        </el-form-item>
+        <el-form-item label="选择角色" prop="roleId">
+          <role-tree :value.sync="form.roleId" />
         </el-form-item>
         <el-form-item label="菜单路径" prop="url">
           <el-input v-model="form.url" placeholder="请输入菜单路径"></el-input>
@@ -65,7 +70,7 @@
         </el-form-item>
       </el-form>
       <div scope="footer" class="dialog-footer">
-        <el-button @click="cancel('form')">取 消</el-button>
+        <el-button @click="cancel()">取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
         <el-button v-else type="primary" @click="update('form')">确 定</el-button>
       </div>
@@ -83,15 +88,20 @@
     getMenuById
   } from 'api/admin/menu';
   import { mapGetters } from 'vuex';
+  import RoleTree from "@/views/admin/role/components"
 
   export default {
     name: 'adminMenu',
+    components: {
+      RoleTree
+    },
     data() {
       return {
         form: {
           name: undefined,
           url: undefined,
-          parent: undefined,
+          roleId: undefined,
+          parentId: undefined,
           description: undefined,
         },
         rules: {
@@ -121,16 +131,10 @@
               trigger: 'blur'
             }
           ],
-          parent: [
+          roleId: [
             {
               required: true,
-              message: '请输入父菜单id',
-              trigger: 'blur'
-            },
-            {
-              min: 3,
-              max: 20,
-              message: '长度在 3 到 20 个字符',
+              message: '请选择角色',
               trigger: 'blur'
             }
           ],
@@ -264,9 +268,9 @@
         this.listQuery.page = val;
         this.getList();
       },
-      cancel(formName) {
+      cancel() {
         this.dialogFormVisible = false;
-        this.$refs[formName].resetFields();
+        this.$refs['form'].resetFields();
       },
       create(formName) {
         const set = this.$refs;
@@ -312,7 +316,8 @@
         this.form = {
           name: undefined,
           url: undefined,
-          parent: undefined,
+          roleId: undefined,
+          parentId: undefined,
           description: undefined,
         };
       }
