@@ -15,11 +15,12 @@ import java.util.List;
  * @Date: 2020-01-13 17:30
  */
 public interface IMenuService extends IService<Menu> {
-    IPage<Menu> findMenuPageList(Menu menu, Integer pageNo, Integer pageSize, String sortProp, String sortType);
+    IPage<MenuInfo> findMenuPageList(Menu menu, Integer pageNo, Integer pageSize, String sortProp, String sortType);
     boolean createMenu(ResourceInfo resourceInfo);
     boolean alterMenuById(ResourceInfo resourceInfo);
     boolean dropMenuById(Serializable id);
     boolean dropMenuBatch(String ids);
-    Menu findMenuById(Serializable id);
+    MenuInfo findMenuById(Serializable id);
     List<MenuInfo> getMenuByRoleId(String id);
+    List<MenuInfo> findAllMenus();
 }

@@ -47,19 +47,6 @@ service.interceptors.response.use(
      * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中
      */
     const res = response.data;
-
-    if (response.status === 401) {
-      MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
-        confirmButtonText: '重新登录',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        store.dispatch('FrontLogOut').then(() => {
-          location.reload(); // 为了重新实例化vue-router对象 避免bug
-        });
-      })
-      return Promise.reject('error');
-    }
     if (response.status !== 200 || res.code !== 200) {
       Message({
         message: res.message,
@@ -73,17 +60,23 @@ service.interceptors.response.use(
   },
   error => {
     console.log(error.response); // for debug
+    const response = error.response
+    if (response.status === 401 && response.data.code === 40101) {
+      MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
+        confirmButtonText: '重新登录',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        store.dispatch('FrontLogOut').then(() => {
+          location.reload(); // 为了重新实例化vue-router对象 避免bug
+        });
+      })
+    }
     Message({
-      message: error.response.data.message,
+      message: response.data.message,
       type: 'error',
       duration: 5 * 1000
     });
-    if (response.status === 401 && response.data.code === 40101) {
-      router.replace({
-        path: 'login',
-        query: { redirect: router.currentRoute.fullPath }
-      })
-    }
     return Promise.reject(error);
   }
 )

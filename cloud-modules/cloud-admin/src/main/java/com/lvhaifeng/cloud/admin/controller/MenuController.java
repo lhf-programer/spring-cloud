@@ -3,6 +3,7 @@ package com.lvhaifeng.cloud.admin.controller;
 import java.util.List;
 
 import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
+import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.lvhaifeng.cloud.admin.service.IMenuService;
@@ -43,23 +44,23 @@ public class MenuController {
 	 */
 	@ApiOperation(value="菜单-分页列表查询", notes="菜单-分页列表查询")
 	@GetMapping(value = "/getMenuPageList")
-	public Result<IPage<Menu>> getMenuPageList(Menu menu,
+	public Result<IPage<MenuInfo>> getMenuPageList(Menu menu,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
                                       @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
                                       @RequestParam(name="sortProp", required = false) String sortProp,
                                       @RequestParam(name="sortType", required = false) String sortType) {
-        Result<IPage<Menu>> result = new Result<>();
-		IPage<Menu> pageList = menuService.findMenuPageList(menu, pageNo, pageSize, sortProp, sortType);
+        Result<IPage<MenuInfo>> result = new Result<>();
+		IPage<MenuInfo> pageList = menuService.findMenuPageList(menu, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
 
-	 @ApiOperation(value="菜单-列表查询", notes="菜单-列表查询")
+	 @ApiOperation(value="所有菜单-查询", notes="所有菜单-查询")
 	 @GetMapping(value = "/getAllMenus")
-	 public Result<List<Menu>> getAllMenu() {
-		 Result<List<Menu>> result = new Result<>();
-		 List<Menu> response = menuService.list();
+	 public Result<List<MenuInfo>> getAllMenu() {
+		 Result<List<MenuInfo>> result = new Result<>();
+		 List<MenuInfo> response = menuService.findAllMenus();
 		 result.setSuccess(true);
 		 result.setResult(response);
 		 return result;
@@ -149,10 +150,10 @@ public class MenuController {
 	 */
 	@ApiOperation(value="菜单-通过id查询", notes="菜单-通过id查询")
 	@GetMapping(value = "/getMenuById")
-	public Result<Menu> getMenuById(@RequestParam(name="id",required=true) String id) {
-		Result<Menu> result = new Result<>();
-		Menu menu = menuService.findMenuById(id);
-        result.setResult(menu);
+	public Result<MenuInfo> getMenuById(@RequestParam(name="id",required=true) String id) {
+		Result<MenuInfo> result = new Result<>();
+		MenuInfo menuInfo = menuService.findMenuById(id);
+        result.setResult(menuInfo);
         result.setSuccess(true);
 		return result;
 	}

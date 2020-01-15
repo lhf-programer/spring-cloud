@@ -1,12 +1,8 @@
 package com.lvhaifeng.cloud.admin.vo.response;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.lvhaifeng.cloud.admin.entity.Button;
-import com.lvhaifeng.cloud.admin.entity.Menu;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.List;
 
@@ -25,8 +21,12 @@ public class MenuInfo {
     private String parentId;
     /**父菜单*/
     private MenuInfo parent;
+    /**描述*/
+    private String description;
     /**子菜单*/
     private List<MenuInfo> children;
+    /**角色 id*/
+    private String roleId;
     /**菜单路径*/
     private String url;
     /**按钮列表*/

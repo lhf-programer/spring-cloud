@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 /**
  * @Description: 菜单
  * @Author: haifeng.lv
- * @Date: 2020-01-13 17:30
+ * @Date: 2020-01-14 16:59
  */
 @Data
 @TableName("menu")
@@ -41,7 +41,7 @@ public class Menu {
 	private String name;
 	/**父菜单id*/
     @ApiModelProperty(value = "父菜单id")
-	private String parent;
+	private String parentId;
 	/**最后更新时间*/
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "最后更新时间")

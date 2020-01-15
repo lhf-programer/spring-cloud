@@ -1,5 +1,6 @@
 package com.lvhaifeng.cloud.admin.service.impl;
 
+import com.lvhaifeng.cloud.admin.constant.ErrCodeConstant;
 import com.lvhaifeng.cloud.admin.constant.ResourceTypeEnum;
 import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.lvhaifeng.cloud.admin.entity.RoleResource;
@@ -9,8 +10,8 @@ import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
-import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import com.lvhaifeng.cloud.common.util.SortUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,13 +39,24 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     private RoleResourceServiceImpl roleResourceService;
     @Resource
     private MenuMapper menuMapper;
+    /**
+     * 父id
+     */
+    private static final String PARENT_ID = "0";
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<Menu> findMenuPageList(Menu menu, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
-        QueryWrapper<Menu> queryWrapper = QueryGenerator.initQueryWrapper(menu, sortProp, sortType);
-        Page<Menu> page = new Page<>(pageNo, pageSize);
-        IPage<Menu> pageList = baseMapper.selectPage(page, queryWrapper);
+    public IPage<MenuInfo> findMenuPageList(Menu menu, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
+        Page<MenuInfo> page = new Page(pageNo, pageSize);
+        page.setOrders(SortUtils.resolverSort(sortProp, sortType));
+        if (StringUtils.isBlank(menu.getParentId())
+                && StringUtils.isBlank(menu.getName())
+                && StringUtils.isBlank(menu.getUrl())
+                && StringUtils.isBlank(menu.getDescription())) {
+            menu.setParentId(PARENT_ID);
+        }
+
+        IPage<MenuInfo> pageList = menuMapper.selectMenuPageList(page, menu);
         return pageList;
     }
 
@@ -54,25 +66,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         Menu menu = new Menu();
         BeanUtils.copyProperties(resourceInfo, menu);
         EntityUtils.setDefaultValue(menu);
-        if (StringUtils.isBlank(resourceInfo.getParent())) {
+        if (StringUtils.isBlank(resourceInfo.getParentId())) {
             // 如果没有指定父菜单则默认为父菜单(0)
-            menu.setParent("0");
+            menu.setParentId(PARENT_ID);
         }
-
-        if (super.save(menu)) {
-            RoleResource roleResource = new RoleResource();
-            EntityUtils.setDefaultValue(roleResource);
-            roleResource.setDescription(resourceInfo.getDescription());
-            // 资源类型
-            roleResource.setType(ResourceTypeEnum.MENU.getType());
-            // 角色 id
-            roleResource.setRoleId(resourceInfo.getRoleId());
-            roleResource.setResourceId(menu.getId());
-
-            return roleResourceService.save(roleResource);
-        } else {
-            return false;
-        }
+        return super.save(menu);
     }
 
     @Override
@@ -83,9 +81,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         }else {
             BeanUtils.copyProperties(resourceInfo, menuEntity);
-            if (StringUtils.isBlank(resourceInfo.getParent())) {
+            if (StringUtils.isBlank(resourceInfo.getParentId())) {
                 // 如果没有指定父菜单则默认为父菜单(0)
-                menuEntity.setParent("0");
+                menuEntity.setParentId(PARENT_ID);
             }
         }
         EntityUtils.setDefaultValue(menuEntity);
@@ -104,20 +102,31 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         if(StringUtils.isBlank(ids)) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
-            QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.in("resource_id", Arrays.asList(ids.split(",")));
-            roleResourceService.remove(queryWrapper);
             return super.removeByIds(Arrays.asList(ids.split(",")));
         }
     }
 
     @Override
-    public Menu findMenuById(Serializable id) {
+    public MenuInfo findMenuById(Serializable id) {
         Menu menu = super.getById(id);
+        MenuInfo menuInfo = new MenuInfo();
+
         if (null == menu) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
-            return menu;
+            BeanUtils.copyProperties(menu, menuInfo);
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.eq("resource_id", menu.getId());
+            queryWrapper.eq("type", ResourceTypeEnum.MENU.getType());
+
+            List<RoleResource> roleResources = roleResourceService.list(queryWrapper);
+            if (roleResources.isEmpty()) {
+                throw new BusinessException(ErrCodeConstant.NO_RESOURCE_ERR);
+            }
+            String roleId = roleResources.get(0).getRoleId();
+            menuInfo.setRoleId(roleId);
+
+            return menuInfo;
         }
     }
 
@@ -130,6 +139,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      */
     @Override
     public List<MenuInfo> getMenuByRoleId(String id) {
-        return menuMapper.selectMenuByRoleId(id, "0");
+        return menuMapper.selectMenuByRoleId(id, PARENT_ID);
+    }
+
+    /**
+     * @Description 查询所有菜单
+     * @Author haifeng.lv
+     * @Date 2020/1/14 14:31
+     * @return: java.util.List<com.lvhaifeng.cloud.admin.vo.response.MenuInfo>
+     */
+    @Override
+    public List<MenuInfo> findAllMenus() {
+        return menuMapper.selectAllMenus();
     }
 }

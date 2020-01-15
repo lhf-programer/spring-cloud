@@ -112,9 +112,9 @@
               trigger: 'blur'
             },
             {
-              min: 3,
-              max: 20,
-              message: '长度在 3 到 20 个字符',
+              min: 1,
+              max: 255,
+              message: '长度在 1 到 255 个字符',
               trigger: 'blur'
             }
           ],
@@ -125,9 +125,9 @@
               trigger: 'blur'
             },
             {
-              min: 3,
-              max: 20,
-              message: '长度在 3 到 20 个字符',
+              min: 1,
+              max: 255,
+              message: '长度在 1 到 255 个字符',
               trigger: 'blur'
             }
           ],
@@ -197,11 +197,19 @@
         this.dialogFormVisible = true;
       },
       handleUpdate(row) {
+        this.dialogFormVisible = true;
+        this.dialogStatus = 'update';
         getMenuById({id: row.id})
           .then(response => {
-            this.form = response.result;
-            this.dialogFormVisible = true;
-            this.dialogStatus = 'update';
+            const { result } = response;
+            this.form = {
+              id: result.id,
+              name: result.name,
+              url: result.url,
+              roleId: result.roleId,
+              parentId: result.parentId,
+              description: result.description,
+            };
           });
       },
       handleDelete(row) {
@@ -302,7 +310,7 @@
               this.getList();
               this.$notify({
                 title: '成功',
-                message: '创建成功',
+                message: '修改成功',
                 type: 'success',
                 duration: 2000
               });

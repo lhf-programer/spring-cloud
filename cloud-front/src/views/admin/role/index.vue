@@ -48,7 +48,7 @@
     <div v-show="!listLoading" class="pagination-container">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.pageNo" :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
     </div>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :before-close="cancel" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入角色名称"></el-input>
@@ -58,7 +58,7 @@
         </el-form-item>
       </el-form>
       <div scope="footer" class="dialog-footer">
-        <el-button @click="cancel('form')">取 消</el-button>
+        <el-button @click="cancel()">取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
         <el-button v-else type="primary" @click="update('form')">确 定</el-button>
       </div>
@@ -93,9 +93,9 @@
               trigger: 'blur'
             },
             {
-              min: 3,
-              max: 20,
-              message: '长度在 3 到 20 个字符',
+              min: 1,
+              max: 255,
+              message: '长度在 1 到 255 个字符',
               trigger: 'blur'
             }
           ],
@@ -229,9 +229,9 @@
         this.listQuery.page = val;
         this.getList();
       },
-      cancel(formName) {
+      cancel() {
         this.dialogFormVisible = false;
-        this.$refs[formName].resetFields();
+        this.$refs['form'].resetFields();
       },
       create(formName) {
         const set = this.$refs;
@@ -263,7 +263,7 @@
               this.getList();
               this.$notify({
                 title: '成功',
-                message: '创建成功',
+                message: '修改成功',
                 type: 'success',
                 duration: 2000
               });

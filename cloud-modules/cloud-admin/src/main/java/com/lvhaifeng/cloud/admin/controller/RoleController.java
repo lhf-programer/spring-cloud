@@ -14,7 +14,9 @@ import io.swagger.annotations.ApiOperation;
 import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
 import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 
- /**
+import java.util.List;
+
+/**
  * @Description: 角色
  * @Author: haifeng.lv
  * @Date: 2020-01-13 17:26
@@ -49,6 +51,16 @@ public class RoleController {
 		IPage<Role> pageList = roleService.findRolePageList(role, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);
 		result.setResult(pageList);
+		return result;
+	}
+
+	@ApiOperation(value="所有角色-查询", notes="所有角色-查询")
+	@GetMapping(value = "/getAllRoles")
+	public Result<List<Role>> getAllRoles() {
+		Result<List<Role>> result = new Result<>();
+		List<Role> roles = roleService.list();
+		result.setSuccess(true);
+		result.setResult(roles);
 		return result;
 	}
 	

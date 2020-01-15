@@ -4,8 +4,8 @@
 
     <resultMap id="getMenuInfos" type="com.lvhaifeng.cloud.admin.vo.response.MenuInfo">
         <id column="id" property="id"></id>
-        <id column="parent" property="parentId"></id>
-        <association property="parent" select="selectParentMenu" column="{parent=parentId}"></association>
+        <id column="parent_id" property="parentId"></id>
+        <association property="parent" select="selectParentMenu" column="{parentId=parentId}"></association>
         <collection property="children" select="selectMenuByRoleId" column="{id=id}">
         </collection>
         <collection property="buttonList" select="selectButtonInfos" column="{menuId=id}">
@@ -26,13 +26,14 @@
         select
             m.id,
             m.name,
-            parent as parentId,
+            m.description,
+            m.parent_id as parentId,
             m.url
         from
             menu m
         where 1=1
-        <if test="parent!= null">
-            and m.id = #{parent}
+        <if test="parentId!= null">
+            and m.id = #{parentId}
         </if>
     </select>
 
@@ -41,18 +42,59 @@
         select
             m.id,
             m.name,
-            parent as parentId,
+            m.description,
+            m.parent_id as parentId,
             m.url
         from
             menu m
         left join role_resource r_r on r_r.resource_id = m.id
         where 1=1
         <if test="id!= null">
-            and m.parent = #{id}
+            and m.parent_id = #{id}
         </if>
         <if test="roleId!= null">
             and r_r.role_id = #{roleId}
         </if>
+    </select>
+    
+    <!-- 查询菜单列表 -->
+    <select id="selectMenuPageList"
+            parameterType="com.lvhaifeng.cloud.admin.entity.Menu"
+            resultMap="getMenuInfos">
+        select
+            id,
+            name,
+            url,
+            description,
+            parent_id as parentId
+        from
+            menu
+        where 1=1
+        <if test="menu.name!= null and menu.name!= ''">
+            and name like "%"#{menu.name}"%"
+        </if>
+        <if test="menu.url!= null and menu.url!= ''">
+            and url like "%"#{menu.url}"%"
+        </if>
+        <if test="menu.description!= null and menu.description!= ''">
+            and description like "%"#{menu.description}"%"
+        </if>
+        <if test="menu.parentId!= null and menu.parentId!= ''">
+            and parent_id = #{menu.parentId}
+        </if>
+    </select>
+
+    <!-- 查询所有菜单 -->
+    <select id="selectAllMenus" resultType="com.lvhaifeng.cloud.admin.vo.response.MenuInfo">
+        select
+            id,
+            name,
+            url,
+            description,
+            parent_id as parentId
+        from
+            menu
+        where parent_id = 0
     </select>
 
 </mapper>

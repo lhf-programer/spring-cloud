@@ -25,3 +25,7 @@ export function expurgateRoleBatch(data) {
 export function getRoleById(data) {
   return get(prefix + 'role/getRoleById', data)
 }
+
+export function getAllRoles(data) {
+  return get(prefix + 'role/getAllRoles', data)
+}

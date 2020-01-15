@@ -2,6 +2,7 @@ package com.lvhaifeng.cloud.common.query;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lvhaifeng.cloud.common.constant.CommonConstant;
+import com.lvhaifeng.cloud.common.constant.OrderTypeConstant;
 import com.lvhaifeng.cloud.common.util.ConvertUtils;
 import com.lvhaifeng.cloud.common.util.SqlInjectionUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,6 @@ import java.util.Map;
  */
 @Slf4j
 public class QueryGenerator {
-    private static final String ORDER_TYPE_ASC = "ascending";
-
     /**
      * @Description 获取查询条件构造器QueryWrapper实例 通用查询条件已被封装完成
      * @Author haifeng.lv
@@ -70,7 +69,7 @@ public class QueryGenerator {
                     //SQL注入check
                     SqlInjectionUtil.filterContent(props[i]);
 
-                    if (types[i].indexOf(ORDER_TYPE_ASC) >= 0) {
+                    if (types[i].indexOf(OrderTypeConstant.ORDER_TYPE_ASC) >= 0) {
                         queryWrapper.orderByAsc(ConvertUtils.camelToUnderline(props[i]));
                     } else {
                         queryWrapper.orderByDesc(ConvertUtils.camelToUnderline(props[i]));

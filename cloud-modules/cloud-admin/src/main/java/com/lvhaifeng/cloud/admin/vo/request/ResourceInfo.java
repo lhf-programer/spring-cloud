@@ -15,7 +15,7 @@ public class ResourceInfo {
     /**菜单名称*/
     private String name;
     /**父菜单id*/
-    private String parent;
+    private String parentId;
     /**菜单路径*/
     private String url;
     /**角色id*/
