@@ -3,9 +3,9 @@ package com.lvhaifeng.cloud.admin.service;
 import com.lvhaifeng.cloud.admin.entity.Button;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Description: 按钮
@@ -14,9 +14,10 @@ import java.io.Serializable;
  */
 public interface IButtonService extends IService<Button> {
     IPage<Button> findButtonPageList(Button button, Integer pageNo, Integer pageSize, String sortProp, String sortType);
-    boolean createButton(ResourceInfo resourceInfo);
-    boolean alterButtonById(ResourceInfo resourceInfo);
+    boolean createButton(Button button);
+    boolean alterButtonById(Button button);
     boolean dropButtonById(Serializable id);
     boolean dropButtonBatch(String ids);
     Button findButtonById(Serializable id);
+    List<Button> findAllButtonsById(String roleId, String menuId);
 }

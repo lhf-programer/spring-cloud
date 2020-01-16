@@ -14,7 +14,9 @@ import io.swagger.annotations.ApiOperation;
 import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
 import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 
- /**
+import java.util.List;
+
+/**
  * @Description: 角色资源
  * @Author: haifeng.lv
  * @Date: 2020-01-13 17:26
@@ -51,7 +53,7 @@ public class RoleResourceController {
 		result.setResult(pageList);
 		return result;
 	}
-	
+
 	/**
 	 * 添加
 	 * @param roleResource

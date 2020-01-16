@@ -1,82 +1,84 @@
 <template>
   <div class="app-container calendar-list-container">
-    <!-- 查询区域 -->
-    <div class="filter-container">
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入登录名" v-model="listQuery.username"></el-input>
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入密码" v-model="listQuery.password"></el-input>
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入真实名称" v-model="listQuery.realname"></el-input>
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
-        <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-        <el-button class="filter-item" v-if="user_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
-        <el-button class="filter-item" v-if="user_btn_remove" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
-    </div>
-
-    <!-- table区域-begin -->
-    <el-table
-      :key='tableKey'
-      :data="list"
-      v-loading.body="listLoading"
-      @sort-change="sortChange"
-      @selection-change="handleSelectionChange"
-      border fit highlight-current-row
-      style="width: 100%">
-      <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
-      <el-table-column
-          label="序号"
-          sortable="custom"
-          type="index"
-          :index="(index)=>{return (index+1) + (listQuery.pageNo-1)*listQuery.pageSize}"
-          align="center"
-          width="50"
-        />
-      <el-table-column align="center" sortable="custom" prop="username" label="登录名"> <template slot-scope="scope">
-            <span>{{scope.row.username}}</span>
-          </template> </el-table-column>
-      <el-table-column align="center" sortable="custom" prop="password" label="密码"> <template slot-scope="scope">
-            <span>{{scope.row.password}}</span>
-          </template> </el-table-column>
-      <el-table-column align="center" sortable="custom" prop="realname" label="真实名称"> <template slot-scope="scope">
-            <span>{{scope.row.realname}}</span>
-          </template> </el-table-column>
-      <el-table-column align="center" sortable="custom" prop="description" label="描述"> <template slot-scope="scope">
-            <span>{{scope.row.description}}</span>
-          </template> </el-table-column>
-      <el-table-column align="center" label="操作" width="150"> <template slot-scope="scope">
-          <el-button size="small" v-if="user_btn_edit" type="success" @click="handleUpdate(scope.row)">编辑
-          </el-button>
-          <el-button size="small" v-if="user_btn_remove" type="danger" @click="handleDelete(scope.row)">删除
-          </el-button>
-        </template> </el-table-column>
-    </el-table>
-
-    <!-- 表单区域 -->
-    <div v-show="!listLoading" class="pagination-container">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.pageNo" :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
-    </div>
-    <el-dialog :before-close="cancel" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-        <el-form-item label="登录名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入登录名"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码"></el-input>
-        </el-form-item>
-        <el-form-item label="真实名称" prop="realname">
-          <el-input v-model="form.realname" placeholder="请输入真实名称"></el-input>
-        </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" placeholder="请输入描述"></el-input>
-        </el-form-item>
-      </el-form>
-      <div scope="footer" class="dialog-footer">
-        <el-button @click="cancel()">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('form')">确 定</el-button>
+    <el-card class="box-card">
+      <!-- 查询区域 -->
+      <div class="filter-container">
+          <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入登录名" v-model="listQuery.username"></el-input>
+          <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入密码" v-model="listQuery.password"></el-input>
+          <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入真实名称" v-model="listQuery.realname"></el-input>
+          <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
+          <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+          <el-button class="filter-item" v-if="user_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
+          <el-button class="filter-item" v-if="user_btn_remove" style="margin-left: 10px;" @click="handleDeleteBatch" type="danger" icon="delete">删除</el-button>
       </div>
-    </el-dialog>
+
+      <!-- table区域-begin -->
+      <el-table
+        :key='tableKey'
+        :data="list"
+        v-loading.body="listLoading"
+        @sort-change="sortChange"
+        @selection-change="handleSelectionChange"
+        border fit highlight-current-row
+        style="width: 100%">
+        <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+        <el-table-column
+            label="序号"
+            sortable="custom"
+            type="index"
+            :index="(index)=>{return (index+1) + (listQuery.pageNo-1)*listQuery.pageSize}"
+            align="center"
+            width="50"
+          />
+        <el-table-column align="center" sortable="custom" prop="username" label="登录名"> <template slot-scope="scope">
+              <span>{{scope.row.username}}</span>
+            </template> </el-table-column>
+        <el-table-column align="center" sortable="custom" prop="password" label="密码"> <template slot-scope="scope">
+              <span>{{scope.row.password}}</span>
+            </template> </el-table-column>
+        <el-table-column align="center" sortable="custom" prop="realname" label="真实名称"> <template slot-scope="scope">
+              <span>{{scope.row.realname}}</span>
+            </template> </el-table-column>
+        <el-table-column align="center" sortable="custom" prop="description" label="描述"> <template slot-scope="scope">
+              <span>{{scope.row.description}}</span>
+            </template> </el-table-column>
+        <el-table-column align="center" label="操作" width="150"> <template slot-scope="scope">
+            <el-button size="small" v-if="user_btn_edit" type="success" @click="handleUpdate(scope.row)">编辑
+            </el-button>
+            <el-button size="small" v-if="user_btn_remove" type="danger" @click="handleDelete(scope.row)">删除
+            </el-button>
+          </template> </el-table-column>
+      </el-table>
+
+      <!-- 表单区域 -->
+      <div v-show="!listLoading" class="pagination-container">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.pageNo" :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
+      </div>
+      <el-dialog :before-close="cancel" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+        <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+          <el-form-item label="登录名" prop="username">
+            <el-input v-model="form.username" placeholder="请输入登录名"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="form.password" placeholder="请输入密码"></el-input>
+          </el-form-item>
+          <el-form-item label="真实名称" prop="realname">
+            <el-input v-model="form.realname" placeholder="请输入真实名称"></el-input>
+          </el-form-item>
+          <el-form-item label="描述" prop="description">
+            <el-input v-model="form.description" placeholder="请输入描述"></el-input>
+          </el-form-item>
+        </el-form>
+        <div scope="footer" class="dialog-footer">
+          <el-button @click="cancel()">取 消</el-button>
+          <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
+          <el-button v-else type="primary" @click="update('form')">确 定</el-button>
+        </div>
+      </el-dialog>
+    </el-card>
   </div>
 </template>
 

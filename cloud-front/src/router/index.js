@@ -99,40 +99,4 @@ export const asyncRouterMap = [{
     name: '按钮管理',
     authority: '/admin/button'
   }]
-},
-{
-  path: '/authManager',
-  component: Layout,
-  name: '基础配置管理',
-  icon: 'setting',
-  authority: 'authManager',
-  // children: [{
-  //   path: 'serviceManager',
-  //   component: _import('auth/service/index'),
-  //   name: '用户管理',
-  //   authority: 'serviceManager'
-  // }]
-},
-{
-  path: '/monitorManager',
-  component: Layout,
-  name: '监控模块管理',
-  icon: 'setting',
-  authority: 'monitorManager',
-  // children: [{
-  //   path: 'serviceEurekaManager',
-  //   component: _import('monitor/eureka/index'),
-  //   name: 'Eureka注册中心',
-  //   authority: 'serviceEurekaManager'
-  // }, {
-  //   path: 'serviceMonitorManager',
-  //   component: _import('monitor/service/index'),
-  //   name: '服务状态监控',
-  //   authority: 'serviceMonitorManager'
-  // }, {
-  //   path: 'serviceZipkinManager',
-  //   component: _import('monitor/zipkin/index'),
-  //   name: '服务状态监控',
-  //   authority: 'serviceZipkinManager'
-  // }]
 }];

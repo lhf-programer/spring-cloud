@@ -29,6 +29,8 @@ public class MenuInfo {
     private String roleId;
     /**菜单路径*/
     private String url;
+    /**是否选中*/
+    private boolean isCheck;
     /**按钮列表*/
-    private List<Button> buttonList;
+    private List<ButtonInfo> buttonList;
 }

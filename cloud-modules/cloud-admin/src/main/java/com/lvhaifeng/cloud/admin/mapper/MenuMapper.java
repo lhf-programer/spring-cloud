@@ -40,4 +40,12 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @return: java.util.List<com.lvhaifeng.cloud.admin.vo.response.MenuInfo>
      */
     List<MenuInfo> selectAllMenus();
+    /**
+     * @Description 查询所有菜单
+     * @Author haifeng.lv
+     * @param: id 角色 id
+     * @Date 2020/1/15 17:00
+     * @return: java.util.List<com.lvhaifeng.cloud.admin.entity.Menu>
+     */
+    List<Menu> selectAllMenusByRoleId(@Param("id") String id);
 }

@@ -13,7 +13,7 @@
     </resultMap>
 
     <!-- 查询所有按钮信息 -->
-    <select id="selectButtonInfos" resultType="com.lvhaifeng.cloud.admin.entity.Button">
+    <select id="selectButtonInfos" resultType="com.lvhaifeng.cloud.admin.vo.response.ButtonInfo">
         select
             *
         from
@@ -56,7 +56,7 @@
             and r_r.role_id = #{roleId}
         </if>
     </select>
-    
+
     <!-- 查询菜单列表 -->
     <select id="selectMenuPageList"
             parameterType="com.lvhaifeng.cloud.admin.entity.Menu"
@@ -85,7 +85,7 @@
     </select>
 
     <!-- 查询所有菜单 -->
-    <select id="selectAllMenus" resultType="com.lvhaifeng.cloud.admin.vo.response.MenuInfo">
+    <select id="selectAllMenus" resultMap="getMenuInfos">
         select
             id,
             name,
@@ -94,7 +94,19 @@
             parent_id as parentId
         from
             menu
-        where parent_id = 0
+    </select>
+
+    <select id="selectAllMenusByRoleId" resultType="com.lvhaifeng.cloud.admin.entity.Menu">
+        select
+            m.id,
+            m.name
+        from
+            menu m
+        left join role_resource rr on rr.resource_id = m.id
+        where 1=1
+        <if test="id!= null and id!= ''">
+            and rr.role_id = #{id}
+        </if>
     </select>
 
 </mapper>

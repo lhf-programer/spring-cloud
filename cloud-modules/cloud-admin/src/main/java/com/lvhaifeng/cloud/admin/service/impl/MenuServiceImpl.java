@@ -2,11 +2,13 @@ package com.lvhaifeng.cloud.admin.service.impl;
 
 import com.lvhaifeng.cloud.admin.constant.ErrCodeConstant;
 import com.lvhaifeng.cloud.admin.constant.ResourceTypeEnum;
+import com.lvhaifeng.cloud.admin.entity.Button;
 import com.lvhaifeng.cloud.admin.entity.Menu;
 import com.lvhaifeng.cloud.admin.entity.RoleResource;
 import com.lvhaifeng.cloud.admin.mapper.MenuMapper;
+import com.lvhaifeng.cloud.admin.service.IButtonService;
 import com.lvhaifeng.cloud.admin.service.IMenuService;
-import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
+import com.lvhaifeng.cloud.admin.vo.response.ButtonInfo;
 import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
@@ -25,6 +27,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +42,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     private RoleResourceServiceImpl roleResourceService;
     @Resource
     private MenuMapper menuMapper;
+    @Autowired
+    private IButtonService buttonService;
     /**
      * 父id
      */
@@ -62,11 +67,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean createMenu(ResourceInfo resourceInfo) {
-        Menu menu = new Menu();
-        BeanUtils.copyProperties(resourceInfo, menu);
+    public boolean createMenu(Menu menu) {
         EntityUtils.setDefaultValue(menu);
-        if (StringUtils.isBlank(resourceInfo.getParentId())) {
+        if (StringUtils.isBlank(menu.getParentId())) {
             // 如果没有指定父菜单则默认为父菜单(0)
             menu.setParentId(PARENT_ID);
         }
@@ -75,13 +78,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean alterMenuById(ResourceInfo resourceInfo) {
-        Menu menuEntity = baseMapper.selectById(resourceInfo.getId());
+    public boolean alterMenuById(Menu menu) {
+        Menu menuEntity = baseMapper.selectById(menu.getId());
         if(menuEntity == null) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         }else {
-            BeanUtils.copyProperties(resourceInfo, menuEntity);
-            if (StringUtils.isBlank(resourceInfo.getParentId())) {
+            BeanUtils.copyProperties(menu, menuEntity);
+            if (StringUtils.isBlank(menu.getParentId())) {
                 // 如果没有指定父菜单则默认为父菜单(0)
                 menuEntity.setParentId(PARENT_ID);
             }
@@ -149,7 +152,60 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      * @return: java.util.List<com.lvhaifeng.cloud.admin.vo.response.MenuInfo>
      */
     @Override
-    public List<MenuInfo> findAllMenus() {
-        return menuMapper.selectAllMenus();
+    public List<MenuInfo> findAllMenusByRoleId(String id) {
+        List<Menu> menus = list();
+        List<Menu> roleMenus = null;
+        List<Button> roleButtons = null;
+        List<MenuInfo> menuInfos = new ArrayList<>();
+
+        // 查询角色相关资源
+        if (StringUtils.isNotBlank(id)) {
+            roleMenus = menuMapper.selectAllMenusByRoleId(id);
+        }
+
+        // 菜单
+        for (Menu menu:menus) {
+            MenuInfo menuInfo = new MenuInfo();
+            menuInfo.setId(menu.getId());
+            menuInfo.setName(menu.getName());
+            if (!roleMenus.isEmpty()) {
+                for (Menu roleMenu:roleMenus) {
+                    if (menu.getId().equals(roleMenu.getId())) {
+                        menuInfo.setCheck(true);
+                    }
+                }
+            } else {
+                menuInfo.setCheck(false);
+            }
+
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.eq("menu_id", menu.getId());
+            List<Button> buttons = buttonService.list(queryWrapper);
+            List<ButtonInfo> buttonInfos = new ArrayList<>();
+
+            // 按钮
+            for (Button button:buttons) {
+                ButtonInfo buttonInfo = new ButtonInfo();
+                buttonInfo.setId(button.getId());
+                buttonInfo.setName(button.getName());
+                roleButtons = buttonService.findAllButtonsById(id, menu.getId());
+
+                if (!roleButtons.isEmpty()) {
+                    for (Button roleButton:roleButtons) {
+                        if (button.getId().equals(roleButton.getId())) {
+                            buttonInfo.setCheck(true);
+                        }
+                    }
+                } else {
+                    buttonInfo.setCheck(false);
+                }
+                buttonInfos.add(buttonInfo);
+            }
+            menuInfo.setButtonList(buttonInfos);
+            menuInfos.add(menuInfo);
+        }
+
+        return menuInfos;
     }
+
 }

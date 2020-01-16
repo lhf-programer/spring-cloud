@@ -2,7 +2,6 @@ package com.lvhaifeng.cloud.admin.controller;
 
 import java.util.List;
 
-import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Menu;
@@ -56,27 +55,34 @@ public class MenuController {
 		return result;
 	}
 
-	 @ApiOperation(value="所有菜单-查询", notes="所有菜单-查询")
-	 @GetMapping(value = "/getAllMenus")
-	 public Result<List<MenuInfo>> getAllMenu() {
-		 Result<List<MenuInfo>> result = new Result<>();
-		 List<MenuInfo> response = menuService.findAllMenus();
-		 result.setSuccess(true);
-		 result.setResult(response);
-		 return result;
-	 }
+	/**
+	 * @Description 查询所有菜单 通过角色id
+	 * @Author haifeng.lv
+	 * @param: id 角色id
+	 * @Date 2020/1/15 17:44
+	 * @return: com.lvhaifeng.cloud.common.vo.Result<java.util.List<com.lvhaifeng.cloud.admin.vo.response.MenuInfo>>
+	 */
+	@ApiOperation(value="所有菜单 通过角色id-查询", notes="所有菜单通过 角色id-查询")
+	@GetMapping(value = "/getAllMenusByRoleId")
+	public Result<List<MenuInfo>> getAllMenusByRoleId(@RequestParam(name="id") String id) {
+		Result<List<MenuInfo>> result = new Result<>();
+		List<MenuInfo> response = menuService.findAllMenusByRoleId(id);
+		result.setSuccess(true);
+		result.setResult(response);
+		return result;
+	}
 
 	/**
 	 * 添加
-	 * @param resourceInfo
+	 * @param menu
 	 * @return
 	 */
 	@ApiOperation(value="菜单-添加", notes="菜单-添加")
 	@PostMapping(value = "/generateMenu")
-	public Result<Menu> generateMenu(@RequestBody ResourceInfo resourceInfo) {
+	public Result<Menu> generateMenu(@RequestBody Menu menu) {
 		Result<Menu> result = new Result<>();
 		try {
-			menuService.createMenu(resourceInfo);
+			menuService.createMenu(menu);
 			result.success("添加成功！");
 		} catch (Exception e) {
             e.printStackTrace();
@@ -88,15 +94,15 @@ public class MenuController {
 	
 	/**
 	 * 编辑
-	 * @param resourceInfo
+	 * @param menu
 	 * @return
 	 */
 	@ApiOperation(value="菜单-编辑", notes="菜单-编辑")
 	@PutMapping(value = "/changeMenuById")
-	public Result<Menu> changeMenuById(@RequestBody ResourceInfo resourceInfo) {
+	public Result<Menu> changeMenuById(@RequestBody Menu menu) {
 		Result<Menu> result = new Result<>();
 		try {
-            menuService.alterMenuById(resourceInfo);
+            menuService.alterMenuById(menu);
             result.success("编辑成功！");
         } catch (Exception e) {
             e.printStackTrace();

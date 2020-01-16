@@ -27,13 +27,13 @@ function hasPermission(menus, route) {
  */
 function filterAsyncRouter(asyncRouterMap, menus) {
   const accessedRouters = asyncRouterMap.filter(route => {
-    if (hasPermission(menus, route)) {
-      if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, menus);
-      }
+    // if (hasPermission(menus, route)) {
+    //   if (route.children && route.children.length) {
+    //     route.children = filterAsyncRouter(route.children, menus);
+    //   }
       return true
-    }
-    return false
+    // }
+    // return false
   })
   return accessedRouters
 }

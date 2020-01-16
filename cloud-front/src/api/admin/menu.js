@@ -26,6 +26,6 @@ export function getMenuById(data) {
   return get(prefix + 'menu/getMenuById', data)
 }
 
-export function getAllMenus(data) {
-  return get(prefix + 'menu/getAllMenus', data)
+export function getAllMenusByRoleId(data) {
+  return get(prefix + 'menu/getAllMenusByRoleId', data)
 }

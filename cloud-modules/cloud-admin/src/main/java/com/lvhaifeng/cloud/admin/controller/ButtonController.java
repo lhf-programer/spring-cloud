@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.admin.controller;
 
-import com.lvhaifeng.cloud.admin.vo.request.ResourceInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Button;
 import com.lvhaifeng.cloud.admin.service.IButtonService;
@@ -55,15 +54,15 @@ public class ButtonController {
 	
 	/**
 	 * 添加
-	 * @param resourceInfo
+	 * @param button
 	 * @return
 	 */
 	@ApiOperation(value="按钮-添加", notes="按钮-添加")
 	@PostMapping(value = "/generateButton")
-	public Result<Button> generateButton(@RequestBody ResourceInfo resourceInfo) {
+	public Result<Button> generateButton(@RequestBody Button button) {
 		Result<Button> result = new Result<>();
 		try {
-			buttonService.createButton(resourceInfo);
+			buttonService.createButton(button);
 			result.success("添加成功！");
 		} catch (Exception e) {
             e.printStackTrace();
@@ -75,15 +74,15 @@ public class ButtonController {
 	
 	/**
 	 * 编辑
-	 * @param resourceInfo
+	 * @param button
 	 * @return
 	 */
 	@ApiOperation(value="按钮-编辑", notes="按钮-编辑")
 	@PutMapping(value = "/changeButtonById")
-	public Result<Button> changeButtonById(@RequestBody ResourceInfo resourceInfo) {
+	public Result<Button> changeButtonById(@RequestBody Button button) {
 		Result<Button> result = new Result<>();
 		try {
-            buttonService.alterButtonById(resourceInfo);
+            buttonService.alterButtonById(button);
             result.success("编辑成功！");
         } catch (Exception e) {
             e.printStackTrace();
