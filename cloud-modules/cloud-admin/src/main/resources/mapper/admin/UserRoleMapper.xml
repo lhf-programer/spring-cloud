@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lvhaifeng.cloud.admin.mapper.UserRoleMapper">
+    <sql id="Base_Insert_Column_List">
+        id, user_id, role_id, description, crt_user, crt_time, upd_user, upd_time
+    </sql>
 
+    <!--批量插入-->
+    <insert id="insertBatch">
+        insert into user_role ( <include refid="Base_Insert_Column_List" /> )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.userId},
+            #{item.roleId},
+            #{item.description},
+            #{item.crtUser},
+            #{item.crtTime},
+            #{item.updUser},
+            #{item.updTime}
+            )
+        </foreach>
+    </insert>
 </mapper>

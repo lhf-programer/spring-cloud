@@ -66,7 +66,23 @@ public class MenuController {
 	@GetMapping(value = "/getAllMenusByRoleId")
 	public Result<List<MenuInfo>> getAllMenusByRoleId(@RequestParam(name="id") String id) {
 		Result<List<MenuInfo>> result = new Result<>();
-		List<MenuInfo> response = menuService.findAllMenusByRoleId(id);
+		List<MenuInfo> response = menuService.getAllMenusByRoleId(id);
+		result.setSuccess(true);
+		result.setResult(response);
+		return result;
+	}
+
+	/**
+	 * @Description 查询所有菜单
+	 * @Author haifeng.lv
+	 * @Date 2020/1/15 17:44
+	 * @return: com.lvhaifeng.cloud.common.vo.Result<java.util.List<com.lvhaifeng.cloud.admin.vo.response.MenuInfo>>
+	 */
+	@ApiOperation(value="所有菜单-查询", notes="所有菜单-查询")
+	@GetMapping(value = "/getAllMenus")
+	public Result<List<MenuInfo>> getAllMenus() {
+		Result<List<MenuInfo>> result = new Result<>();
+		List<MenuInfo> response = menuService.findAllMenus();
 		result.setSuccess(true);
 		result.setResult(response);
 		return result;
@@ -81,14 +97,8 @@ public class MenuController {
 	@PostMapping(value = "/generateMenu")
 	public Result<Menu> generateMenu(@RequestBody Menu menu) {
 		Result<Menu> result = new Result<>();
-		try {
-			menuService.createMenu(menu);
-			result.success("添加成功！");
-		} catch (Exception e) {
-            e.printStackTrace();
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
-		}
+		menuService.createMenu(menu);
+		result.success("添加成功！");
 		return result;
 	}
 	
@@ -101,15 +111,8 @@ public class MenuController {
 	@PutMapping(value = "/changeMenuById")
 	public Result<Menu> changeMenuById(@RequestBody Menu menu) {
 		Result<Menu> result = new Result<>();
-		try {
-            menuService.alterMenuById(menu);
-            result.success("编辑成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
-        }
-
+		menuService.alterMenuById(menu);
+		result.success("编辑成功！");
 		return result;
 	}
 	
@@ -121,13 +124,7 @@ public class MenuController {
 	@ApiOperation(value="菜单-通过id删除", notes="菜单-通过id删除")
 	@DeleteMapping(value = "/expurgateMenuById")
 	public Result<?> expurgateMenuById(@RequestParam(name="id",required=true) String id) {
-		try {
-			menuService.dropMenuById(id);
-		} catch (Exception e) {
-		    e.printStackTrace();
-			log.error("删除失败", e.getMessage());
-			return Result.error("删除失败!");
-		}
+		menuService.dropMenuById(id);
 		return Result.ok("删除成功!");
 	}
 	
@@ -139,13 +136,7 @@ public class MenuController {
 	@ApiOperation(value="菜单-批量删除", notes="菜单-批量删除")
 	@DeleteMapping(value = "/expurgateMenuBatch")
 	public Result<?> expurgateMenuBatch(@RequestParam(name="ids",required=true) String ids) {
-        try {
-            menuService.dropMenuBatch(ids);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("删除失败", e.getMessage());
-            return Result.error("删除失败!");
-        }
+		menuService.dropMenuBatch(ids);
 		return Result.ok("删除成功!");
 	}
 	

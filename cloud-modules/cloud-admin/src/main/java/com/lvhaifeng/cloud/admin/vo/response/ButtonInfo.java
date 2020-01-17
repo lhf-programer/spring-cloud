@@ -18,6 +18,8 @@ public class ButtonInfo {
     private String url;
     /**所属菜单id*/
     private String menuId;
+    /**所属菜单名称*/
+    private String menuName;
     /** 是否选中 **/
     private boolean isCheck;
 }

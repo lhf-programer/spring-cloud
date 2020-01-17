@@ -1,5 +1,6 @@
 package com.lvhaifeng.cloud.admin.controller;
 
+import com.lvhaifeng.cloud.admin.vo.request.AddRoleResource;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.RoleResource;
 import com.lvhaifeng.cloud.admin.service.IRoleResourceService;
@@ -63,38 +64,25 @@ public class RoleResourceController {
 	@PostMapping(value = "/generateRoleResource")
 	public Result<RoleResource> generateRoleResource(@RequestBody RoleResource roleResource) {
 		Result<RoleResource> result = new Result<>();
-		try {
-			roleResourceService.createRoleResource(roleResource);
-			result.success("添加成功！");
-		} catch (Exception e) {
-            e.printStackTrace();
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
-		}
+		roleResourceService.createRoleResource(roleResource);
+		result.success("添加成功！");
 		return result;
 	}
 	
 	/**
 	 * 编辑
-	 * @param roleResource
+	 * @param request
 	 * @return
 	 */
 	@ApiOperation(value="角色资源-编辑", notes="角色资源-编辑")
-	@PutMapping(value = "/changeRoleResourceById")
-	public Result<RoleResource> changeRoleResourceById(@RequestBody RoleResource roleResource) {
+	@PutMapping(value = "/changeRoleResourceByRoleId")
+	public Result<RoleResource> changeRoleResourceByRoleId(@RequestBody AddRoleResource request) {
 		Result<RoleResource> result = new Result<>();
-		try {
-            roleResourceService.alterRoleResourceById(roleResource);
-            result.success("编辑成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
-        }
-
+		roleResourceService.alterRoleResourceByRoleId(request);
+		result.success("编辑成功！");
 		return result;
 	}
-	
+
 	/**
 	 * 通过id删除
 	 * @param id
@@ -103,13 +91,7 @@ public class RoleResourceController {
 	@ApiOperation(value="角色资源-通过id删除", notes="角色资源-通过id删除")
 	@DeleteMapping(value = "/expurgateRoleResourceById")
 	public Result<?> expurgateRoleResourceById(@RequestParam(name="id",required=true) String id) {
-		try {
-			roleResourceService.dropRoleResourceById(id);
-		} catch (Exception e) {
-		    e.printStackTrace();
-			log.error("删除失败", e.getMessage());
-			return Result.error("删除失败!");
-		}
+		roleResourceService.dropRoleResourceById(id);
 		return Result.ok("删除成功!");
 	}
 	
@@ -121,13 +103,7 @@ public class RoleResourceController {
 	@ApiOperation(value="角色资源-批量删除", notes="角色资源-批量删除")
 	@DeleteMapping(value = "/expurgateRoleResourceBatch")
 	public Result<?> expurgateRoleResourceBatch(@RequestParam(name="ids",required=true) String ids) {
-        try {
-            roleResourceService.dropRoleResourceBatch(ids);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("删除失败", e.getMessage());
-            return Result.error("删除失败!");
-        }
+		roleResourceService.dropRoleResourceBatch(ids);
 		return Result.ok("删除成功!");
 	}
 	

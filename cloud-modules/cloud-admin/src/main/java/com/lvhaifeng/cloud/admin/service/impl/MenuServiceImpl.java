@@ -14,6 +14,7 @@ import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
 import com.lvhaifeng.cloud.common.util.SortUtils;
+import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,7 +95,18 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean dropMenuById(Serializable id) {
+    public boolean dropMenuById(String id) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("parent_id", id);
+        List<Menu> menus = list(queryWrapper);
+        if (!Collections.isEmpty(menus)) {
+            throw new BusinessException(ErrCodeConstant.NO_CHILDREN_MENU_PERMIT_ERR);
+        }
+
+        // 删除关联资源 id
+        roleResourceService.removeByResourceId(Arrays.asList(id));
+        // 删除关联按钮
+        buttonService.removeByMenuIds(Arrays.asList(id));
         return super.removeById(id);
     }
 
@@ -105,12 +116,24 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         if(StringUtils.isBlank(ids)) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
-            return super.removeByIds(Arrays.asList(ids.split(",")));
+            List<String> menuIds = Arrays.asList(ids.split(","));
+
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.in("parent_id", menuIds);
+            List<Menu> menus = list(queryWrapper);
+            if (!Collections.isEmpty(menus)) {
+                throw new BusinessException(ErrCodeConstant.NO_CHILDREN_MENU_PERMIT_ERR);
+            }
+            // 删除关联资源 id
+            roleResourceService.removeByResourceId(Arrays.asList(ids.split(",")));
+            // 删除关联按钮
+            buttonService.removeByMenuIds(Arrays.asList(ids.split(",")));
+            return super.removeByIds(menuIds);
         }
     }
 
     @Override
-    public MenuInfo findMenuById(Serializable id) {
+    public MenuInfo findMenuById(String id) {
         Menu menu = super.getById(id);
         MenuInfo menuInfo = new MenuInfo();
 
@@ -123,11 +146,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             queryWrapper.eq("type", ResourceTypeEnum.MENU.getType());
 
             List<RoleResource> roleResources = roleResourceService.list(queryWrapper);
-            if (roleResources.isEmpty()) {
-                throw new BusinessException(ErrCodeConstant.NO_RESOURCE_ERR);
+            if (!Collections.isEmpty(roleResources)) {
+                String roleId = roleResources.get(0).getRoleId();
+                menuInfo.setRoleId(roleId);
             }
-            String roleId = roleResources.get(0).getRoleId();
-            menuInfo.setRoleId(roleId);
 
             return menuInfo;
         }
@@ -152,7 +174,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      * @return: java.util.List<com.lvhaifeng.cloud.admin.vo.response.MenuInfo>
      */
     @Override
-    public List<MenuInfo> findAllMenusByRoleId(String id) {
+    public List<MenuInfo> getAllMenusByRoleId(String id) {
         List<Menu> menus = list();
         List<Menu> roleMenus = null;
         List<Button> roleButtons = null;
@@ -168,7 +190,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             MenuInfo menuInfo = new MenuInfo();
             menuInfo.setId(menu.getId());
             menuInfo.setName(menu.getName());
-            if (!roleMenus.isEmpty()) {
+            if (!Collections.isEmpty(roleMenus)) {
                 for (Menu roleMenu:roleMenus) {
                     if (menu.getId().equals(roleMenu.getId())) {
                         menuInfo.setCheck(true);
@@ -188,9 +210,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
                 ButtonInfo buttonInfo = new ButtonInfo();
                 buttonInfo.setId(button.getId());
                 buttonInfo.setName(button.getName());
-                roleButtons = buttonService.findAllButtonsById(id, menu.getId());
+                if (StringUtils.isNotBlank(id)) {
+                    roleButtons = buttonService.findAllButtonsById(id, menu.getId());
+                }
 
-                if (!roleButtons.isEmpty()) {
+                if (!Collections.isEmpty(roleButtons)) {
                     for (Button roleButton:roleButtons) {
                         if (button.getId().equals(roleButton.getId())) {
                             buttonInfo.setCheck(true);
@@ -206,6 +230,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         }
 
         return menuInfos;
+    }
+
+    /**
+     * @Description 查询所有菜单
+     * @Author haifeng.lv
+     * @Date 2020/1/16 13:59
+     * @return: java.util.List<com.lvhaifeng.cloud.admin.vo.response.MenuInfo>
+     */
+    @Override
+    public List<MenuInfo> findAllMenus() {
+        return menuMapper.selectAllMenus();
     }
 
 }

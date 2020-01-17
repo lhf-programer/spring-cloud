@@ -1,4 +1,4 @@
-package com.lvhaifeng.cloud.auth.server.encoder;
+package com.lvhaifeng.cloud.common.encoder;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.security.crypto.password.PasswordEncoder;

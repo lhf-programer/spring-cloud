@@ -12,6 +12,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "@riophae/vue-treeselect": "0.0.38",
     "axios": "^0.19.0",
     "codemirror": "5.26.0",
     "dropzone": "5.1.0",

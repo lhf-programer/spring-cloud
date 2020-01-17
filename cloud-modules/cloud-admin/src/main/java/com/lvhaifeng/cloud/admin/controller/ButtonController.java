@@ -1,5 +1,6 @@
 package com.lvhaifeng.cloud.admin.controller;
 
+import com.lvhaifeng.cloud.admin.vo.response.ButtonInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.Button;
 import com.lvhaifeng.cloud.admin.service.IButtonService;
@@ -40,13 +41,13 @@ public class ButtonController {
 	 */
 	@ApiOperation(value="按钮-分页列表查询", notes="按钮-分页列表查询")
 	@GetMapping(value = "/getButtonPageList")
-	public Result<IPage<Button>> getButtonPageList(Button button,
+	public Result<IPage<ButtonInfo>> getButtonPageList(Button button,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
                                       @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
                                       @RequestParam(name="sortProp", required = false) String sortProp,
                                       @RequestParam(name="sortType", required = false) String sortType) {
-        Result<IPage<Button>> result = new Result<>();
-		IPage<Button> pageList = buttonService.findButtonPageList(button, pageNo, pageSize, sortProp, sortType);
+        Result<IPage<ButtonInfo>> result = new Result<>();
+		IPage<ButtonInfo> pageList = buttonService.findButtonPageList(button, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
@@ -61,14 +62,8 @@ public class ButtonController {
 	@PostMapping(value = "/generateButton")
 	public Result<Button> generateButton(@RequestBody Button button) {
 		Result<Button> result = new Result<>();
-		try {
-			buttonService.createButton(button);
-			result.success("添加成功！");
-		} catch (Exception e) {
-            e.printStackTrace();
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
-		}
+		buttonService.createButton(button);
+		result.success("添加成功！");
 		return result;
 	}
 	
@@ -81,15 +76,8 @@ public class ButtonController {
 	@PutMapping(value = "/changeButtonById")
 	public Result<Button> changeButtonById(@RequestBody Button button) {
 		Result<Button> result = new Result<>();
-		try {
-            buttonService.alterButtonById(button);
-            result.success("编辑成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
-        }
-
+		buttonService.alterButtonById(button);
+		result.success("编辑成功！");
 		return result;
 	}
 	
@@ -101,13 +89,7 @@ public class ButtonController {
 	@ApiOperation(value="按钮-通过id删除", notes="按钮-通过id删除")
 	@DeleteMapping(value = "/expurgateButtonById")
 	public Result<?> expurgateButtonById(@RequestParam(name="id",required=true) String id) {
-		try {
-			buttonService.dropButtonById(id);
-		} catch (Exception e) {
-		    e.printStackTrace();
-			log.error("删除失败", e.getMessage());
-			return Result.error("删除失败!");
-		}
+		buttonService.dropButtonById(id);
 		return Result.ok("删除成功!");
 	}
 	
@@ -119,13 +101,7 @@ public class ButtonController {
 	@ApiOperation(value="按钮-批量删除", notes="按钮-批量删除")
 	@DeleteMapping(value = "/expurgateButtonBatch")
 	public Result<?> expurgateButtonBatch(@RequestParam(name="ids",required=true) String ids) {
-        try {
-            buttonService.dropButtonBatch(ids);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("删除失败", e.getMessage());
-            return Result.error("删除失败!");
-        }
+		buttonService.dropButtonBatch(ids);
 		return Result.ok("删除成功!");
 	}
 	

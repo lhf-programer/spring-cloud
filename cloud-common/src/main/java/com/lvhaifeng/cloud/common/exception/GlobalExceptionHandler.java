@@ -34,6 +34,15 @@ public class GlobalExceptionHandler {
         return result;
     }
 
+    @ExceptionHandler(BusinessException.class)
+    public Result BusinessExceptionHandler(HttpServletResponse response, BusinessException ex) {
+        logger.error(ex.getErrMsg(), ex);
+        Result result = new Result(ex.getErrMsg(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        result.setSuccess(false);
+        response.setStatus(HttpStatus.OK.value());
+        return result;
+    }
+
     @ExceptionHandler(Exception.class)
     public Result otherExceptionHandler(HttpServletResponse response, Exception ex) {
         logger.error(ex.getMessage(), ex);

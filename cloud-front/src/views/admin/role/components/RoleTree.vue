@@ -1,5 +1,5 @@
 <template>
-    <el-select @change="handlerChange" v-model="roleId" placeholder="请选择">
+    <el-select @change="handlerChange" multiple v-model="roleId" placeholder="请选择">
         <el-option
             v-for="item in options"
             :key="item.id"
@@ -18,10 +18,12 @@
     name: 'roleTree',
     props: {
         value: {
-            type: String
+            type: Array,
+            default: []
         }
     },
     created() {
+        this.roleId = this.value;
         this.getAllRoles()
     },
     watch: {
@@ -36,13 +38,13 @@
             })
         },
         handlerChange(value) {
-            this.$emit('update:value', this.roleId)
+            this.$emit('update:value', value)
         }
     },
     data() {
       return {
         options: undefined,
-        roleId: undefined
+        roleId: []
       }
     }
   }

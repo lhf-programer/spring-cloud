@@ -73,14 +73,8 @@ public class RoleController {
 	@PostMapping(value = "/generateRole")
 	public Result<Role> generateRole(@RequestBody Role role) {
 		Result<Role> result = new Result<>();
-		try {
-			roleService.createRole(role);
-			result.success("添加成功！");
-		} catch (Exception e) {
-            e.printStackTrace();
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
-		}
+		roleService.createRole(role);
+		result.success("添加成功！");
 		return result;
 	}
 	
@@ -93,15 +87,8 @@ public class RoleController {
 	@PutMapping(value = "/changeRoleById")
 	public Result<Role> changeRoleById(@RequestBody Role role) {
 		Result<Role> result = new Result<>();
-		try {
-            roleService.alterRoleById(role);
-            result.success("编辑成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
-        }
-
+		roleService.alterRoleById(role);
+		result.success("编辑成功！");
 		return result;
 	}
 	
@@ -113,13 +100,7 @@ public class RoleController {
 	@ApiOperation(value="角色-通过id删除", notes="角色-通过id删除")
 	@DeleteMapping(value = "/expurgateRoleById")
 	public Result<?> expurgateRoleById(@RequestParam(name="id",required=true) String id) {
-		try {
-			roleService.dropRoleById(id);
-		} catch (Exception e) {
-		    e.printStackTrace();
-			log.error("删除失败", e.getMessage());
-			return Result.error("删除失败!");
-		}
+		roleService.dropRoleById(id);
 		return Result.ok("删除成功!");
 	}
 	
@@ -131,13 +112,7 @@ public class RoleController {
 	@ApiOperation(value="角色-批量删除", notes="角色-批量删除")
 	@DeleteMapping(value = "/expurgateRoleBatch")
 	public Result<?> expurgateRoleBatch(@RequestParam(name="ids",required=true) String ids) {
-        try {
-            roleService.dropRoleBatch(ids);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("删除失败", e.getMessage());
-            return Result.error("删除失败!");
-        }
+		roleService.dropRoleBatch(ids);
 		return Result.ok("删除成功!");
 	}
 	

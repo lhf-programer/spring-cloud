@@ -288,7 +288,7 @@
           type: 'warning'
         })
           .then(() => {
-            expurgateRoleBatch({ids: ids})
+            expurgate${entityName}Batch({ids: ids})
               .then(() => {
                 this.$notify({
                   title: '成功',
@@ -336,7 +336,6 @@
         const set = this.$refs;
         set[formName].validate(valid => {
           if (valid) {
-            this.dialogFormVisible = false;
             change${entityName}ById(this.form).then(() => {
               this.dialogFormVisible = false;
               this.getList();

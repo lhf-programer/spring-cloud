@@ -140,9 +140,10 @@
     },
     created() {
       this.getList();
-      this.role_btn_edit = this.buttons['/admin/role/edit'] || true;
-      this.role_btn_remove = this.buttons['/admin/role/remove'] || true;
-      this.role_btn_add = this.buttons['/admin/role/add'] || true;
+      this.role_btn_edit = this.buttons['/admin/role/edit'] || false;
+      this.role_btn_remove = this.buttons['/admin/role/remove'] || false;
+      this.role_btn_add = this.buttons['/admin/role/add'] || false;
+      // 默认为ture, 以防按钮删除
       this.role_btn_permit = this.buttons['/admin/role/permit'] || true;
     },
     computed: {
@@ -281,7 +282,6 @@
         const set = this.$refs;
         set[formName].validate(valid => {
           if (valid) {
-            this.dialogFormVisible = false;
             changeRoleById(this.form).then(() => {
               this.dialogFormVisible = false;
               this.getList();
@@ -298,7 +298,7 @@
         });
       },
       updatePermit() { // 修改权限
-        console.info("updatePermit")
+        this.rolePermitVisible = false;
       },
       resetTemp() {
         this.form = {

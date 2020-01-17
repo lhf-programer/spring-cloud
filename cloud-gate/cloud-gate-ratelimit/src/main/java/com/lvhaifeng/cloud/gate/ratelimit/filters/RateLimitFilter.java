@@ -117,7 +117,7 @@ public class RateLimitFilter extends ZuulFilter {
         final StringJoiner joiner = new StringJoiner(":");
         joiner.add(properties.getKeyPrefix());
         joiner.add(route.getId());
-        if (!types.isEmpty()) {
+        if (null != types && !types.isEmpty()) {
             if (types.contains(Type.URL)) {
                 // 路径
                 joiner.add(route.getPath());

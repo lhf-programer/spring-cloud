@@ -17,7 +17,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -58,7 +57,7 @@ public class ${entityName}ServiceImpl extends ServiceImpl<${entityName}Mapper, $
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean drop${entityName}ById(Serializable id) {
+    public boolean drop${entityName}ById(String id) {
         return super.removeById(id);
     }
 
@@ -73,7 +72,7 @@ public class ${entityName}ServiceImpl extends ServiceImpl<${entityName}Mapper, $
     }
 
     @Override
-    public ${entityName} find${entityName}ById(Serializable id) {
+    public ${entityName} find${entityName}ById(String id) {
         ${entityName} ${entityName?uncap_first} = super.getById(id);
         if (null == ${entityName?uncap_first}) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);

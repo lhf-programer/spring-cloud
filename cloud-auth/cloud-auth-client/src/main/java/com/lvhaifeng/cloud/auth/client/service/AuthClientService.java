@@ -9,6 +9,7 @@ import com.lvhaifeng.cloud.common.vo.AuthInfo;
 import com.lvhaifeng.cloud.common.vo.Result;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -55,7 +56,7 @@ public class AuthClientService {
             String id = authInfo.getId();
             // 获取所有允许的 client
             List<String> allowedClient = authClientFeign.getAllowedClient(clientId).getResult();
-            if (!allowedClient.isEmpty()) {
+            if (!Collections.isEmpty(allowedClient)) {
                 for(String client: allowedClient){
                     if(client.equals(id)){
                         return authInfo;

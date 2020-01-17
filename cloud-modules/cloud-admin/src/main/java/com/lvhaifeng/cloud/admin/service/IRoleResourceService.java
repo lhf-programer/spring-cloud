@@ -3,8 +3,8 @@ package com.lvhaifeng.cloud.admin.service;
 import com.lvhaifeng.cloud.admin.entity.RoleResource;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lvhaifeng.cloud.admin.vo.request.AddRoleResource;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,8 +15,9 @@ import java.util.List;
 public interface IRoleResourceService extends IService<RoleResource> {
     IPage<RoleResource> findRoleResourcePageList(RoleResource roleResource, Integer pageNo, Integer pageSize, String sortProp, String sortType);
     boolean createRoleResource(RoleResource roleResource);
-    boolean alterRoleResourceById(RoleResource roleResource);
-    boolean dropRoleResourceById(Serializable id);
+    void alterRoleResourceByRoleId(AddRoleResource request);
+    boolean dropRoleResourceById(String id);
     boolean dropRoleResourceBatch(String ids);
-    RoleResource findRoleResourceById(Serializable id);
+    RoleResource findRoleResourceById(String id);
+    void removeByResourceId(List<String> ids);
 }

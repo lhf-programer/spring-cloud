@@ -12,15 +12,31 @@ import java.util.List;
  */
 @Data
 public class UserInfo {
-    private String name;
-
+    private String id;
+    /**
+     * 名称
+     */
+    private String username;
+    /**
+     * 名称
+     */
+    private String realname;
     /**
      * 角色名称
      */
     private String roleName;
-
+    /**
+     * 菜单列表
+     */
     private List<MenuInfo> menusList;
-
+    /**
+     * 角色 id
+     */
+    private List<String> roleId;
+    /**
+     * 密码
+     */
+    private String password;
     /**
      * 描述
      */

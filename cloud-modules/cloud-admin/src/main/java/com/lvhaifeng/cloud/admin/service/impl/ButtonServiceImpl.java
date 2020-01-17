@@ -3,11 +3,16 @@ package com.lvhaifeng.cloud.admin.service.impl;
 import com.lvhaifeng.cloud.admin.entity.Button;
 import com.lvhaifeng.cloud.admin.mapper.ButtonMapper;
 import com.lvhaifeng.cloud.admin.service.IButtonService;
+import com.lvhaifeng.cloud.admin.service.IMenuService;
+import com.lvhaifeng.cloud.admin.vo.response.ButtonInfo;
+import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.BeanUtils;
@@ -18,9 +23,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 按钮
@@ -29,16 +34,35 @@ import java.util.List;
  */
 @Service
 public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> implements IButtonService {
+    @Autowired
+    private RoleResourceServiceImpl roleResourceService;
     @Resource
     private ButtonMapper buttonMapper;
+    @Autowired
+    private IMenuService menuService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IPage<Button> findButtonPageList(Button button, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
+    public IPage<ButtonInfo> findButtonPageList(Button button, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
         QueryWrapper<Button> queryWrapper = QueryGenerator.initQueryWrapper(button, sortProp, sortType);
         Page<Button> page = new Page<>(pageNo, pageSize);
         IPage<Button> pageList = baseMapper.selectPage(page, queryWrapper);
-        return pageList;
+        List<Button> buttonList = pageList.getRecords();
+        List<ButtonInfo> buttonInfos = buttonList.stream().map(btn -> {
+            ButtonInfo buttonInfo = new ButtonInfo();
+            BeanUtils.copyProperties(btn, buttonInfo);
+
+            MenuInfo menuInfo = menuService.findMenuById(buttonInfo.getMenuId());
+            if (null != menuInfo) {
+                buttonInfo.setMenuName(menuInfo.getName());
+            }
+            return buttonInfo;
+        }).collect(Collectors.toList());
+        IPage<ButtonInfo> response = new Page<>();
+        BeanUtils.copyProperties(pageList, response);
+        response.setRecords(buttonInfos);
+
+        return response;
     }
 
     @Override
@@ -63,7 +87,9 @@ public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean dropButtonById(Serializable id) {
+    public boolean dropButtonById(String id) {
+        // 删除关联资源 id
+        roleResourceService.removeByResourceId(Arrays.asList(id));
         return super.removeById(id);
     }
 
@@ -73,12 +99,14 @@ public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> impleme
         if(StringUtils.isBlank(ids)) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
+            // 删除关联资源 id
+            roleResourceService.removeByResourceId(Arrays.asList(ids.split(",")));
             return super.removeByIds(Arrays.asList(ids.split(",")));
         }
     }
 
     @Override
-    public Button findButtonById(Serializable id) {
+    public Button findButtonById(String id) {
         Button button = super.getById(id);
         if (null == button) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
@@ -98,5 +126,26 @@ public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> impleme
     @Override
     public List<Button> findAllButtonsById(String roleId, String menuId) {
         return buttonMapper.selectAllButtonsByRoleId(roleId, menuId);
+    }
+
+    /**
+     * @Description 删除按钮通过菜单 id
+     * @Author haifeng.lv
+     * @param: asList
+     * @Date 2020/1/17 15:07
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void removeByMenuIds(List<String> ids) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.in("menu_id", ids);
+        List<Button> buttons = buttonMapper.selectList(queryWrapper);
+        List<String> buttonIds = buttons.stream().map(Button::getId).collect(Collectors.toList());
+        if (!Collections.isEmpty(buttonIds)) {
+            // 删除关联资源 id
+            roleResourceService.removeByResourceId(buttonIds);
+        }
+
+        buttonMapper.delete(queryWrapper);
     }
 }

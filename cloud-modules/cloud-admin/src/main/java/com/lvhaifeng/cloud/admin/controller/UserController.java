@@ -12,6 +12,7 @@ import com.lvhaifeng.cloud.common.vo.Result;
 import com.lvhaifeng.cloud.admin.entity.User;
 import com.lvhaifeng.cloud.admin.service.IUserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class UserController {
 		QueryWrapper queryWrapper = new QueryWrapper();
 		queryWrapper.eq("username", username);
 		List<User> users = userService.list(queryWrapper);
-		if (!users.isEmpty() && users.size() == 1) {
+		if (!Collections.isEmpty(users) && users.size() == 1) {
 			User user = users.get(0);
 			authUser.setId(user.getId());
 			authUser.setUsername(username);
@@ -96,13 +97,13 @@ public class UserController {
 	 */
 	@ApiOperation(value="用户-分页列表查询", notes="用户-分页列表查询")
 	@GetMapping(value = "/getUserPageList")
-	public Result<IPage<User>> getUserPageList(User user,
+	public Result<IPage<UserInfo>> getUserPageList(User user,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
                                       @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
                                       @RequestParam(name="sortProp", required = false) String sortProp,
                                       @RequestParam(name="sortType", required = false) String sortType) {
-        Result<IPage<User>> result = new Result<>();
-		IPage<User> pageList = userService.findUserPageList(user, pageNo, pageSize, sortProp, sortType);
+        Result<IPage<UserInfo>> result = new Result<>();
+		IPage<UserInfo> pageList = userService.findUserPageList(user, pageNo, pageSize, sortProp, sortType);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
@@ -110,44 +111,45 @@ public class UserController {
 	
 	/**
 	 * 添加
-	 * @param user
+	 * @param userInfo
 	 * @return
 	 */
 	@ApiOperation(value="用户-添加", notes="用户-添加")
 	@PostMapping(value = "/generateUser")
-	public Result<User> generateUser(@RequestBody User user) {
-		Result<User> result = new Result<>();
-		try {
-			userService.createUser(user);
-			result.success("添加成功！");
-		} catch (Exception e) {
-            e.printStackTrace();
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
-		}
+	public Result<UserInfo> generateUser(@RequestBody UserInfo userInfo) {
+		Result<UserInfo> result = new Result<>();
+		userService.createUser(userInfo);
+		result.success("添加成功！");
 		return result;
 	}
 	
 	/**
 	 * 编辑
-	 * @param user
+	 * @param userInfo
 	 * @return
 	 */
 	@ApiOperation(value="用户-编辑", notes="用户-编辑")
 	@PutMapping(value = "/changeUserById")
-	public Result<User> changeUserById(@RequestBody User user) {
+	public Result<User> changeUserById(@RequestBody UserInfo userInfo) {
 		Result<User> result = new Result<>();
-		try {
-            userService.alterUserById(user);
-            result.success("编辑成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
-        }
-
+		userService.alterUserById(userInfo);
+		result.success("编辑成功！");
 		return result;
 	}
+
+	 /**
+	  * 用户密码修改
+	  * @param userInfo
+	  * @return
+	  */
+	 @ApiOperation(value="用户密码-修改", notes="用户密码-修改")
+	 @PutMapping(value = "/changePasswordById")
+	 public Result<User> changePasswordById(@RequestBody UserInfo userInfo) {
+		 Result<User> result = new Result<>();
+		 userService.alterPasswordById(userInfo);
+		 result.success("编辑成功！");
+		 return result;
+	 }
 	
 	/**
 	 * 通过id删除
@@ -157,13 +159,7 @@ public class UserController {
 	@ApiOperation(value="用户-通过id删除", notes="用户-通过id删除")
 	@DeleteMapping(value = "/expurgateUserById")
 	public Result<?> expurgateUserById(@RequestParam(name="id",required=true) String id) {
-		try {
-			userService.dropUserById(id);
-		} catch (Exception e) {
-		    e.printStackTrace();
-			log.error("删除失败", e.getMessage());
-			return Result.error("删除失败!");
-		}
+		userService.dropUserById(id);
 		return Result.ok("删除成功!");
 	}
 	
@@ -175,13 +171,7 @@ public class UserController {
 	@ApiOperation(value="用户-批量删除", notes="用户-批量删除")
 	@DeleteMapping(value = "/expurgateUserBatch")
 	public Result<?> expurgateUserBatch(@RequestParam(name="ids",required=true) String ids) {
-        try {
-            userService.dropUserBatch(ids);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("删除失败", e.getMessage());
-            return Result.error("删除失败!");
-        }
+		userService.dropUserBatch(ids);
 		return Result.ok("删除成功!");
 	}
 	
@@ -192,10 +182,10 @@ public class UserController {
 	 */
 	@ApiOperation(value="用户-通过id查询", notes="用户-通过id查询")
 	@GetMapping(value = "/getUserById")
-	public Result<User> getUserById(@RequestParam(name="id",required=true) String id) {
-		Result<User> result = new Result<>();
-		User user = userService.findUserById(id);
-        result.setResult(user);
+	public Result<UserInfo> getUserById(@RequestParam(name="id",required=true) String id) {
+		Result<UserInfo> result = new Result<>();
+		UserInfo userInfo = userService.findUserById(id);
+        result.setResult(userInfo);
         result.setSuccess(true);
 		return result;
 	}

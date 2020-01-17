@@ -99,4 +99,17 @@ export const asyncRouterMap = [{
     name: '按钮管理',
     authority: '/admin/button'
   }]
+},{
+  path: '/system',
+  component: Layout,
+  name: '系统监控菜单',
+  icon: 'setting',
+  authority: '/system',
+  children: [{
+    path: '/system/service',
+    icon: 'fa-user',
+    component: _import('system/service/index'),
+    name: '服务监控',
+    authority: '/system/service'
+  }]
 }];

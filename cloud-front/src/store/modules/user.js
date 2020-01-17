@@ -20,7 +20,7 @@ const user = {
     name: '',
     avatar: '',
     introduction: '',
-    roles: [],
+    roles: '',
     menus: undefined,
     buttons: undefined,
     setting: {
@@ -74,7 +74,7 @@ const user = {
     }, userInfo) {
       const username = userInfo.username.trim();
       commit('SET_TOKEN', '');
-      commit('SET_ROLES', []);
+      commit('SET_ROLES', '');
       commit('SET_MENUS', undefined);
       commit('SET_BUTTONS', undefined);
       removeToken();
@@ -106,7 +106,7 @@ const user = {
         getUserInfoByToken(param).then(response => {
           const data = response;
           commit('SET_ROLES', data.result.roleName);
-          commit('SET_NAME', data.result.name);
+          commit('SET_NAME', data.result.username);
           commit('SET_AVATAR', 'http://git.oschina.net/uploads/42/547642_geek_qi.png?1499487420');
           commit('SET_INTRODUCTION', data.result.description);
 
@@ -133,7 +133,7 @@ const user = {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '');
-          commit('SET_ROLES', []);
+          commit('SET_ROLES', '');
           commit('SET_MENUS', undefined);
           commit('SET_BUTTONS', undefined);
           removeToken();

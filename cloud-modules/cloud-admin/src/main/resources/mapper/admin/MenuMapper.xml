@@ -2,15 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lvhaifeng.cloud.admin.mapper.MenuMapper">
 
+    <resultMap id="getMenuInfosByRoleId" type="com.lvhaifeng.cloud.admin.vo.response.MenuInfo">
+        <id column="id" property="id"></id>
+        <id column="parent_id" property="parentId"></id>
+        <id column="role_id" property="roleId"></id>
+        <association property="parent" select="selectParentMenu" column="{parentId=parentId}"></association>
+        <collection property="children" select="selectMenuByRoleId" column="{id=id},{roleId=roleId}">
+        </collection>
+        <collection property="buttonList" select="selectButtonInfosByRoleId" column="{menuId=id},{roleId=roleId}">
+        </collection>
+    </resultMap>
+
     <resultMap id="getMenuInfos" type="com.lvhaifeng.cloud.admin.vo.response.MenuInfo">
         <id column="id" property="id"></id>
         <id column="parent_id" property="parentId"></id>
         <association property="parent" select="selectParentMenu" column="{parentId=parentId}"></association>
-        <collection property="children" select="selectMenuByRoleId" column="{id=id}">
+        <collection property="children" select="selectMenuChildren" column="{id=id}">
         </collection>
         <collection property="buttonList" select="selectButtonInfos" column="{menuId=id}">
         </collection>
     </resultMap>
+
+    <!-- 查询所有按钮信息 通过角色 id -->
+    <select id="selectButtonInfosByRoleId" resultType="com.lvhaifeng.cloud.admin.vo.response.ButtonInfo">
+        select
+            *
+        from
+            button b
+        left join role_resource r_r on r_r.resource_id = b.id
+        where b.menu_id = #{menuId}
+        <if test="roleId!= null">
+            and r_r.role_id = #{roleId}
+        </if>
+    </select>
 
     <!-- 查询所有按钮信息 -->
     <select id="selectButtonInfos" resultType="com.lvhaifeng.cloud.admin.vo.response.ButtonInfo">
@@ -38,13 +62,30 @@
     </select>
 
     <!-- 根据角色 id查询菜单 -->
-    <select id="selectMenuByRoleId" resultMap="getMenuInfos">
+    <select id="selectMenuChildren" resultMap="getMenuInfos">
+        select
+            id,
+            name,
+            description,
+            parent_id as parentId,
+            url
+        from
+            menu
+        where 1=1
+        <if test="id!= null">
+            and parent_id = #{id}
+        </if>
+    </select>
+
+    <!-- 根据角色 id查询菜单 -->
+    <select id="selectMenuByRoleId" resultMap="getMenuInfosByRoleId">
         select
             m.id,
             m.name,
             m.description,
             m.parent_id as parentId,
-            m.url
+            m.url,
+            r_r.role_id as roleId
         from
             menu m
         left join role_resource r_r on r_r.resource_id = m.id
@@ -94,6 +135,7 @@
             parent_id as parentId
         from
             menu
+        where parent_id = '0'
     </select>
 
     <select id="selectAllMenusByRoleId" resultType="com.lvhaifeng.cloud.admin.entity.Menu">
@@ -102,10 +144,10 @@
             m.name
         from
             menu m
-        left join role_resource rr on rr.resource_id = m.id
+        left join role_resource r_r on r_r.resource_id = m.id
         where 1=1
         <if test="id!= null and id!= ''">
-            and rr.role_id = #{id}
+            and r_r.role_id = #{id}
         </if>
     </select>
 

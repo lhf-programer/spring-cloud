@@ -29,3 +29,7 @@ export function getMenuById(data) {
 export function getAllMenusByRoleId(data) {
   return get(prefix + 'menu/getAllMenusByRoleId', data)
 }
+
+export function getAllMenus(data) {
+  return get(prefix + 'menu/getAllMenus', data)
+}

@@ -61,14 +61,8 @@ public class UserRoleController {
 	@PostMapping(value = "/generateUserRole")
 	public Result<UserRole> generateUserRole(@RequestBody UserRole userRole) {
 		Result<UserRole> result = new Result<>();
-		try {
-			userRoleService.createUserRole(userRole);
-			result.success("添加成功！");
-		} catch (Exception e) {
-            e.printStackTrace();
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
-		}
+		userRoleService.createUserRole(userRole);
+		result.success("添加成功！");
 		return result;
 	}
 	
@@ -81,15 +75,8 @@ public class UserRoleController {
 	@PutMapping(value = "/changeUserRoleById")
 	public Result<UserRole> changeUserRoleById(@RequestBody UserRole userRole) {
 		Result<UserRole> result = new Result<>();
-		try {
-            userRoleService.alterUserRoleById(userRole);
-            result.success("编辑成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
-        }
-
+		userRoleService.alterUserRoleById(userRole);
+		result.success("编辑成功！");
 		return result;
 	}
 	
@@ -101,13 +88,7 @@ public class UserRoleController {
 	@ApiOperation(value="用户角色-通过id删除", notes="用户角色-通过id删除")
 	@DeleteMapping(value = "/expurgateUserRoleById")
 	public Result<?> expurgateUserRoleById(@RequestParam(name="id",required=true) String id) {
-		try {
-			userRoleService.dropUserRoleById(id);
-		} catch (Exception e) {
-		    e.printStackTrace();
-			log.error("删除失败", e.getMessage());
-			return Result.error("删除失败!");
-		}
+		userRoleService.dropUserRoleById(id);
 		return Result.ok("删除成功!");
 	}
 	
@@ -119,13 +100,7 @@ public class UserRoleController {
 	@ApiOperation(value="用户角色-批量删除", notes="用户角色-批量删除")
 	@DeleteMapping(value = "/expurgateUserRoleBatch")
 	public Result<?> expurgateUserRoleBatch(@RequestParam(name="ids",required=true) String ids) {
-        try {
-            userRoleService.dropUserRoleBatch(ids);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("删除失败", e.getMessage());
-            return Result.error("删除失败!");
-        }
+		userRoleService.dropUserRoleBatch(ids);
 		return Result.ok("删除成功!");
 	}
 	

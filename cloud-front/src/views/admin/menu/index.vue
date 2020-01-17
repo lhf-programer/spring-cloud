@@ -60,11 +60,16 @@
           <el-form-item label="菜单名称" prop="name">
             <el-input v-model="form.name" placeholder="请输入菜单名称"></el-input>
           </el-form-item>
-          <el-form-item label="选择角色" prop="roleId">
-            <role-tree :value.sync="form.roleId" />
-          </el-form-item>
           <el-form-item label="菜单路径" prop="url">
             <el-input v-model="form.url" placeholder="请输入菜单路径"></el-input>
+          </el-form-item>
+          <el-form-item label="父菜单" prop="menuId">
+            <tree-select 
+              :options="menuOptions"
+              :value="form.parentId"
+              :currentValue="form.id"
+              @setValue="setParentId"
+              />
           </el-form-item>
           <el-form-item label="描述" prop="description">
             <el-input v-model="form.description" placeholder="请输入描述"></el-input>
@@ -87,22 +92,22 @@
     changeMenuById,
     expurgateMenuById,
     expurgateMenuBatch,
-    getMenuById
+    getMenuById,
+    getAllMenus
   } from 'api/admin/menu';
   import { mapGetters } from 'vuex';
-  import RoleTree from "@/views/admin/role/components/RoleTree"
+  import TreeSelect from "@/components/TreeSelect"
 
   export default {
     name: 'adminMenu',
     components: {
-      RoleTree
+      TreeSelect
     },
     data() {
       return {
         form: {
           name: undefined,
           url: undefined,
-          roleId: undefined,
           parentId: undefined,
           description: undefined,
         },
@@ -132,14 +137,7 @@
               message: '长度在 1 到 255 个字符',
               trigger: 'blur'
             }
-          ],
-          roleId: [
-            {
-              required: true,
-              message: '请选择角色',
-              trigger: 'blur'
-            }
-          ],
+          ]
         },
         list: undefined,
         total: undefined,
@@ -160,7 +158,8 @@
           update: '编辑',
           create: '创建'
         },
-        tableKey: 0
+        tableKey: 0,
+        menuOptions: undefined // 菜单节点数据
       }
     },
     created() {
@@ -182,6 +181,12 @@
           this.total = response.result.total;
           this.listLoading = false;
         })
+        this.getAllMenus();
+      },
+      getAllMenus() {
+          getAllMenus().then(response => {
+              this.menuOptions = response.result;
+          })
       },
       handleFilter() {
         this.listQuery.pageNo = 1;
@@ -208,8 +213,7 @@
               id: result.id,
               name: result.name,
               url: result.url,
-              roleId: result.roleId,
-              parentId: result.parentId,
+              parentId: result.parentId == 0?undefined:result.parentId,
               description: result.description,
             };
           });
@@ -229,8 +233,7 @@
                   type: 'success',
                   duration: 2000
                 });
-                const index = this.list.indexOf(row);
-                this.list.splice(index, 1);
+                this.getList();
               });
           });
       },
@@ -258,7 +261,7 @@
           type: 'warning'
         })
           .then(() => {
-            expurgateRoleBatch({ids: ids})
+            expurgateMenuBatch({ids: ids})
               .then(() => {
                 this.$notify({
                   title: '成功',
@@ -281,6 +284,10 @@
       cancel() {
         this.dialogFormVisible = false;
         this.$refs['form'].resetFields();
+        this.getAllMenus();
+      },
+      setParentId(value) {
+        this.form.parentId = value;
       },
       create(formName) {
         const set = this.$refs;
@@ -306,7 +313,6 @@
         const set = this.$refs;
         set[formName].validate(valid => {
           if (valid) {
-            this.dialogFormVisible = false;
             changeMenuById(this.form).then(() => {
               this.dialogFormVisible = false;
               this.getList();
@@ -326,7 +332,6 @@
         this.form = {
           name: undefined,
           url: undefined,
-          roleId: undefined,
           parentId: undefined,
           description: undefined,
         };

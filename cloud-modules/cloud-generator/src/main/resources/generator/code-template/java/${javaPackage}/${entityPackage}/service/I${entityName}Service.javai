@@ -4,8 +4,6 @@ import ${javaPackage}.${entityPackage}.entity.${entityName};
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.io.Serializable;
-
 /**
  * @Description: ${tableVo.ftlDescription}
  * @Author: haifeng.lv
@@ -15,7 +13,7 @@ public interface I${entityName}Service extends IService<${entityName}> {
     IPage<${entityName}> find${entityName}PageList(${entityName} ${entityName?uncap_first}, Integer pageNo, Integer pageSize, String sortProp, String sortType);
     boolean create${entityName}(${entityName} ${entityName?uncap_first});
     boolean alter${entityName}ById(${entityName} ${entityName?uncap_first});
-    boolean drop${entityName}ById(Serializable id);
+    boolean drop${entityName}ById(String id);
     boolean drop${entityName}Batch(String ids);
-    ${entityName} find${entityName}ById(Serializable id);
+    ${entityName} find${entityName}ById(String id);
 }

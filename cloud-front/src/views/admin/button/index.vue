@@ -5,7 +5,6 @@
       <div class="filter-container">
           <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入按钮名称" v-model="listQuery.name"></el-input>
           <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入按钮路径" v-model="listQuery.url"></el-input>
-          <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入所属菜单id" v-model="listQuery.menuId"></el-input>
           <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入描述" v-model="listQuery.description"></el-input>
           <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
           <el-button class="filter-item" v-if="button_btn_add" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
@@ -39,8 +38,8 @@
         <el-table-column align="center" sortable="custom" prop="url" label="按钮路径"> <template slot-scope="scope">
               <span>{{scope.row.url}}</span>
             </template> </el-table-column>
-        <el-table-column align="center" sortable="custom" prop="menuId" label="所属菜单id"> <template slot-scope="scope">
-              <span>{{scope.row.menuId}}</span>
+        <el-table-column align="center" prop="menuName" label="菜单名称"> <template slot-scope="scope">
+              <span>{{scope.row.menuName}}</span>
             </template> </el-table-column>
         <el-table-column align="center" sortable="custom" prop="description" label="描述"> <template slot-scope="scope">
               <span>{{scope.row.description}}</span>
@@ -65,8 +64,12 @@
           <el-form-item label="按钮路径" prop="url">
             <el-input v-model="form.url" placeholder="请输入按钮路径"></el-input>
           </el-form-item>
-          <el-form-item label="所属菜单id" prop="menuId">
-            <el-input v-model="form.menuId" placeholder="请输入所属菜单id"></el-input>
+          <el-form-item label="菜单" prop="menuId">
+            <tree-select 
+              :options="menuOptions"
+              :value="form.menuId"
+              @setValue="setMenuId"
+              />
           </el-form-item>
           <el-form-item label="描述" prop="description">
             <el-input v-model="form.description" placeholder="请输入描述"></el-input>
@@ -91,10 +94,17 @@
     expurgateButtonBatch,
     getButtonById
   } from 'api/admin/button';
+  import {
+    getAllMenus
+  } from 'api/admin/menu';
   import { mapGetters } from 'vuex';
+  import TreeSelect from "@/components/TreeSelect"
 
   export default {
     name: 'adminButton',
+    components: {
+      TreeSelect
+    },
     data() {
       return {
         form: {
@@ -133,13 +143,7 @@
           menuId: [
             {
               required: true,
-              message: '请输入所属菜单id',
-              trigger: 'blur'
-            },
-            {
-              min: 1,
-              max: 32,
-              message: '长度在 1 到 32 个字符',
+              message: '请选择所属菜单',
               trigger: 'blur'
             }
           ],
@@ -163,11 +167,13 @@
           update: '编辑',
           create: '创建'
         },
-        tableKey: 0
+        tableKey: 0,
+        menuOptions: undefined // 菜单节点数据
       }
     },
     created() {
       this.getList();
+      this.getAllMenus();
       this.button_btn_edit = this.buttons['/admin/button/edit'] || false;
       this.button_btn_remove = this.buttons['/admin/button/remove'] || false;
       this.button_btn_add = this.buttons['/admin/button/add'] || false;
@@ -185,6 +191,11 @@
           this.total = response.result.total;
           this.listLoading = false;
         })
+      },
+      getAllMenus() {
+          getAllMenus().then(response => {
+              this.menuOptions = response.result;
+          })
       },
       handleFilter() {
         this.listQuery.pageNo = 1;
@@ -253,7 +264,7 @@
           type: 'warning'
         })
           .then(() => {
-            expurgateRoleBatch({ids: ids})
+            expurgateButtonBatch({ids: ids})
               .then(() => {
                 this.$notify({
                   title: '成功',
@@ -274,8 +285,11 @@
         this.getList();
       },
       cancel() {
-        this.dialogFormVisible = false;
         this.$refs['form'].resetFields();
+        this.dialogFormVisible = false;
+      },
+      setMenuId(value) {
+        this.form.menuId = value;
       },
       create(formName) {
         const set = this.$refs;
@@ -301,7 +315,6 @@
         const set = this.$refs;
         set[formName].validate(valid => {
           if (valid) {
-            this.dialogFormVisible = false;
             changeButtonById(this.form).then(() => {
               this.dialogFormVisible = false;
               this.getList();

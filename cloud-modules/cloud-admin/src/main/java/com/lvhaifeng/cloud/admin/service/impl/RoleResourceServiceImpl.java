@@ -1,14 +1,20 @@
 package com.lvhaifeng.cloud.admin.service.impl;
 
+import com.lvhaifeng.cloud.admin.constant.ErrCodeConstant;
+import com.lvhaifeng.cloud.admin.constant.ResourceTypeEnum;
+import com.lvhaifeng.cloud.admin.entity.Role;
 import com.lvhaifeng.cloud.admin.entity.RoleResource;
 import com.lvhaifeng.cloud.admin.mapper.RoleResourceMapper;
 import com.lvhaifeng.cloud.admin.service.IRoleResourceService;
+import com.lvhaifeng.cloud.admin.service.IRoleService;
+import com.lvhaifeng.cloud.admin.vo.request.AddRoleResource;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,8 +22,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -27,6 +34,9 @@ import java.util.Arrays;
  */
 @Service
 public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, RoleResource> implements IRoleResourceService {
+    @Autowired
+    private IRoleService roleService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public IPage<RoleResource> findRoleResourcePageList(RoleResource roleResource, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
@@ -45,20 +55,51 @@ public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, Rol
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean alterRoleResourceById(RoleResource roleResource) {
-        RoleResource roleResourceEntity = baseMapper.selectById(roleResource.getId());
-        if(roleResourceEntity == null) {
-            throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
-        } else {
-            BeanUtils.copyProperties(roleResource, roleResourceEntity);
+    public void alterRoleResourceByRoleId(AddRoleResource request) {
+        // 角色 id
+        String roleId = request.getId();
+        Role role = roleService.findRoleById(roleId);
+        if (null == role) {
+            throw new BusinessException(ErrCodeConstant.NO_ROLE_ERR);
         }
-        EntityUtils.setDefaultValue(roleResourceEntity);
-        return super.updateById(roleResourceEntity);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("role_id", roleId);
+        baseMapper.delete(queryWrapper);
+
+        // 角色菜单
+        List<String> menuIds = request.getMenuIds();
+        // 角色按钮
+        List<String> buttonIds = request.getButtonIds();
+        List<RoleResource> roleResources = new ArrayList<>();
+
+        if (!Collections.isEmpty(menuIds)) {
+            menuIds.forEach(menuId -> {
+                RoleResource roleResource = new RoleResource();
+                roleResource.setRoleId(roleId);
+                roleResource.setResourceId(menuId);
+                roleResource.setType(ResourceTypeEnum.MENU.getType());
+                EntityUtils.setDefaultValue(roleResource);
+                roleResources.add(roleResource);
+            });
+            if (!Collections.isEmpty(buttonIds)) {
+                buttonIds.forEach(buttonId -> {
+                    RoleResource roleResource = new RoleResource();
+                    roleResource.setRoleId(roleId);
+                    roleResource.setResourceId(buttonId);
+                    roleResource.setType(ResourceTypeEnum.BUTTON.getType());
+                    EntityUtils.setDefaultValue(roleResource);
+                    roleResources.add(roleResource);
+                });
+            }
+        }
+
+        // 批量插入
+        baseMapper.insertBatch(roleResources);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean dropRoleResourceById(Serializable id) {
+    public boolean dropRoleResourceById(String id) {
         return super.removeById(id);
     }
 
@@ -73,12 +114,25 @@ public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, Rol
     }
 
     @Override
-    public RoleResource findRoleResourceById(Serializable id) {
+    public RoleResource findRoleResourceById(String id) {
         RoleResource roleResource = super.getById(id);
         if (null == roleResource) {
             throw new BusinessException(ErrCodeBaseConstant.COMMON_PARAM_ERR);
         } else {
             return roleResource;
         }
+    }
+
+    /**
+     * @Description 删除通过资源 id
+     * @Author haifeng.lv
+     * @param: ids
+     * @Date 2020/1/17 15:16
+     */
+    @Override
+    public void removeByResourceId(List<String> ids) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.in("resource_id", ids);
+        remove(queryWrapper);
     }
 }

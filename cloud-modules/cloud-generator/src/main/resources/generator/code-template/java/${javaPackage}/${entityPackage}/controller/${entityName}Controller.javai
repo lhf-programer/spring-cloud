@@ -73,14 +73,8 @@ public class ${entityName}Controller {
 	@PostMapping(value = "/generate${entityName}")
 	public Result<${entityName}> generate${entityName}(@RequestBody ${entityName} ${entityName?uncap_first}) {
 		Result<${entityName}> result = new Result<>();
-		try {
-			${entityName?uncap_first}Service.create${entityName}(${entityName?uncap_first});
-			result.success("添加成功！");
-		} catch (Exception e) {
-            e.printStackTrace();
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
-		}
+        ${entityName?uncap_first}Service.create${entityName}(${entityName?uncap_first});
+        result.success("添加成功！");
 		return result;
 	}
 	
@@ -93,15 +87,8 @@ public class ${entityName}Controller {
 	@PutMapping(value = "/change${entityName}ById")
 	public Result<${entityName}> change${entityName}ById(@RequestBody ${entityName} ${entityName?uncap_first}) {
 		Result<${entityName}> result = new Result<>();
-		try {
-            ${entityName?uncap_first}Service.alter${entityName}ById(${entityName?uncap_first});
-            result.success("编辑成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
-        }
-
+        ${entityName?uncap_first}Service.alter${entityName}ById(${entityName?uncap_first});
+        result.success("编辑成功！");
 		return result;
 	}
 	
@@ -113,13 +100,7 @@ public class ${entityName}Controller {
 	@ApiOperation(value="${tableVo.ftlDescription}-通过id删除", notes="${tableVo.ftlDescription}-通过id删除")
 	@DeleteMapping(value = "/expurgate${entityName}ById")
 	public Result<?> expurgate${entityName}ById(@RequestParam(name="id",required=true) String id) {
-		try {
-			${entityName?uncap_first}Service.drop${entityName}ById(id);
-		} catch (Exception e) {
-		    e.printStackTrace();
-			log.error("删除失败", e.getMessage());
-			return Result.error("删除失败!");
-		}
+        ${entityName?uncap_first}Service.drop${entityName}ById(id);
 		return Result.ok("删除成功!");
 	}
 	
@@ -131,13 +112,7 @@ public class ${entityName}Controller {
 	@ApiOperation(value="${tableVo.ftlDescription}-批量删除", notes="${tableVo.ftlDescription}-批量删除")
 	@DeleteMapping(value = "/expurgate${entityName}Batch")
 	public Result<?> expurgate${entityName}Batch(@RequestParam(name="ids",required=true) String ids) {
-        try {
-            ${entityName?uncap_first}Service.drop${entityName}Batch(ids);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("删除失败", e.getMessage());
-            return Result.error("删除失败!");
-        }
+        ${entityName?uncap_first}Service.drop${entityName}Batch(ids);
 		return Result.ok("删除成功!");
 	}
 	
