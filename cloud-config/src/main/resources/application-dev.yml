@@ -12,7 +12,7 @@ spring:
           username: 1179438473@qq.com
           password: Lv13597680154
   rabbitmq:
-    host: 192.168.42.128
+    host: 192.168.0.117
     port: 5672
     username: admin
     password: admin
