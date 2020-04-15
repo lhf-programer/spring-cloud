@@ -1,3 +1,22 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : lvhaifeng-test
+ Source Server Type    : MySQL
+ Source Server Version : 80018
+ Source Host           : 192.168.0.117:3306
+ Source Schema         : spring_cloud
+
+ Target Server Type    : MySQL
+ Target Server Version : 80018
+ File Encoding         : 65001
+
+ Date: 15/04/2020 16:36:29
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- ----------------------------
 -- Table structure for oauth_access_token
 -- ----------------------------
@@ -12,7 +31,7 @@ CREATE TABLE `oauth_access_token`  (
   `refresh_token` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`authentication_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
- 
+
 -- ----------------------------
 -- Table structure for oauth_client_details
 -- ----------------------------
@@ -31,7 +50,12 @@ CREATE TABLE `oauth_client_details`  (
   `autoapprove` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`client_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
- 
+
+-- ----------------------------
+-- Records of oauth_client_details
+-- ----------------------------
+INSERT INTO `oauth_client_details` VALUES ('cloud', '', 'VmgQELdT4avlLESdCqspGyjxgIo6kba66qcmiDuq1LA=', 'read,write', 'password,refresh_token', '', 'ROLE_ADMIN,ROLE_USER', 7200, 7200, '{}', '');
+
 -- ----------------------------
 -- Table structure for oauth_refresh_token
 -- ----------------------------
@@ -41,3 +65,5 @@ CREATE TABLE `oauth_refresh_token`  (
   `token` blob NULL,
   `authentication` blob NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
