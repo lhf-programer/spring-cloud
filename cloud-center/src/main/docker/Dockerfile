@@ -1,5 +1,5 @@
 # 运行环境
-FROM jdk:8
+FROM openjdk:8-jre-alpine
 # 创建 app 目录
 RUN mkdir -p /home/project/center
 WORKDIR /home/project/center
