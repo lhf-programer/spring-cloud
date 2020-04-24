@@ -76,7 +76,7 @@ public class QueryGenerator {
                     //SQL注入check
                     SqlInjectionUtil.filterContent(props[i]);
 
-                    if (types[i].indexOf(OrderTypeConstant.ORDER_TYPE_ASC) >= 0) {
+                    if (OrderTypeConstant.ORDER_TYPE_ASC.indexOf(types[i]) >= 0) {
                         queryWrapper.orderByAsc(ConvertUtils.camelToUnderline(props[i]));
                     } else {
                         queryWrapper.orderByDesc(ConvertUtils.camelToUnderline(props[i]));
