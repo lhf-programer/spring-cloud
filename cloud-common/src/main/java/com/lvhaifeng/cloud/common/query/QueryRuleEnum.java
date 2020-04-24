@@ -1,6 +1,5 @@
 package com.lvhaifeng.cloud.common.query;
 
-import com.lvhaifeng.cloud.common.util.ConvertUtils;
 import com.lvhaifeng.cloud.common.util.StringUtils;
 
 /**

@@ -1,7 +1,6 @@
 package com.lvhaifeng.cloud.common.query;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lvhaifeng.cloud.common.constant.CommonConstant;
 import com.lvhaifeng.cloud.common.constant.OrderTypeConstant;
 import com.lvhaifeng.cloud.common.util.ConvertUtils;
 import com.lvhaifeng.cloud.common.util.SqlInjectionUtil;
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.beans.PropertyDescriptor;
-import java.util.Map;
 
 /**
  * @Description
