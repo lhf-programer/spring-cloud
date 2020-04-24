@@ -1,6 +1,7 @@
 package com.lvhaifeng.cloud.common.query;
 
 import com.lvhaifeng.cloud.common.util.ConvertUtils;
+import com.lvhaifeng.cloud.common.util.StringUtils;
 
 /**
  * @Description Query 规则 常量
@@ -34,7 +35,7 @@ public enum QueryRuleEnum {
     }
 
     public static QueryRuleEnum getByValue(String value) {
-        if (ConvertUtils.isEmpty(value)) {
+        if (StringUtils.isEmpty(value)) {
             return null;
         }
         for (QueryRuleEnum val : values()) {

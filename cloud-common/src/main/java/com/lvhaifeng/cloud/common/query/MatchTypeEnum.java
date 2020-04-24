@@ -1,7 +1,6 @@
 package com.lvhaifeng.cloud.common.query;
 
-
-import com.lvhaifeng.cloud.common.util.ConvertUtils;
+import com.lvhaifeng.cloud.common.util.StringUtils;
 
 /**
  * @Description 查询链接规则
@@ -19,7 +18,7 @@ public enum MatchTypeEnum {
     }
 
     public static MatchTypeEnum getByValue(String value) {
-        if (ConvertUtils.isEmpty(value)) {
+        if (StringUtils.isEmpty(value)) {
             return null;
         }
         for (MatchTypeEnum val : values()) {

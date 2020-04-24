@@ -1,50 +1,17 @@
 package com.lvhaifeng.cloud.common.util;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.sql.Date;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
- * @Description
+ * @Description 字符串转换
  * @Author haifeng.lv
  * @Date 2020/1/10 15:53
  */
 public class ConvertUtils {
-    public static boolean isEmpty(Object object) {
-        if (object == null) {
-            return (true);
-        }
-        if ("".equals(object)) {
-            return (true);
-        }
-        if ("null".equals(object)) {
-            return (true);
-        }
-        return (false);
-    }
-
-    public static boolean isNotEmpty(Object object) {
-        if (object != null && !object.equals("") && !object.equals("null")) {
-            return (true);
-        }
-        return (false);
-    }
-
     /**
-     * 将驼峰命名转化成下划线
-     *
-     * @param para
-     * @return
+     * @Description 将驼峰命名转化成下划线
+     * @Author haifeng.lv
+     * @param: para
+     * @Date 2020/4/24 11:07
+     * @return: java.lang.String
      */
     public static String camelToUnderline(String para) {
         if (para.length() < 3) {
