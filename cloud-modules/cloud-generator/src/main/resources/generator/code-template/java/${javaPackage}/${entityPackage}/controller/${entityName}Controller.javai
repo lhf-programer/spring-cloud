@@ -1,15 +1,17 @@
 package ${javaPackage}.${entityPackage}.controller;
 
-import com.lvhaifeng.cloud.common.vo.Result;
-import ${javaPackage}.${entityPackage}.entity.${entityName};
 import ${javaPackage}.${entityPackage}.service.I${entityName}Service;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
+<#if tableVo.isEmpty ==0>
 import io.swagger.annotations.ApiOperation;
+import com.lvhaifeng.cloud.common.vo.Result;
+import ${javaPackage}.${entityPackage}.entity.${entityName};
+import com.baomidou.mybatisplus.core.metadata.IPage;
+</#if>
 
 <#if tableVo.isCheckClient ==1>
 import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
@@ -40,7 +42,7 @@ import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 public class ${entityName}Controller {
 	@Autowired
 	private I${entityName}Service ${entityName?uncap_first}Service;
-	
+<#if tableVo.isEmpty ==0>
 	/**
 	 * 分页列表查询
 	 * @param ${entityName?uncap_first}
@@ -130,5 +132,5 @@ public class ${entityName}Controller {
         result.setSuccess(true);
 		return result;
 	}
-
+</#if>
 }

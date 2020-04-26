@@ -1,8 +1,10 @@
 package ${javaPackage}.${entityPackage}.service;
 
 import ${javaPackage}.${entityPackage}.entity.${entityName};
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+<#if tableVo.isEmpty ==0>
+import com.baomidou.mybatisplus.core.metadata.IPage;
+</#if>
 
 /**
  * @Description: ${tableVo.ftlDescription}
@@ -10,10 +12,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @Date: ${.now?string["yyyy-MM-dd HH:mm"]}
  */
 public interface I${entityName}Service extends IService<${entityName}> {
+<#if tableVo.isEmpty ==0>
     IPage<${entityName}> find${entityName}PageList(${entityName} ${entityName?uncap_first}, Integer pageNo, Integer pageSize, String sortProp, String sortType);
     boolean create${entityName}(${entityName} ${entityName?uncap_first});
     boolean alter${entityName}ById(${entityName} ${entityName?uncap_first});
     boolean drop${entityName}ById(String id);
     boolean drop${entityName}Batch(String ids);
     ${entityName} find${entityName}ById(String id);
+</#if>
 }
