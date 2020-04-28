@@ -19,9 +19,9 @@
             client.id
           FROM
               auth_client client
-          INNER JOIN auth_client_service gcs ON gcs.client_id = client.id
+          INNER JOIN auth_client_service acs ON acs.client_id = client.id
         WHERE
-            gcs.service_id = #{serviceId}
+            acs.service_id = #{serviceId}
     </select>
 
 </mapper>

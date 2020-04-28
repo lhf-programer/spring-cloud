@@ -2,8 +2,8 @@ package com.lvhaifeng.cloud.auth.client.interceptor;
 
 import com.lvhaifeng.cloud.auth.client.annotation.CheckClientToken;
 import com.lvhaifeng.cloud.auth.client.annotation.IgnoreClientToken;
-import com.lvhaifeng.cloud.auth.client.config.AuthClientConfig;
 import com.lvhaifeng.cloud.auth.client.service.AuthClientService;
+import com.lvhaifeng.cloud.common.exception.auth.ClientTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.method.HandlerMethod;
@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthClientInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private AuthClientService authClientService;
-    @Autowired
-    private AuthClientConfig authClientConfig;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -39,10 +37,11 @@ public class AuthClientInterceptor extends HandlerInterceptorAdapter {
         if (annotation == null || ignoreClientToken != null) {
             return super.preHandle(request, response, handler);
         } else {
-            // 获取头部 token
-            String token = request.getHeader(authClientConfig.getTokenHeader());
-            // 获取客户端信息
-            authClientService.getInfoFromToken(token, authClientConfig.getClientId());
+            // 设置当前客户端信息
+            boolean flag = authClientService.setCurrentClientInfo(request);
+            if (!flag) {
+                throw new ClientTokenException("客户端 token为空!");
+            }
             return super.preHandle(request, response, handler);
         }
     }

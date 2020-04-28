@@ -11,11 +11,13 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.Duration;
@@ -41,7 +43,7 @@ public class AuthClientService {
     private String clientToken;
 
     /**
-     * @Description 验证客户端 token
+     * @Description 获取客户端信息
      * @Author haifeng.lv
      * @Date 2019/12/20 11:47
      */
@@ -57,8 +59,8 @@ public class AuthClientService {
             // 获取所有允许的 client
             List<String> allowedClient = authClientFeign.getAllowedClient(clientId).getResult();
             if (!Collections.isEmpty(allowedClient)) {
-                for(String client: allowedClient){
-                    if(client.equals(id)){
+                for (String client : allowedClient) {
+                    if (client.equals(id)) {
                         return authInfo;
                     }
                 }
@@ -69,13 +71,29 @@ public class AuthClientService {
             throw new ClientTokenException("客户端 token过期！");
         } catch (SignatureException ex) {
             throw new ClientTokenException("客户端 token签名错误！");
-        } catch (IllegalArgumentException ex) {
-            throw new ClientTokenException("客户端 token为空!");
         }
     }
 
     /**
+     * @Description 设置当前客户端信息
+     * @Author haifeng.lv
+     * @param: request
+     * @Date 2020/4/28 11:03
+     */
+    public boolean setCurrentClientInfo(HttpServletRequest request) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        // 获取头部 token
+        String token = request.getHeader(authClientConfig.getTokenHeader());
+        if (StringUtils.isBlank(token)) {
+            return false;
+        }
+
+        getInfoFromToken(token, authClientConfig.getClientId());
+        return true;
+    }
+
+    /**
      * 刷新客户端token
+     *
      * @author haifeng.lv
      * @date 2019-07-30 17:58
      */

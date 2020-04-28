@@ -51,7 +51,7 @@ public class AuthClientServiceImpl extends ServiceImpl<AuthClientMapper, AuthCli
     @Override
     public List<String> findAllowedClient(String clientId) {
         AuthClient authClient = getAuthClient(clientId);
-        List<String> clients = authClientMapper.selectAllowedClient(authClient.getId() + "");
+        List<String> clients = authClientMapper.selectAllowedClient(authClient.getId());
         if (clients == null) {
             new ArrayList<String>();
         }

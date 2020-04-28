@@ -2,18 +2,14 @@ package com.lvhaifeng.cloud.auth.user.interceptor;
 
 import com.lvhaifeng.cloud.auth.user.annotation.CheckUserToken;
 import com.lvhaifeng.cloud.auth.user.annotation.IgnoreUserToken;
-import com.lvhaifeng.cloud.auth.user.config.AuthUserConfig;
 import com.lvhaifeng.cloud.auth.user.service.AuthUserService;
-import com.lvhaifeng.cloud.common.constant.RequestHeaderConstants;
 import com.lvhaifeng.cloud.common.context.BaseContextHandler;
-import com.lvhaifeng.cloud.common.vo.AuthInfo;
-import org.apache.commons.lang3.StringUtils;
+import com.lvhaifeng.cloud.common.exception.auth.NonLoginException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,8 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthUserInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private AuthUserService authUserService;
-    @Autowired
-    private AuthUserConfig userAuthConfig;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -44,29 +38,11 @@ public class AuthUserInterceptor extends HandlerInterceptorAdapter {
         if (annotation == null || ignoreUserToken != null) {
             return super.preHandle(request, response, handler);
         } else {
-            // 获取用户 token
-            String token = request.getHeader(userAuthConfig.getTokenHeader());
-            // 如果为空则到 cookie中查找
-            if (StringUtils.isEmpty(token)) {
-                if (request.getCookies() != null) {
-                    for (Cookie cookie : request.getCookies()) {
-                        if (cookie.getName().equals(userAuthConfig.getTokenHeader())) {
-                            token = cookie.getValue();
-                        }
-                    }
-                }
+            // 设置当前用户信息
+            boolean flag = authUserService.setCurrentUserInfo(request);
+            if (!flag) {
+                throw new NonLoginException("用户 token为空！");
             }
-
-            // 截取 token
-            if (token != null && token.startsWith(RequestHeaderConstants.JWT_TOKEN_TYPE)) {
-                token = token.substring(RequestHeaderConstants.JWT_TOKEN_TYPE.length());
-            }
-
-            // 解析 token
-            AuthInfo authInfo = authUserService.getInfoFromToken(token);
-            BaseContextHandler.setToken(token);
-            BaseContextHandler.setUserName(authInfo.getName());
-            BaseContextHandler.setUserId(authInfo.getId());
             return super.preHandle(request, response, handler);
         }
     }

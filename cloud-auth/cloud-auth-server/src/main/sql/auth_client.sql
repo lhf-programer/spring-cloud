@@ -64,6 +64,7 @@ INSERT INTO `auth_client_service` VALUES ('2d3adc3949ba59abbe56e057f20f883e', '1
 INSERT INTO `auth_client_service` VALUES ('3d3adc3949ba59abbe56e057f20f883e', '1d4adc3949ba59abbe56e057f20f883e', '1d3adc3949ba59abbe56e057f20f883e', 'cloud-auth->cloud-gate', 'haifeng.lv', '2019-12-21 14:51:26', 'haifeng.lv', '2019-12-21 14:51:31');
 INSERT INTO `auth_client_service` VALUES ('4d3adc3949ba59abbe56e057f20f883e', '1d4adc3949ba59abbe56e057f20f883e', '1d2adc3949ba59abbe56e057f20f883e', 'cloud-auth->cloud-admin', 'haifeng.lv', '2019-12-21 14:51:26', 'haifeng.lv', '2019-12-21 14:51:31');
 INSERT INTO `auth_client_service` VALUES ('5d3adc3949ba59abbe56e057f20f883e', '1d2adc3949ba59abbe56e057f20f883e', '1d3adc3949ba59abbe56e057f20f883e', 'cloud-admin->cloud-gate', 'haifeng.lv', '2019-12-21 14:51:26', 'haifeng.lv', '2019-12-21 14:51:31');
+INSERT INTO `auth_client_service` VALUES ('5d3adc3949ba59abbe56e057f20f984e', '1d2adc3949ba59abbe56e057f20f883e', '1d4adc3949ba59abbe56e057f20f883e', 'cloud-admin->cloud-auth', 'haifeng.lv', '2019-12-21 14:51:26', 'haifeng.lv', '2019-12-21 14:51:31');
 
 -- ----------------------------
 -- Table structure for gateway_route
