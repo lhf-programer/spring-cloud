@@ -19,7 +19,7 @@ service.interceptors.request.use(
   config => {
     if (store.getters.token) {
       // 携带用户 token
-      config.headers['Authorization'] = getToken()
+      config.headers['Authorization'] = "Bearer " + getToken()
     } else if(config.url === loginUrl) {
       // 携带登录认证客户端 token
       config.headers['Authorization'] = clientToken
