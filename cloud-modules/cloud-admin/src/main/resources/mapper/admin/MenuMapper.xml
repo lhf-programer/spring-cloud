@@ -112,13 +112,13 @@
             menu
         where 1=1
         <if test="menu.name!= null and menu.name!= ''">
-            and name like "%"#{menu.name}"%"
+            and name like concat('%',#{menu.name},'%')
         </if>
         <if test="menu.url!= null and menu.url!= ''">
-            and url like "%"#{menu.url}"%"
+            and url like concat('%',#{menu.url},'%')
         </if>
         <if test="menu.description!= null and menu.description!= ''">
-            and description like "%"#{menu.description}"%"
+            and description like concat('%',#{menu.description},'%')
         </if>
         <if test="menu.parentId!= null and menu.parentId!= ''">
             and parent_id = #{menu.parentId}
