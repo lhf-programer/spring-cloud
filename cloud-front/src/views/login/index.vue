@@ -48,7 +48,6 @@
 </template>
 
 <script>
-
 export default {
   name: "login",
   data() {
@@ -86,26 +85,36 @@ export default {
           }
         ]
       },
-      loading: false
+      loading: false,
+      redirect: undefined
     };
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect;
+      },
+      immediate: true
+    }
   },
   methods: {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-            this.loading = true
-            this.$store.dispatch('Login', this.loginForm)
-              .then(() => {
-                this.$router.push({ path: this.redirect || '/' })
-                this.loading = false
-              })
-              .catch(() => {
-                this.loading = false
-              })
-          } else {
-            console.log('登录失败')
-            return false
-          }
+          this.loading = true;
+          this.$store
+            .dispatch("Login", this.loginForm)
+            .then(() => {
+              this.$router.push({ path: this.redirect || "/" });
+              this.loading = false;
+            })
+            .catch(() => {
+              this.loading = false;
+            });
+        } else {
+          console.log("登录失败");
+          return false;
+        }
       });
     }
   }
