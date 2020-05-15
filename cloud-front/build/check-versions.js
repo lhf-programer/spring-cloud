@@ -33,7 +33,7 @@ module.exports = function () {
 
     if (warnings.length) {
         console.log('')
-        console.log(chalk.yellow('To use this template, you must update following to modules:'))
+        console.log(chalk.yellow('要使用此模板，必须将以下内容更新到模块:'))
         console.log()
         for (var i = 0; i < warnings.length; i++) {
             var warning = warnings[i]

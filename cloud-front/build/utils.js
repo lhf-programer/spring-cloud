@@ -15,12 +15,11 @@ exports.cssLoaders = function (options) {
   var cssLoader = {
     loader: 'css-loader',
     options: {
-      // minimize: process.env.NODE_ENV === 'production',
       sourceMap: options.sourceMap
     }
   }
 
-  // generate loader string to be used with extract text plugin
+  // 生成与提取文本插件一起使用的加载程序字符串
   function generateLoaders (loader, loaderOptions) {
     var loaders = [cssLoader]
     if (loader) {
@@ -32,19 +31,17 @@ exports.cssLoaders = function (options) {
       })
     }
 
-    // Extract CSS when that option is specified
-    // (which is the case during production build)
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
-        fallback: 'vue-style-loader'
+        fallback: 'vue-style-loader',
+        publicPath: '../../'
       })
     } else {
       return ['vue-style-loader'].concat(loaders)
     }
   }
 
-  // https://vue-loader.vuejs.org/en/configurations/extract-css.html
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
@@ -56,7 +53,7 @@ exports.cssLoaders = function (options) {
   }
 }
 
-// Generate loaders for standalone style files (outside of .vue)
+// 为独立样式文件生成加载程序
 exports.styleLoaders = function (options) {
   var output = []
   var loaders = exports.cssLoaders(options)

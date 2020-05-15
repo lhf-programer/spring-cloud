@@ -44,11 +44,9 @@ var webpackConfig = merge(baseWebpackConfig, {
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css')
     }),
-    // Compress extracted CSS. We are using this plugin so that possible
-    // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin(),
-    // generate dist index.html with correct asset hash for caching.
-    // you can customize output by editing /index.html
+    // 生成带有正确的用于缓存的资产散列的dist index.html。
+    // 您可以通过编辑/index.html自定义输出
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: 'index.html',
@@ -68,16 +66,16 @@ var webpackConfig = merge(baseWebpackConfig, {
         minifyURLs: true
       },
       path: config.build.assetsPublicPath + config.build.assetsSubDirectory,
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      // 必须通过CommonsChunkPlugin一致地处理多个块
       chunksSortMode: 'dependency'
     }),
-    // cache Module Identifiers
+    // 缓存模块标识符
     new webpack.HashedModuleIdsPlugin(),
-    // split vendor js into its own file
+    // 将供应商js分割到自己的文件中
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function (module, count) {
-        // any required modules inside node_modules are extracted to vendor
+        // node_modules中需要的任何模块都被提取给vendor
         return (
           module.resource &&
           /\.js$/.test(module.resource) &&
@@ -87,7 +85,6 @@ var webpackConfig = merge(baseWebpackConfig, {
         )
       }
     }),
-    // split echarts into its own file
     new webpack.optimize.CommonsChunkPlugin({
       async: 'echarts',
       minChunks(module) {
@@ -95,13 +92,12 @@ var webpackConfig = merge(baseWebpackConfig, {
         return context && (context.indexOf('echarts') >= 0 || context.indexOf('zrender') >= 0);
       }
     }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
+    // 将webpack运行时和模块清单解压缩到它自己的文件中
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']
     }),
-    // copy custom static assets
+    // 复制自定义静态资产
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, '../static'),
       to: config.build.assetsSubDirectory,
