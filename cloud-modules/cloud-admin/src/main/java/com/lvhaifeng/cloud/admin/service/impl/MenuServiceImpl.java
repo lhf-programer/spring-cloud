@@ -13,7 +13,7 @@ import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
-import com.lvhaifeng.cloud.common.util.SortUtils;
+import com.lvhaifeng.mybatis.query.QueryHelper;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Transactional(rollbackFor = Exception.class)
     public IPage<MenuInfo> findMenuPageList(Menu menu, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
         Page<MenuInfo> page = new Page(pageNo, pageSize);
-        page.setOrders(SortUtils.resolverSort(sortProp, sortType));
+        page.setOrders(QueryHelper.resolverSort(sortProp, sortType));
         if (StringUtils.isBlank(menu.getParentId())
                 && StringUtils.isBlank(menu.getName())
                 && StringUtils.isBlank(menu.getUrl())

@@ -8,8 +8,8 @@ import com.lvhaifeng.cloud.admin.vo.response.ButtonInfo;
 import com.lvhaifeng.cloud.admin.vo.response.MenuInfo;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
-import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import com.lvhaifeng.mybatis.query.QueryHelper;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class ButtonServiceImpl extends ServiceImpl<ButtonMapper, Button> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public IPage<ButtonInfo> findButtonPageList(Button button, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
-        QueryWrapper<Button> queryWrapper = QueryGenerator.initQueryWrapper(button, sortProp, sortType);
+        QueryWrapper<Button> queryWrapper = QueryHelper.initQueryWrapper(button, sortProp, sortType);
         Page<Button> page = new Page<>(pageNo, pageSize);
         IPage<Button> pageList = baseMapper.selectPage(page, queryWrapper);
         List<Button> buttonList = pageList.getRecords();

@@ -1,7 +1,5 @@
 package com.lvhaifeng.cloud.common.context;
 
-import com.lvhaifeng.cloud.common.util.StringUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +44,7 @@ public class BaseContextHandler {
 
     public static String getToken() {
         Object value = get(CONTEXT_KEY_USER_TOKEN);
-        return StringUtils.getObjectValue(value);
+        return value == null ? "" : value.toString();
     }
 
     public static void setToken(String token) {

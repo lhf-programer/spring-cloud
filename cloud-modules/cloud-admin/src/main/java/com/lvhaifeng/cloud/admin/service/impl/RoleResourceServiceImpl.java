@@ -10,8 +10,8 @@ import com.lvhaifeng.cloud.admin.service.IRoleService;
 import com.lvhaifeng.cloud.admin.vo.request.AddRoleResource;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
-import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import com.lvhaifeng.mybatis.query.QueryHelper;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, Rol
     @Override
     @Transactional(rollbackFor = Exception.class)
     public IPage<RoleResource> findRoleResourcePageList(RoleResource roleResource, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
-        QueryWrapper<RoleResource> queryWrapper = QueryGenerator.initQueryWrapper(roleResource, sortProp, sortType);
+        QueryWrapper<RoleResource> queryWrapper = QueryHelper.initQueryWrapper(roleResource, sortProp, sortType);
         Page<RoleResource> page = new Page<>(pageNo, pageSize);
         IPage<RoleResource> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;

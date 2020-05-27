@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${javaPackage}.${entityPackage}.mapper.${entityName}Mapper">
-
+    <sql id="sqlSelect"><#noparse>${ew.sqlSelect}</#noparse></sql>
+    <sql id="joinTables"><foreach collection="ew.joinTables" item="itemTable" separator=" "><#noparse>${itemTable}</#noparse></foreach></sql>
+    <sql id="customSqlSegment"><#noparse>${ew.customSqlSegment}</#noparse></sql>
 </mapper>

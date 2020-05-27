@@ -16,9 +16,9 @@ import com.lvhaifeng.cloud.auth.user.service.AuthUserService;
 import com.lvhaifeng.cloud.common.encoder.Sha256PasswordEncoder;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
-import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
 import com.lvhaifeng.cloud.common.vo.AuthInfo;
+import com.lvhaifeng.mybatis.query.QueryHelper;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     @Transactional(rollbackFor = Exception.class)
     public IPage<UserInfo> findUserPageList(User user, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
-        QueryWrapper<User> queryWrapperUser = QueryGenerator.initQueryWrapper(user, sortProp, sortType);
+        QueryWrapper<User> queryWrapperUser = QueryHelper.initQueryWrapper(user, sortProp, sortType);
         Page<User> page = new Page<>(pageNo, pageSize);
         IPage<User> pageList = baseMapper.selectPage(page, queryWrapperUser);
         List<User> userList = pageList.getRecords();

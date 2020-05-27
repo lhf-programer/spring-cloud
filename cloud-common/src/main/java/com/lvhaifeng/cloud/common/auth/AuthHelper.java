@@ -2,7 +2,6 @@ package com.lvhaifeng.cloud.common.auth;
 
 import com.lvhaifeng.cloud.common.constant.JwtKeyConstants;
 import com.lvhaifeng.cloud.common.util.RsaKeyUtils;
-import com.lvhaifeng.cloud.common.util.StringUtils;
 import com.lvhaifeng.cloud.common.vo.AuthInfo;
 import io.jsonwebtoken.*;
 
@@ -98,7 +97,10 @@ public class AuthHelper {
             }
             otherInfo.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
         }
-        return new AuthInfo(StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_ID)), StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_NAME)), Instant.ofEpochMilli(Long.parseLong(body.get(JwtKeyConstants.JWT_KEY_EXPIRE).toString())).atZone(ZoneOffset.ofHours(8)).toLocalDateTime(), StringUtils.getObjectValue(body.get(JwtKeyConstants.JWT_KEY_CODE)), otherInfo);
+        return new AuthInfo(getObjectValue(body.get(JwtKeyConstants.JWT_KEY_ID)), getObjectValue(body.get(JwtKeyConstants.JWT_KEY_NAME)), Instant.ofEpochMilli(Long.parseLong(body.get(JwtKeyConstants.JWT_KEY_EXPIRE).toString())).atZone(ZoneOffset.ofHours(8)).toLocalDateTime(), getObjectValue(body.get(JwtKeyConstants.JWT_KEY_CODE)), otherInfo);
     }
 
+    public static String getObjectValue(Object obj) {
+        return obj == null ? "" : obj.toString();
+    }
 }

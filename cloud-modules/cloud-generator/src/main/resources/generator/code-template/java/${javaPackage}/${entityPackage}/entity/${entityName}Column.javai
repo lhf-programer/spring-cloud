@@ -1,0 +1,13 @@
+package ${javaPackage}.${entityPackage}.entity;
+
+/**
+ * @Description: ${tableVo.ftlDescription}列
+ * @Author: haifeng.lv
+ * @Date: ${.now?string["yyyy-MM-dd HH:mm"]}
+ */
+public class ${entityName}Column {
+    public static final String TABLE = "${tableVo.tableName}";
+<#list originalColumns as po>
+    public static final String ${po.fieldColumn} = TABLE + ".${po.fieldDbName}";
+</#list>
+}

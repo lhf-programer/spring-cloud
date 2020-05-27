@@ -8,8 +8,8 @@ import com.lvhaifeng.cloud.admin.service.IRoleService;
 import com.lvhaifeng.cloud.admin.service.IUserRoleService;
 import com.lvhaifeng.cloud.common.error.ErrCodeBaseConstant;
 import com.lvhaifeng.cloud.common.exception.BusinessException;
-import com.lvhaifeng.cloud.common.query.QueryGenerator;
 import com.lvhaifeng.cloud.common.util.EntityUtils;
+import com.lvhaifeng.mybatis.query.QueryHelper;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public IPage<UserRole> findUserRolePageList(UserRole userRole, Integer pageNo, Integer pageSize, String sortProp, String sortType) {
-        QueryWrapper<UserRole> queryWrapper = QueryGenerator.initQueryWrapper(userRole, sortProp, sortType);
+        QueryWrapper<UserRole> queryWrapper = QueryHelper.initQueryWrapper(userRole, sortProp, sortType);
         Page<UserRole> page = new Page<>(pageNo, pageSize);
         IPage<UserRole> pageList = baseMapper.selectPage(page, queryWrapper);
         return pageList;
