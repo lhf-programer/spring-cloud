@@ -22,7 +22,7 @@
     "jquery": "^3.4.1",
     "js-cookie": "2.1.4",
     "jsonlint": "1.6.2",
-    "jszip": "^3.1.5",
+    "jszip": "^3.7.0",
     "mockjs": "1.0.1-beta3",
     "normalize.css": "3.0.2",
     "nprogress": "0.2.0",
